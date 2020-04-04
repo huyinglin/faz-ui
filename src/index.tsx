@@ -8,29 +8,45 @@ function App() {
   return (
     <div>
       <h1>hello world</h1>
-      <Button
-        className="test"
-        disabled
-        size="lg"
-      >
-        faz
+      <Button>
+        default
       </Button>
       <Button
-        className="test"
+        type="primary"
+        size="lg"
+      >
+        lg primary
+      </Button>
+      <Button
+        size="sm"
+        type="danger"
+      >
+        sm danger
+      </Button>
+      <Button
+        disabled
+      >
+        disabled
+      </Button>
+      <Button
         disabled
         type="primary"
       >
-        faz
+        disabled primary
       </Button>
       <Button
-        className="test"
-        size="sm"
         type="link"
         href="www.baidu.com"
       >
-        faz
+        link
       </Button>
-      faz
+      <Button
+        type="link"
+        href="www.baidu.com"
+        disabled
+      >
+        disabled link
+      </Button>
     </div>
   );
 }
