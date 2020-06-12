@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 export type ButtonSize = 'lg' | 'sm';
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link';
@@ -28,6 +29,11 @@ export type AnchorButtonProps = {
 
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
 
+/**
+ * Component is described here.
+ *
+ * @example ./button.md
+ */
 function Button(props: ButtonProps) {
   const {
     className,
@@ -39,6 +45,8 @@ function Button(props: ButtonProps) {
     children,
     ...rest
   } = props;
+
+  // const buttonRef = ref || React.createRef<HTMLButtonElement>();
 
   const classes = classnames('btn', className, {
     [`btn-${type}`]: type,
@@ -63,6 +71,7 @@ function Button(props: ButtonProps) {
       type={htmlType}
       className={classes}
       disabled={disabled}
+      // ref={buttonRef}
       {...rest}
     >
       {children}
@@ -70,10 +79,21 @@ function Button(props: ButtonProps) {
   );
 }
 
+// const Button = React.forwardRef(InternalButton as any);
+
 Button.defaultProps = {
   disabled: false,
   htmlType: 'button',
   type: 'default',
+};
+
+Button.propTypes = {
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  size: PropTypes.oneOf(['lg', 'sm']),
+  type: PropTypes.oneOf(['primary', 'default', 'danger', 'link']),
+  href: PropTypes.string,
+  children: PropTypes.node.isRequired,
 };
 
 export default Button;

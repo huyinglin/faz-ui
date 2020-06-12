@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 
 export type AlertType = 'success' | 'info' | 'danger' | 'warning';

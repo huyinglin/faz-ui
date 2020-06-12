@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.scss';
 
-import Button from './components/Button/button';
+import Button from './components/Button';
 import Alert from './components/Alert/alert';
 
 function App() {
