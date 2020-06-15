@@ -4,6 +4,7 @@ import './styles/index.scss';
 
 import Button from './components/Button/button';
 import Alert from './components/Alert/alert';
+import Toc from './tox';
 
 function App() {
   return (
@@ -79,7 +80,8 @@ function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Toc />
+    {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

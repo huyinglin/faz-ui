@@ -9,5 +9,5 @@ describe('test Button component', () => {
     expect(element).toBeInTheDocument();
     expect(element.tagName).toEqual('BUTTON');
     expect(element).toHaveClass('btn btn-default');
-  })
-})
+  });
+});
