@@ -22,7 +22,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
-    "@types/jest": "^25.2.1"
+    "@types/jest": "^25.2.1",
+    "react-styleguidist": "^11.0.8"
   }
 }
