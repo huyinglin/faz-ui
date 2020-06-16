@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import classnames from 'classnames';
+import {
+  AlertView,
+  AlrtDescView,
+} from './style';
+import {
+  AlertProps,
+} from './interface';
+import { styledFactory } from '../../styled';
 
-export type AlertType = 'success' | 'info' | 'danger' | 'warning';
+// const { Span } = styledElement;
+const Span = styledFactory('span');
 
-export interface AlertProps {
-  closable?: boolean;
-  type: AlertType;
-  message: string;
-  description?: string;
-  onClose?: () => void;
-  className?: string;
-}
-
+/**
+ * This is Button.
+ *
+ * @example ./button.md
+ */
 function Alert(props: AlertProps) {
   const {
     closable,
     type,
     message,
     description,
-    onClose,
     className,
+    style,
+    onClose,
   } = props;
 
   const [closed, setClosed] = useState(false);
@@ -38,34 +43,33 @@ function Alert(props: AlertProps) {
     return null;
   }
 
-  const classes = classnames('alert', className, {
-    [`alert-${type}`]: true,
-    'alert-desc': !!description,
-  });
-
   if (description) {
     return (
-      <div className={classes}>
-        <div className="alrt-desc-message">
+      <AlertView
+        style={style}
+        type={type}
+        className={className}
+      >
+        <AlrtDescView>
           {message}
           {closable &&
-            <span className="alert-close" onClick={handleClose}>x</span>
+            <Span cursor="pointer" onClick={handleClose}>x</Span>
           }
-        </div>
-        <div>
-          {description}
-        </div>
-      </div>
+        </AlrtDescView>
+        <div>{description}</div>
+      </AlertView>
     );
   }
 
   return (
-    <div className={classes}>
+    <AlertView
+      style={style}
+      type={type}
+      className={className}
+    >
       {message}
-      {closable &&
-        <span className="alert-close" onClick={handleClose}>x</span>
-      }
-    </div>
+      {closable && <Span cursor="pointer" onClick={handleClose}>x</Span>}
+    </AlertView>
   );
 }
 
@@ -73,4 +77,5 @@ Alert.defaultProps = {
   type: 'info',
 }
 
+/** @component */
 export default Alert;

@@ -1,27 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.scss';
+// import './styles/index.scss';
 
 import Button from './components/Button';
-import Alert from './components/Alert/alert';
-import Toc from './tox';
+import Alert from './components/Alert';
 
 function App() {
   return (
     <div>
-      <div style={{ margin: 20, display: 'flex', justifyContent: 'space-evenly' }}>
+      {/* <div style={{ margin: 20, display: 'flex', justifyContent: 'space-evenly' }}>
         <Button>
           default
         </Button>
         <Button
           type="primary"
-          size="lg"
+          size="large"
           onClick={() => alert(43)}
         >
           lg primary
         </Button>
         <Button
-          size="sm"
+          size="small"
           type="danger"
         >
           sm danger
@@ -73,15 +72,14 @@ function App() {
           type="danger"
           closable
         />
-      </div>
+      </div> */}
     </div>
   );
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <Toc />
-    {/* <App /> */}
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

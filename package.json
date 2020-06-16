@@ -2,22 +2,6 @@
   "name": "faz",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "classnames": "^2.2.6",
-    "node-sass": "^4.13.1",
-    "omit.js": "^1.0.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "typescript": "^3.8.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/huyinglin/faz.git"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -25,6 +9,10 @@
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huyinglin/faz.git"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,9 +29,23 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "node-sass": "^4.13.1",
+    "omit.js": "^1.0.2",
+    "polished": "^3.6.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1",
+    "typescript": "^3.8.3",
+    "react-styleguidist": "^11.0.8"
+  },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/jest": "^25.2.1",
-    "react-styleguidist": "^11.0.8"
+    "@types/styled-components": "^5.1.0"
   }
 }

@@ -1,38 +1,17 @@
 import React from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-export type ButtonSize = 'lg' | 'sm';
-export type ButtonType = 'primary' | 'default' | 'danger' | 'link';
-
-export interface BaseButtonProps {
-  className: string;
-  disabled: boolean;
-  size: ButtonSize;
-  type: ButtonType;
-  href: string;
-  children: React.ReactNode;
-}
-
-type ButtonHTMLTypes = 'submit' | 'button' | 'reset';
-
-export type NativeButtonProps = {
-  htmlType: ButtonHTMLTypes;
-  onClick: React.MouseEventHandler<HTMLElement>;
-} & BaseButtonProps & Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type' | 'onClick'>;
-
-export type AnchorButtonProps = {
-  href: string;
-  target: string;
-  onClick: React.MouseEventHandler<HTMLElement>;
-} & BaseButtonProps & Omit<React.AnchorHTMLAttributes<HTMLElement>, 'type' | 'onClick'>
-
-export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
+import {
+  ButtonProps,
+} from './interface';
+import {
+  ButtonView,
+  AncharView,
+} from './style';
 
 /**
- * Component is described here.
+ * This is Button.
  *
- * @example ./button.md
  */
 function Button(props: ButtonProps) {
   const {
@@ -48,38 +27,36 @@ function Button(props: ButtonProps) {
 
   // const buttonRef = ref || React.createRef<HTMLButtonElement>();
 
-  const classes = classnames('btn', className, {
-    [`btn-${type}`]: type,
-    [`btn-${size}`]: size,
-    'disabled': type === 'link' && disabled
-  });
-
   if (type === 'link' && href) {
     return (
-      <a
-        className={classes}
+      <AncharView
+        className={className}
         href={href}
         {...rest}
       >
         {children}
-      </a>
+      </AncharView>
     )
   }
 
   return (
-    <button
+    <ButtonView
+      buttonType={type}
+      buttonSize={size}
       type={htmlType}
-      className={classes}
+      className={className}
       disabled={disabled}
       // ref={buttonRef}
       {...rest}
     >
       {children}
-    </button>
+    </ButtonView>
   );
 }
 
 // const Button = React.forwardRef(InternalButton as any);
+
+Button.displayName = 'Button';
 
 Button.defaultProps = {
   disabled: false,
@@ -90,10 +67,11 @@ Button.defaultProps = {
 Button.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  size: PropTypes.oneOf(['lg', 'sm']),
+  size: PropTypes.oneOf(['large', 'small']),
   type: PropTypes.oneOf(['primary', 'default', 'danger', 'link']),
   href: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
 
+/** @component */
 export default Button;
