@@ -9,10 +9,6 @@ import {
   AncharView,
 } from './style';
 
-/**
- * This is Button.
- *
- */
 function Button(props: ButtonProps) {
   const {
     className,

@@ -11,11 +11,6 @@ import { styledFactory } from '../../styled';
 // const { Span } = styledElement;
 const Span = styledFactory('span');
 
-/**
- * This is Button.
- *
- * @example ./button.md
- */
 function Alert(props: AlertProps) {
   const {
     closable,

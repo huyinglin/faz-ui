@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Button from '../button';
+import Button from '../../Buttons/button';
 
 describe('test Button component', () => {
   it('should render the correct default button', () => {

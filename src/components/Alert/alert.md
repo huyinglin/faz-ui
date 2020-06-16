@@ -1,4 +1,4 @@
-Basic button:
+Basic Alert:
 
 ```jsx
 <Alert

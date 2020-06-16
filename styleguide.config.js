@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Faz',
-  components: 'src/components/**/index.{ts,tsx}',
+  components: 'src/components/**/[A-Z]*.{ts,tsx}',
   ignore: [
     'src/components/**/styled.{js,jsx,ts,tsx}',
     'src/components/**/interface.{ts,tsx}',
