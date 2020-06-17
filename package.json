@@ -8,7 +8,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build"
+    "styleguide:build": "styleguidist build",
+    "new": "node ./scirpt/component.js --name"
   },
   "repository": {
     "type": "git",
@@ -39,13 +40,14 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "react-styleguidist": "^11.0.8",
     "styled-components": "^5.1.1",
-    "typescript": "^3.8.3",
-    "react-styleguidist": "^11.0.8"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/jest": "^25.2.1",
-    "@types/styled-components": "^5.1.0"
+    "@types/styled-components": "^5.1.0",
+    "yargs": "^15.3.1"
   }
 }

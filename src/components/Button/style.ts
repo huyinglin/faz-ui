@@ -4,7 +4,7 @@ import {
   ButtonType,
   ButtonSize,
 } from './interface';
-import { themeColor } from '../../styled';
+import { themeColor } from '../src/styled';
 
 function generateTypeCSS(
   background: string,

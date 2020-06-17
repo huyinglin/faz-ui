@@ -15,10 +15,3 @@ export const FlexBetween = styledFactory('div', `
   justify-content: space-between;
   align-content: center;
 `);
-
-export const Ellipsis = styledFactory('div', `
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`);
