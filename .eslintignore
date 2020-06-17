@@ -1,0 +1,5 @@
+!src/components/*/__tests__/**/*.js
+
+node_modules
+dist
+template

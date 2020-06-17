@@ -1,2 +1,2 @@
 import styled from 'styled-components';
-import { themeColor } from '../src/styled';
+import { themeColor } from '../../styled';
