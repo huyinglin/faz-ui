@@ -16,6 +16,7 @@ function generateComponentDirectory() {
 
   templateMain();
   templateMarkdown();
+  templateIndex();
   templateStyle();
   templateInterface();
   templateTest();
@@ -45,6 +46,14 @@ function templateMarkdown() {
 
   fs.writeFileSync(path.join(componentPath, `${componentName.toLowerCase()}.md`), template);
   console.log(chalk.cyan('Done') + ` ${componentName.toLowerCase()}.md`);
+}
+
+function templateIndex() {
+  const template = fs.readFileSync(path.join(__dirname, `../template/index.tsx`), "utf-8")
+    .replace(/\$\$component_name/g, componentName);
+
+  fs.writeFileSync(path.join(componentPath, 'index.tsx'), template);
+  console.log(chalk.cyan('Done') + 'index.tsx');
 }
 
 function templateStyle() {

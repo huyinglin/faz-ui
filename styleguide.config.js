@@ -6,6 +6,7 @@ module.exports = {
     'src/components/**/interface.{ts,tsx}',
     'src/components/**/index.{ts,tsx}',
     'src/components/**/__tests__/**.{ts,tsx}',
+    'src/components/**/component/**.{ts,tsx}',
   ],
   styles: function(theme) {
     return {
