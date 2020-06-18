@@ -33,36 +33,42 @@ function parseTabList(children: React.ReactNode): Tab[] {
   return tabList;
 }
 
-function Tabs(props: TabsProps) {
-  const {
-    activeKey,
-    defaultActiveKey,
-    children,
-    onChange,
-  } = props;
-
+function Tabs({
+  tabPosition,
+  activeKey,
+  defaultActiveKey,
+  children,
+  onChange,
+}: TabsProps) {
   const [active, setActive] = useState<string>('');
 
   const tabs = parseTabList(children);
 
   useEffect(() => {
-    setActive(activeKey);
-  }, [activeKey])
+    if (activeKey !== undefined) {
+      setActive(activeKey);
+    }
+  }, [activeKey]);
 
   useEffect(() => {
-    setActive(defaultActiveKey);
-  }, [defaultActiveKey])
+    if (defaultActiveKey !== undefined) {
+      setActive(defaultActiveKey);
+    }
+  }, [defaultActiveKey]);
 
   const handleTabClick = useCallback((key: string) => {
     setActive(key);
-    onChange(key);
+    if (onChange) {
+      onChange(key);
+    }
   }, [onChange]);
 
   return (
     <TabContext.Provider value={{ tabs }}>
-      <TabsView>
+      <TabsView tabPosition={tabPosition}>
         <TabNavList
           activeKey={active}
+          tabPosition={tabPosition}
           onTabClick={handleTabClick}
         />
         <TabPaneList activeKey={active}/>
@@ -75,7 +81,7 @@ Tabs.TabPane = TabPane;
 Tabs.displayName = 'Tabs';
 
 Tabs.defaultProps = {
-
+  tabPosition: 'top',
 };
 
 Tabs.propTypes = {

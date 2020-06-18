@@ -1,11 +1,13 @@
 export type TabSize = 'large' | 'default' | 'small';
+export type TabPosition = 'top' | 'right' | 'bottom' | 'left';
 
 export interface TabsProps {
-  activeKey: string;
-  defaultActiveKey: string;
-  size: TabSize;
+  activeKey?: string;
+  defaultActiveKey?: string;
+  size?: TabSize;
+  tabPosition: TabPosition;
   children?: React.ReactNode;
-  onChange(activeKey: string): void;
+  onChange?(activeKey: string): void;
 }
 
 export interface TabPaneProps {
@@ -31,7 +33,6 @@ export interface TabPanelListProps {
   activeKey: React.Key;
 }
 
-export interface TabNavListProps extends TabPaneProps {
-  activeKey: React.Key;
+export interface TabNavListProps extends TabPaneProps, TabsProps {
   onTabClick(key: string): void;
 }
