@@ -26,12 +26,12 @@ const navDirection = {
 type TabNavItemViewProps = {
   active: boolean;
   disabled?: boolean;
-  tabPosition: TabPosition;
+  tabPosition?: TabPosition;
 }
 
 const activeFP = (props: TabNavItemViewProps) => {
   const { active, tabPosition } = props;
-  return active && css`
+  return tabPosition && active && css`
     margin-${reversePosition[tabPosition]}: -2px;
     border-${reversePosition[tabPosition]}: 2px solid ${themeColor.primary};
     color: ${themeColor.primary};
@@ -51,7 +51,7 @@ const disabledFP = (props: TabNavItemViewProps) => {
 
 const positionFP = (props: TabsProps) => {
   const { tabPosition } = props;
-  return css`
+  return tabPosition && css`
     flex-direction: ${tabDirection[tabPosition]};
     ${tabPosition === 'right' && 'justify-content: space-between;'}
     ${TabNavView} {

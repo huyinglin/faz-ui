@@ -43,7 +43,7 @@ import React from 'react';
 
 const { TabPane } = Tabs;
 
-const [position, setPosition] = React.useState('right');
+const [position, setPosition] = React.useState('top');
 
 <div>
   <div>

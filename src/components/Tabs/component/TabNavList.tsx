@@ -10,11 +10,9 @@ import {
 } from '../style';
 
 function TabNavList({
-  activeKey,
-  tabPosition,
   onTabClick,
 }: TabNavListProps) {
-  const { tabs } = React.useContext(TabContext);
+  const { tabs, activeKey, tabPosition } = React.useContext(TabContext);
 
   return (
     <TabNavView>

@@ -5,7 +5,7 @@ export interface TabsProps {
   activeKey?: string;
   defaultActiveKey?: string;
   size?: TabSize;
-  tabPosition: TabPosition;
+  tabPosition?: TabPosition;
   children?: React.ReactNode;
   onChange?(activeKey: string): void;
 }
@@ -20,16 +20,13 @@ export interface TabPaneProps {
   active?: boolean;
 }
 
-export interface Tab extends TabPaneProps {
+export interface Tab extends TabPaneProps, TabsProps {
   key: string;
   node: React.ReactElement;
 }
 
-export interface TabContextProps {
+export interface TabContextProps extends TabsProps {
   tabs: Tab[];
-}
-
-export interface TabPanelListProps extends TabPaneProps, TabsProps {
 }
 
 export interface TabNavListProps extends TabPaneProps, TabsProps {

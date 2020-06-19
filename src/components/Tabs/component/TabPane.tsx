@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TabPaneProps } from '../interface';
 
 function TabPane({
@@ -14,5 +15,21 @@ function TabPane({
     </div>
   );
 }
+
+TabPane.displayName = 'TabPane';
+
+TabPane.defaultProps = {
+
+};
+
+TabPane.propTypes = {
+  tab: PropTypes.node,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  disabled: PropTypes.bool,
+  tabKey: PropTypes.string,
+  active: PropTypes.bool,
+};
 
 export default React.memo(TabPane);

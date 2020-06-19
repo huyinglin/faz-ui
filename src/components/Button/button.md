@@ -7,7 +7,7 @@ Basic button:
 Big pink button:
 
 ```jsx
-<Button size="lg">
+<Button size="large">
   Click Me
 </Button>
 ```
