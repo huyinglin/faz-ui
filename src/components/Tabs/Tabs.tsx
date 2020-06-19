@@ -37,15 +37,15 @@ function Tabs(props: TabsProps) {
   const {
     tabPosition = 'top',
     activeKey,
-    size,
     defaultActiveKey,
     children,
     onChange,
   } = props;
 
   const [active, setActive] = useState<string>('');
-
+  console.log('children: ', children);
   const tabs = parseTabList(children);
+  console.log('tabs: ', tabs);
 
   useEffect(() => {
     if (activeKey !== undefined) {

@@ -78,7 +78,16 @@ const positionFP = (props: TabsProps) => {
 }
 
 export const TabContentView = styled.div``;
-export const TabNavView = styled.div``;
+
+export const TabNavView = styled.div`
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+`;
 
 export const TabsView = styled.div<TabsProps>`
   width: 100%;
@@ -89,6 +98,7 @@ export const TabsView = styled.div<TabsProps>`
 
 export const TabNavItemView = styled.div<TabNavItemViewProps>`
   padding: 8px 16px;
+  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
