@@ -12,13 +12,14 @@ import {
 function TabNavList({
   onTabClick,
 }: TabNavListProps) {
-  const { tabs, activeKey, tabPosition } = React.useContext(TabContext);
+  const { tabs, activeKey, tabPosition, size } = React.useContext(TabContext);
 
   return (
     <TabNavView>
       {tabs.map(tab => (
         <TabNavItemView
           key={tab.key}
+          size={size}
           tabPosition={tabPosition}
           active={activeKey === tab.key}
           disabled={tab.disabled}

@@ -37,6 +37,7 @@ function Tabs(props: TabsProps) {
   const {
     tabPosition = 'top',
     activeKey,
+    size,
     defaultActiveKey,
     children,
     onChange,

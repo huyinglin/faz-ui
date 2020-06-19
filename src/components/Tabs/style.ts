@@ -1,6 +1,12 @@
 import styled, { css } from 'styled-components';
 import { themeColor } from '../../styled';
-import { TabsProps, TabPosition } from './interface';
+import { TabsProps, TabPosition, TabSize } from './interface';
+
+const tabSize = {
+  default: '14px',
+  large: '18px',
+  small: '12px',
+};
 
 const reversePosition = {
   top: 'bottom',
@@ -25,6 +31,7 @@ const navDirection = {
 
 type TabNavItemViewProps = {
   active: boolean;
+  size?: TabSize;
   disabled?: boolean;
   tabPosition?: TabPosition;
 }
@@ -46,6 +53,13 @@ const disabledFP = (props: TabNavItemViewProps) => {
     &:hover {
       color: unset;
     }
+  `;
+};
+
+const sizeFP = (props: TabsProps) => {
+  const { size } = props;
+  return size && css`
+    font-size: ${tabSize[size]};
   `;
 };
 
@@ -74,13 +88,14 @@ export const TabsView = styled.div<TabsProps>`
 `;
 
 export const TabNavItemView = styled.div<TabNavItemViewProps>`
-  padding: 8px;
+  padding: 8px 16px;
   cursor: pointer;
 
   &:hover {
     color: ${themeColor.primary};
   }
 
+  ${sizeFP}
   ${activeFP}
   ${disabledFP}
 `;
