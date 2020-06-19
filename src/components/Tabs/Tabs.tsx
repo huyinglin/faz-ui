@@ -71,7 +71,10 @@ function Tabs({
           tabPosition={tabPosition}
           onTabClick={handleTabClick}
         />
-        <TabPaneList activeKey={active}/>
+        <TabPaneList
+          activeKey={active}
+          tabPosition={tabPosition}
+        />
       </TabsView>
     </TabContext.Provider>
   );

@@ -17,7 +17,7 @@ function TabNavList({
   const { tabs } = React.useContext(TabContext);
 
   return (
-    <TabNavView tabPosition={tabPosition}>
+    <TabNavView>
       {tabs.map(tab => (
         <TabNavItemView
           key={tab.key}

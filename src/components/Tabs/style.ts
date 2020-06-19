@@ -9,45 +9,78 @@ const reversePosition = {
   left: 'right',
 };
 
-const direction = {
+const tabDirection = {
   top: 'column',
   bottom: 'column-reverse',
-  right: 'left',
-  left: 'right',
+  left: 'unset',
+  right: 'row-reverse',
 };
+
+const navDirection = {
+  top: 'row',
+  bottom: 'row',
+  left: 'column',
+  right: 'column',
+};
+
+type TabNavItemViewProps = {
+  active: boolean;
+  disabled?: boolean;
+  tabPosition: TabPosition;
+}
+
+const activeFP = (props: TabNavItemViewProps) => {
+  const { active, tabPosition } = props;
+  return active && css`
+    margin-${reversePosition[tabPosition]}: -2px;
+    border-${reversePosition[tabPosition]}: 2px solid ${themeColor.primary};
+    color: ${themeColor.primary};
+  `;
+};
+
+const disabledFP = (props: TabNavItemViewProps) => {
+  const { disabled } = props;
+  return disabled && css`
+    opacity: 0.3;
+    cursor: not-allowed;
+    &:hover {
+      color: unset;
+    }
+  `;
+};
+
+const positionFP = (props: TabsProps) => {
+  const { tabPosition } = props;
+  return css`
+    flex-direction: ${tabDirection[tabPosition]};
+    ${tabPosition === 'right' && 'justify-content: space-between;'}
+    ${TabNavView} {
+      display: flex;
+      margin-${reversePosition[tabPosition]}: 8px;
+      border-${reversePosition[tabPosition]}: 2px solid #ccc;
+      flex-direction: ${navDirection[tabPosition]};
+    }
+  `;
+}
+
+export const TabContentView = styled.div``;
+export const TabNavView = styled.div``;
 
 export const TabsView = styled.div<TabsProps>`
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: ${({tabPosition}) => direction[tabPosition]};
+  ${positionFP}
 `;
 
-export const TabNavView = styled.div<TabsProps>`
-  display: flex;
-  ${({tabPosition}) => `margin-${reversePosition[tabPosition]}: 8px;`}
-  ${({tabPosition}) => `border-${reversePosition[tabPosition]}: 2px solid #ccc;`}
-`;
-
-const disabledCSS = css`
-  opacity: 0.3;
-  cursor: not-allowed;
-`;
-
-export const TabNavItemView = styled.div<{ active: boolean;disabled?: boolean;tabPosition: TabPosition; }>`
+export const TabNavItemView = styled.div<TabNavItemViewProps>`
   padding: 8px;
-  ${({tabPosition, active}) => active &&
-    `
-    margin-${reversePosition[tabPosition]}: -2px;
-    border-${reversePosition[tabPosition]}: 2px solid ${themeColor.primary};
-    `
-  }
-  color: ${({active}) => active ? themeColor.primary : ''};
   cursor: pointer;
 
-  ${({disabled}) => disabled && disabledCSS};
-
   &:hover {
-    color: ${({disabled}) => disabled ? '' : themeColor.primary};
+    color: ${themeColor.primary};
   }
+
+  ${activeFP}
+  ${disabledFP}
 `;

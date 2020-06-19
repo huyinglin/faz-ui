@@ -29,8 +29,7 @@ export interface TabContextProps {
   tabs: Tab[];
 }
 
-export interface TabPanelListProps {
-  activeKey: React.Key;
+export interface TabPanelListProps extends TabPaneProps, TabsProps {
 }
 
 export interface TabNavListProps extends TabPaneProps, TabsProps {
