@@ -55,13 +55,13 @@ const [position, setPosition] = React.useState('top');
 
   <Tabs defaultActiveKey="1" tabPosition={position}>
     <TabPane tab="Tab 1" key="1">
-      Content of Tab Pane 1
+      <div style={{ height: 400 }}>Content of Tab Pane 1</div>
     </TabPane>
     <TabPane tab="Tab 2" key="2">
-      Content of Tab Pane 2
+      <div style={{ height: 400 }}>Content of Tab Pane 2</div>
     </TabPane>
     <TabPane tab="Tab 3" key="3">
-      Content of Tab Pane 3
+      <div style={{ height: 400 }}>Content of Tab Pane 3</div>
     </TabPane>
   </Tabs>
 </div>
