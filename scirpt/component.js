@@ -10,7 +10,7 @@ const componentPath = path.join(__dirname,  `../src/components/${componentName}`
 function generateComponentDirectory() {
   if (fs.existsSync(componentPath)) {
     console.log(chalk.red(`error`) + ` The ${componentName} component already exists!`);
-    return;
+    process.exit(1);
   }
 
   const spinner = ora('Generating template code files').start();

@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "styleguidist server",
+    "build": "styleguidist build",
+    "start:origin": "react-scripts start",
+    "build:origin": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build",
     "new": "node ./scirpt/component.js --name"
   },
   "repository": {
@@ -35,6 +35,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "node-sass": "^4.13.1",
+    "normalize.css": "^8.0.1",
     "omit.js": "^1.0.2",
     "polished": "^3.6.5",
     "react": "^16.13.1",

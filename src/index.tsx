@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'normalize.css';
+
 // import './styles/index.scss';
 
 // import Button from './components/Buttons';
-// import Alert from './components/Alert';
+import Modal from './components/Modal';
 
 function App() {
   return (
     <div>
+      <Modal>
+        test
+      </Modal>
       {/* <div style={{ margin: 20, display: 'flex', justifyContent: 'space-evenly' }}>
         <Button>
           default
