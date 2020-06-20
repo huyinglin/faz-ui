@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require('chalk');
 const argv = require('yargs').alias('n', 'name').argv;
+const ora = require('ora');
 
 const componentName = argv.name;
 const componentPath = path.join(__dirname,  `../src/components/${componentName}`);
@@ -12,6 +13,8 @@ function generateComponentDirectory() {
     return;
   }
 
+  const spinner = ora('Generating template code files').start();
+
   fs.mkdirSync(componentPath);
 
   templateMain();
@@ -21,13 +24,7 @@ function generateComponentDirectory() {
   templateInterface();
   templateTest();
 
-  console.log(
-    '\n' +
-    chalk.green('success') +
-    ` ${componentName} component created successfully.` +
-    ` Check out to: "/src/components/${componentName}".` +
-    '\n'
-  );
+  spinner.succeed(`${componentName} component created successfully. Check out to: "/src/components/${componentName}".`);
 }
 
 function templateMain() {
@@ -37,7 +34,6 @@ function templateMain() {
     .replace(/\$\$component_props/g, `${componentName}Props`);
 
   fs.writeFileSync(path.join(componentPath, `${componentName}.tsx`), template);
-  console.log(chalk.cyan('Done') + ` ${componentName}.tsx`);
 }
 
 function templateMarkdown() {
@@ -45,7 +41,6 @@ function templateMarkdown() {
     .replace(/\$\$component_name/g, componentName);
 
   fs.writeFileSync(path.join(componentPath, `${componentName.toLowerCase()}.md`), template);
-  console.log(chalk.cyan('Done') + ` ${componentName.toLowerCase()}.md`);
 }
 
 function templateIndex() {
@@ -53,14 +48,12 @@ function templateIndex() {
     .replace(/\$\$component_name/g, componentName);
 
   fs.writeFileSync(path.join(componentPath, 'index.tsx'), template);
-  console.log(chalk.cyan('Done') + 'index.tsx');
 }
 
 function templateStyle() {
   const template = fs.readFileSync(path.join(__dirname, `../template/style.ts`), "utf-8");
 
   fs.writeFileSync(path.join(componentPath, 'style.ts'), template);
-  console.log(chalk.cyan('Done') + ` style.ts`);
 }
 
 function templateInterface() {
@@ -68,7 +61,6 @@ function templateInterface() {
     .replace(/\$\$component_name/g, componentName);
 
   fs.writeFileSync(path.join(componentPath, 'interface.ts'), template);
-  console.log(chalk.cyan('Done') + ` interface.ts`);
 }
 
 function templateTest() {
@@ -78,7 +70,6 @@ function templateTest() {
     .replace(/\$\$component_name/g, componentName);
 
   fs.writeFileSync(path.join(testPath, `${componentName}.test.tsx`), template);
-  console.log(chalk.cyan('Done') + ` __tests__`);
 }
 
 generateComponentDirectory();
