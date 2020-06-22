@@ -7,6 +7,7 @@ export interface TabsProps {
   size?: TabSize;
   tabPosition?: TabPosition;
   children?: React.ReactNode;
+  closeIcon?: React.ReactNode;
   onChange?(activeKey: string): void;
 }
 
