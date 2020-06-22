@@ -110,3 +110,10 @@ export const TabNavItemView = styled.div<TabNavItemViewProps>`
   ${activeFP}
   ${disabledFP}
 `;
+
+export const InkBarView = styled.div`
+  position: absolute;
+  background: red;
+  pointer-events: none;
+  transition: all 0.3s;
+`;

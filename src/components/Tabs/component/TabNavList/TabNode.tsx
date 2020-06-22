@@ -3,7 +3,7 @@ import { Tab, TabPosition } from '../../interface';
 
 export interface TabNodeProps {
   id: string;
-  prefixCls: string;
+  // prefixCls: string;
   tab: Tab;
   active: boolean;
   rtl: boolean;
@@ -22,7 +22,7 @@ export interface TabNodeProps {
 
 function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
   const {
-    prefixCls,
+    // prefixCls,
     id,
     active,
     rtl,
@@ -38,6 +38,16 @@ function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
     onFocus,
   } = props;
 
+  React.useEffect(() => onRemove, []); // ?
+
+  const nodeStyle: React.CSSProperties = {};
+
+  if (tabPosition === 'top' || tabPosition === 'bottom') {
+    nodeStyle[rtl ? 'marginLeft' : 'marginRight'] = tabBarGutter;
+  } else {
+    nodeStyle.marginBottom = tabBarGutter;
+  }
+
   const node: React.ReactElement = (
     <button
       key={key}
@@ -45,18 +55,21 @@ function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
       type="button"
       role="tab"
       disabled={disabled}
+      style={nodeStyle}
       tabIndex={0}
-
+      id={id && `${id}-tab-${key}`}
+      onClick={onClick}
+      onFocus={onFocus}
     >
-
+      {tab}
     </button>
   );
 
-  return (
-    <div>
+  if (renderWrapper) {
+    return renderWrapper(node);
+  }
 
-    </div>
-  );
+  return node;
 }
 
-export default TabNode;
+export default React.forwardRef(TabNode);
