@@ -56,12 +56,12 @@ const disabledFP = (props: TabNavItemViewProps) => {
   `;
 };
 
-const sizeFP = (props: TabsProps) => {
-  const { size } = props;
-  return size && css`
-    font-size: ${tabSize[size]};
-  `;
-};
+// const sizeFP = (props: TabsProps) => {
+//   const { size } = props;
+//   return size && css`
+//     font-size: ${tabSize[size]};
+//   `;
+// };
 
 const positionFP = (props: TabsProps) => {
   const { tabPosition } = props;
@@ -106,7 +106,6 @@ export const TabNavItemView = styled.div<TabNavItemViewProps>`
     color: ${themeColor.primary};
   }
 
-  ${sizeFP}
   ${activeFP}
   ${disabledFP}
 `;

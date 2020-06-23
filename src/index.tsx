@@ -6,13 +6,31 @@ import 'normalize.css';
 
 // import Button from './components/Buttons';
 import Modal from './components/Modal';
+import Tabs from './components/Tabs';
+
+const { TabPane } = Tabs;
+
+function callback(key: string) {
+  console.log(key);
+}
 
 function App() {
   return (
     <div>
-      <Modal>
+      <Tabs defaultActiveKey="1" onChange={callback}>
+        <TabPane tab="Tab 1" key="1">
+          Content of Tab Pane 1
+        </TabPane>
+        <TabPane tab="Tab 2" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Tab 3" key="3">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
+      {/* <Modal>
         test
-      </Modal>
+      </Modal> */}
       {/* <div style={{ margin: 20, display: 'flex', justifyContent: 'space-evenly' }}>
         <Button>
           default

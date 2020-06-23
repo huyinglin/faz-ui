@@ -22,14 +22,14 @@ TabPane.defaultProps = {
 
 };
 
-TabPane.propTypes = {
-  tab: PropTypes.node,
-  children: PropTypes.node,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  disabled: PropTypes.bool,
-  tabKey: PropTypes.string,
-  active: PropTypes.bool,
-};
+// TabPane.propTypes = {
+//   tab: PropTypes.node,
+//   children: PropTypes.node,
+//   className: PropTypes.string,
+//   style: PropTypes.object,
+//   disabled: PropTypes.bool,
+//   tabKey: PropTypes.string,
+//   active: PropTypes.bool,
+// };
 
 export default React.memo(TabPane);

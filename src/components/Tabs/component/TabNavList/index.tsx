@@ -2,7 +2,7 @@ import React from 'react';
 import { TabPosition } from '../../interface';
 import TabContext from '../TabContext';
 import TabNode from './TabNode';
-import useRefs from '../hooks/useRefs';
+import useRefs from '../../../../hooks/useRefs';
 import { InkBarView } from '../../style';
 
 export interface TabNavListProps {
@@ -14,13 +14,13 @@ export interface TabNavListProps {
   extra?: React.ReactNode;
   // editable?: EditableConfig;
   moreIcon?: React.ReactNode;
-  mobile: boolean;
+  // mobile: boolean;
   tabBarGutter?: number;
   // renderTabBar?: RenderTabBar;
   className?: string;
   style?: React.CSSProperties;
   // locale?: TabsLocale;
-  onTabClick: (activeKey: React.Key, e: React.MouseEvent | React.KeyboardEvent) => void;
+  onTabClick: (activeKey: string, e: React.MouseEvent | React.KeyboardEvent) => void;
   children?: (node: React.ReactElement) => React.ReactElement;
 }
 
@@ -32,6 +32,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
     activeKey,
     tabPosition,
     tabBarGutter,
+    onTabClick,
     children,
     style,
   } = props;
@@ -61,7 +62,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
         renderWrapper={children} // ?
         // removeAriaLabel={locale?.removeAriaLabel}
         ref={getBtnRef(key)}
-        // onClick={e => onTabClick(key, e)}
+        onClick={e => onTabClick(key, e)}
         onRemove={() => removeBtnRef(key)}
         onFocus={() => {
           // scrollToTab(key);
@@ -102,4 +103,4 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
   );
 }
 
-export default TabNavList;
+export default React.forwardRef(TabNavList);

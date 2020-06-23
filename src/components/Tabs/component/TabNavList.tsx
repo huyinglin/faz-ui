@@ -10,23 +10,22 @@ import {
 } from '../style';
 
 function TabNavList({
+  activeKey,
+  tabPosition,
+  // size,
   onTabClick,
 }: TabNavListProps) {
-  const { tabs, activeKey, tabPosition, size } = React.useContext(TabContext);
-
+  const { tabs } = React.useContext(TabContext);
   return (
     <TabNavView>
       {tabs.map(tab => (
-        <TabNavItemView
+        <div
           key={tab.key}
-          size={size}
-          tabPosition={tabPosition}
-          active={activeKey === tab.key}
-          disabled={tab.disabled}
+          // disabled={tab.disabled}
           onClick={() => tab.disabled || onTabClick(tab.key)}
         >
           {tab.tab}
-        </TabNavItemView>
+        </div>
       ))}
     </TabNavView>
   );

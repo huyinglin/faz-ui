@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import TabContext from './component/TabContext';
 import TabPaneList from './component/TabPaneList';
 import TabPane from './component/TabPane';
-import TabNavList from './component/TabNavList';
+import TabNavList from './component/TabNavList/index';
 import toArray from '../../utils/toArray';
+import useMergedState from '../../hooks/useMergedState';
 
 import {
   Tab,
@@ -20,11 +21,9 @@ function parseTabList(children: React.ReactNode): Tab[] {
   const tabList: Tab[] = [];
   toArray(children).forEach((node: React.ReactElement<TabPaneProps>) => {
     if (React.isValidElement(node)) {
-      if (node.key === undefined) {
-        throw new Error('The TabPane must have the `key` props!');
-      }
+      const key = node.key !== undefined ? String(node.key) : '';
       tabList.push({
-        key: String(node.key),
+        key,
         ...node.props,
         node,
       });
@@ -35,43 +34,94 @@ function parseTabList(children: React.ReactNode): Tab[] {
 
 function Tabs(props: TabsProps) {
   const {
-    tabPosition = 'top',
+    id,
+    // prefixCls = 'rc-tabs',
+    className,
+    children,
+    direction,
     activeKey,
     defaultActiveKey,
-    children,
+    // editable,
+    // animated,
+    tabPosition = 'top',
+    tabBarGutter,
+    tabBarStyle,
+    tabBarExtraContent,
+    // locale,
+    moreIcon,
+    moreTransitionName,
+    destroyInactiveTabPane,
+    // renderTabBar,
     onChange,
+    onTabClick,
+    // onTabScroll,
+    ...restProps
   } = props;
 
-  const [active, setActive] = useState<string>('');
-  console.log('children: ', children);
   const tabs = parseTabList(children);
-  console.log('tabs: ', tabs);
 
-  useEffect(() => {
-    if (activeKey !== undefined) {
-      setActive(activeKey);
-    }
-  }, [activeKey]);
+  const rtl = direction === 'rtl';
 
-  useEffect(() => {
-    if (defaultActiveKey !== undefined) {
-      setActive(defaultActiveKey);
-    }
-  }, [defaultActiveKey]);
+  /* =============================== Active key =============================== */
+  const [mergedActiveKey, setMergedActiveKey] = useMergedState<string>(() => tabs[0]?.key, {
+    value: activeKey,
+    defaultValue: defaultActiveKey,
+  });
 
-  const handleTabClick = useCallback((key: string) => {
-    setActive(key);
-    if (onChange) {
-      onChange(key);
+  const [activeIndex, setActiveIndex] = React.useState(() =>
+    tabs.findIndex(tab => tab.key === mergedActiveKey),
+  );
+
+  // Reset active key if not exist anymore
+  React.useEffect(() => {
+    let newActiveIndex = tabs.findIndex(tab => tab.key === mergedActiveKey);
+    if (newActiveIndex === -1) {
+      newActiveIndex = Math.max(0, Math.min(activeIndex, tabs.length - 1));
+      setMergedActiveKey(tabs[newActiveIndex]?.key);
     }
-  }, [onChange]);
+    setActiveIndex(newActiveIndex);
+  }, [tabs.map(tab => tab.key).join('_'), mergedActiveKey, activeIndex]);
+
+  /* ================================= Events ================================= */
+  function onInternalTabClick(key: string, e: React.MouseEvent | React.KeyboardEvent) {
+    onTabClick?.(key, e);
+    onChange?.(key);
+    setMergedActiveKey(key);
+  }
+
+  /* ================================= Render ================================= */
+  const sharedProps = {
+    id: id || 'faz-tabs',
+    activeKey: mergedActiveKey,
+    // animated: mergedAnimated,
+    tabPosition,
+    rtl,
+  };
+
+  const tabNavBarProps = {
+    ...sharedProps,
+    // editable,
+    // locale,
+    moreIcon,
+    moreTransitionName,
+    tabBarGutter,
+    onTabClick: onInternalTabClick,
+    // onTabScroll,
+    extra: tabBarExtraContent,
+    style: tabBarStyle,
+  };
 
   return (
-    <TabContext.Provider value={{ ...props, tabs, activeKey: active }}>
-      <TabsView tabPosition={tabPosition}>
-        <TabNavList onTabClick={handleTabClick} />
-        <TabPaneList/>
-      </TabsView>
+    <TabContext.Provider value={{ tabs }}>
+      <div
+        // ref={ref}
+        id={id}
+        className={className}
+        {...restProps}
+      >
+        <TabNavList {...tabNavBarProps} />
+        <TabPaneList {...sharedProps}/>
+      </div>
     </TabContext.Provider>
   );
 }
