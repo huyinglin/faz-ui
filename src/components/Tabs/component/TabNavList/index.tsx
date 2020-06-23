@@ -50,14 +50,10 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
   const [tabSizes, setTabSizes] = React.useState<TabSizeMap>(new Map());
   const tabOffsets = useOffsets(tabs, tabSizes, wrapperScrollWidth);
 
-
 /* =================================== Ink ================================== */
 
   const [inkStyle, setInkStyle] = React.useState<React.CSSProperties>();
   const activeTabOffset = tabOffsets.get(activeKey);
-  console.log('activeKey: ', activeKey);
-  console.log('activeTabOffset: ', activeTabOffset);
-
 
   React.useEffect(() => {
     const newInkStyle: React.CSSProperties = {};
@@ -76,7 +72,6 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
       }
     }
 
-    console.log('newInkStyle: ', newInkStyle);
     setInkStyle(newInkStyle);
 
   }, [activeTabOffset, tabPositionTopOrBottom, rtl]);
@@ -104,7 +99,6 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
           });
         }
       });
-      console.log('newSizes: ', newSizes);
       return newSizes;
     });
   };

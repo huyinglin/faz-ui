@@ -83,11 +83,11 @@ function Tabs(props: TabsProps) {
   }, [tabs.map(tab => tab.key).join('_'), mergedActiveKey, activeIndex]);
 
   /* ================================= Events ================================= */
-  function onInternalTabClick(key: string, e: React.MouseEvent | React.KeyboardEvent) {
+  const onInternalTabClick = React.useCallback((key, e) => {
     onTabClick?.(key, e);
     onChange?.(key);
     setMergedActiveKey(key);
-  }
+  }, [onTabClick, onChange, setMergedActiveKey]);
 
   /* ================================= Render ================================= */
   const sharedProps = {

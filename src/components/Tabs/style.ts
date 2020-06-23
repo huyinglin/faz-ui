@@ -120,8 +120,9 @@ function controlledFeature(featureName: string, feature: FlattenSimpleInterpolat
 }
 
 const TabNodeActive = css`
-  padding-left: 30px;
+  /* padding-left: 30px; */
   font-weight: bolder;
+  background: rgba(0, 0, 255, 0.1);
 `;
 
 const TabNodeDisabled = css`
@@ -132,17 +133,18 @@ const TabNodeDisabled = css`
 export const TabNodeView = styled.button<{ active: boolean; disabled: boolean; }>`
   border: 0;
   font-size: 20px;
-  background: rgba(255, 255, 255, 0.5);
   margin: 0;
   padding: 8px 16px;
   outline: none;
   cursor: pointer;
   position: relative;
   font-weight: lighter;
+  
+  background: rgba(255, 255, 255, 0.5);
 
-  &:focus {
+  /* &:focus {
     background: rgba(0, 0, 255, 0.1);
-  }
+  } */
 
   ${controlledFeature('active', TabNodeActive)}
   ${controlledFeature('disabled', TabNodeDisabled)}

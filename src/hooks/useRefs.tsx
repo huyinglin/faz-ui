@@ -7,8 +7,11 @@ function useRefs<RefType>(): [
   (key: React.Key) => void,
 ] {
   const cacheRefs = useRef(new Map<React.Key, React.RefObject<RefType>>());
+  console.log('cacheRefs: ', cacheRefs);
 
   function getRef(key: React.Key) {
+    console.log('getRef', key);
+
     if (!cacheRefs.current.has(key)) {
       cacheRefs.current.set(key, React.createRef<RefType>());
     }
@@ -16,6 +19,7 @@ function useRefs<RefType>(): [
   }
 
   function removeRef(key: React.Key) {
+    console.log('removeRef', key);
     cacheRefs.current.delete(key);
   }
 

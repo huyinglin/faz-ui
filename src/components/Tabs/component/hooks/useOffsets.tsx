@@ -19,7 +19,6 @@ export function useOffsets(tabs: Tab[], tabSizes: TabSizeMap, holderScrollWidth:
       const { key } = tabs[i];
 
       let data = tabSizes.get(key);
-      console.log('data: ', data);
       if (!data) {
         data = tabSizes.get(tabs[i - 1]?.key) || DEFAULT_SIZE;
       }
@@ -27,7 +26,6 @@ export function useOffsets(tabs: Tab[], tabSizes: TabSizeMap, holderScrollWidth:
       const entity = (map.get(key) || {...data}) as TabOffset;
 
       entity.right = rightOffset - entity.width - entity.left;
-      console.log('entity: ', entity);
 
       map.set(key, entity);
     }

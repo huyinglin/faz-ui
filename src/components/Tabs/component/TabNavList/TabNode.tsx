@@ -39,7 +39,9 @@ function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
     onFocus,
   } = props;
 
-  React.useEffect(() => onRemove, [onRemove]); // ?
+  React.useEffect(() => {
+    // onRemove(); // ? 为什么要 remove
+  }, []);
 
   const nodeStyle: React.CSSProperties = {};
 
