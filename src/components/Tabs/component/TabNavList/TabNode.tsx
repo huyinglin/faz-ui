@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tab, TabPosition } from '../../interface';
+import { TabNodeView } from '../../style';
 
 export interface TabNodeProps {
   id: string;
@@ -49,12 +50,13 @@ function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
   }
 
   const node: React.ReactElement = (
-    <button
+    <TabNodeView
+      active={active}
       key={key}
       ref={ref}
       type="button"
       role="tab"
-      disabled={disabled}
+      disabled={!!disabled}
       style={nodeStyle}
       tabIndex={0}
       id={id && `${id}-tab-${key}`}
@@ -62,7 +64,7 @@ function TabNode(props: TabNodeProps, ref: React.Ref<HTMLButtonElement>) {
       onFocus={onFocus}
     >
       {tab}
-    </button>
+    </TabNodeView>
   );
 
   if (renderWrapper) {

@@ -65,3 +65,18 @@ export interface TabContextProps {
 export interface TabNavListProps extends TabPaneProps, TabsProps {
   onTabClick(key: string): void;
 }
+
+export type TabSizeMap = Map<
+  React.Key,
+  { width: number; height: number; left: number; top: number }
+>;
+
+export interface TabOffset {
+  width: number;
+  height: number;
+  left: number;
+  right: number;
+  top: number;
+}
+
+export type TabOffsetMap = Map<React.Key, TabOffset>;

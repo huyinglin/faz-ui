@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, FlattenSimpleInterpolation } from 'styled-components/macro';
 import { themeColor } from '../../styled';
 import { TabsProps, TabPosition, TabSize } from './interface';
 
@@ -110,9 +110,55 @@ export const TabNavItemView = styled.div<TabNavItemViewProps>`
   ${disabledFP}
 `;
 
+
+/* ================================= TabNav ================================= */
+
+function controlledFeature(featureName: string, feature: FlattenSimpleInterpolation) {
+  return css`
+    ${(props: any) => props && props[featureName] && feature}
+  `;
+}
+
+const TabNodeActive = css`
+  padding-left: 30px;
+  font-weight: bolder;
+`;
+
+const TabNodeDisabled = css`
+  opacity: 0.3;
+  cursor: not-allowed;
+`;
+
+export const TabNodeView = styled.button<{ active: boolean; disabled: boolean; }>`
+  border: 0;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  padding: 8px 16px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  font-weight: lighter;
+
+  &:focus {
+    background: rgba(0, 0, 255, 0.1);
+  }
+
+  ${controlledFeature('active', TabNodeActive)}
+  ${controlledFeature('disabled', TabNodeDisabled)}
+`;
+
 export const InkBarView = styled.div`
   position: absolute;
   background: red;
   pointer-events: none;
   transition: all 0.3s;
+  height: 3px;
+  bottom: 0;
+`;
+
+export const TabListView = styled.div`
+  display: flex;
+  position: relative;
+  transition: transform 0.3s;
 `;

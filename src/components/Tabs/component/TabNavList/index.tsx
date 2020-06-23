@@ -1,9 +1,10 @@
 import React from 'react';
-import { TabPosition } from '../../interface';
 import TabContext from '../TabContext';
 import TabNode from './TabNode';
 import useRefs from '../../../../hooks/useRefs';
-import { InkBarView } from '../../style';
+import { TabPosition, TabSizeMap } from '../../interface';
+import { InkBarView, TabListView } from '../../style';
+import { useOffsets } from '../hooks/useOffsets';
 
 export interface TabNavListProps {
   id: string;
@@ -37,14 +38,76 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
     style,
   } = props;
 
+  const tabPositionTopOrBottom = tabPosition === 'top' || tabPosition === 'bottom';
+
   const { tabs } = React.useContext(TabContext);
 
   const tabsWrapperRef = React.useRef<HTMLDivElement | null>(null);
   const tabListRef = React.useRef<HTMLDivElement | null>(null);
+  const [getBtnRef, removeBtnRef] = useRefs<HTMLButtonElement>();
+
+  const [wrapperScrollWidth, setWrapperScrollWidth] = React.useState<number>(0);
+  const [tabSizes, setTabSizes] = React.useState<TabSizeMap>(new Map());
+  const tabOffsets = useOffsets(tabs, tabSizes, wrapperScrollWidth);
+
+
+/* =================================== Ink ================================== */
 
   const [inkStyle, setInkStyle] = React.useState<React.CSSProperties>();
+  const activeTabOffset = tabOffsets.get(activeKey);
+  console.log('activeKey: ', activeKey);
+  console.log('activeTabOffset: ', activeTabOffset);
 
-  const [getBtnRef, removeBtnRef] = useRefs<HTMLButtonElement>();
+
+  React.useEffect(() => {
+    const newInkStyle: React.CSSProperties = {};
+
+    if (activeTabOffset) {
+      if (tabPositionTopOrBottom) {
+        if (rtl) {
+          newInkStyle.right = activeTabOffset.right;
+        } else {
+          newInkStyle.left = activeTabOffset.left;
+        }
+        newInkStyle.width = activeTabOffset.width;
+      } else {
+        newInkStyle.top = activeTabOffset.top;
+        newInkStyle.height = activeTabOffset.height;
+      }
+    }
+
+    console.log('newInkStyle: ', newInkStyle);
+    setInkStyle(newInkStyle);
+
+  }, [activeTabOffset, tabPositionTopOrBottom, rtl]);
+
+
+  React.useEffect(() => {
+    onListHolderResize();
+  }, [activeKey]);
+
+  const onListHolderResize = () => {
+
+    setWrapperScrollWidth(tabListRef.current?.offsetWidth || 0);
+
+    setTabSizes(() => {
+      const newSizes: TabSizeMap = new Map();
+      tabs.forEach(({ key }) => {
+        const btnNode = getBtnRef(key).current;
+        console.log('btnNode: ', btnNode);
+        if (btnNode) {
+          newSizes.set(key, {
+            width: btnNode.offsetWidth,
+            height: btnNode.offsetHeight,
+            left: btnNode.offsetLeft,
+            top: btnNode.offsetTop,
+          });
+        }
+      });
+      console.log('newSizes: ', newSizes);
+      return newSizes;
+    });
+  };
 
   const tabNodes: React.ReactElement[] = tabs.map(tab => {
     const { key } = tab;
@@ -86,18 +149,18 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
       style={style}
     >
       <div ref={tabsWrapperRef}>
-        <div
+        <TabListView
           ref={tabListRef}
-          // style={{
-          //   transform: `translate(${transformLeft}px, ${transformTop}px)`,
-          //   transition: lockAnimation ? 'none' : undefined,
-          // }}
+          style={{
+            // transform: `translate(${0}px, ${0}px)`,
+            // transition: lockAnimation ? 'none' : undefined,
+          }}
         >
           {tabNodes}
           <InkBarView
             style={inkStyle}
           />
-        </div>
+        </TabListView>
       </div>
     </div>
   );

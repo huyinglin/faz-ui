@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TabContext from './component/TabContext';
 import TabPaneList from './component/TabPaneList';
 import TabPane from './component/TabPane';
-import TabNavList from './component/TabNavList/index';
+import TabNavList from './component/TabNavList';
 import toArray from '../../utils/toArray';
 import useMergedState from '../../hooks/useMergedState';
 
