@@ -79,24 +79,6 @@ const positionFP = (props: TabsProps) => {
 
 export const TabContentView = styled.div``;
 
-export const TabNavView = styled.div`
-  overflow: auto;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  overflow: -moz-scrollbars-none;
-  -ms-overflow-style: none;
-`;
-
-export const TabsView = styled.div<TabsProps>`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  outline: none;
-  ${positionFP}
-`;
-
 export const TabNavItemView = styled.div<TabNavItemViewProps>`
   padding: 8px 16px;
   white-space: nowrap;
@@ -108,6 +90,13 @@ export const TabNavItemView = styled.div<TabNavItemViewProps>`
 
   ${activeFP}
   ${disabledFP}
+`;
+
+/* ============================== TabConatiner ============================== */
+
+export const TabsView = styled.div<TabsProps>`
+  font-size: 14px;
+  overflow: hidden;
 `;
 
 
@@ -139,7 +128,7 @@ export const TabNodeView = styled.button<{ active: boolean; disabled: boolean; }
   cursor: pointer;
   position: relative;
   font-weight: lighter;
-  
+
   background: rgba(255, 255, 255, 0.5);
 
   /* &:focus {
@@ -163,4 +152,20 @@ export const TabListView = styled.div`
   display: flex;
   position: relative;
   transition: transform 0.3s;
+`;
+
+export const TabNavView = styled.div`
+  display: flex;
+  flex: none;
+  position: relative;
+`;
+
+export const TabNavWrapView = styled.div`
+  transform: translate(0);
+  position: relative;
+  display: inline-block;
+  flex: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
 `;

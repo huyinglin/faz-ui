@@ -113,7 +113,7 @@ function Tabs(props: TabsProps) {
 
   return (
     <TabContext.Provider value={{ tabs }}>
-      <div
+      <TabsView
         // ref={ref}
         id={id}
         className={className}
@@ -121,7 +121,7 @@ function Tabs(props: TabsProps) {
       >
         <TabNavList {...tabNavBarProps} />
         <TabPaneList {...sharedProps}/>
-      </div>
+      </TabsView>
     </TabContext.Provider>
   );
 }

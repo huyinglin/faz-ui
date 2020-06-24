@@ -3,8 +3,13 @@ import TabContext from '../TabContext';
 import TabNode from './TabNode';
 import useRefs from '../../../../hooks/useRefs';
 import { TabPosition, TabSizeMap } from '../../interface';
-import { InkBarView, TabListView } from '../../style';
 import { useOffsets } from '../hooks/useOffsets';
+import {
+  InkBarView,
+  TabListView,
+  TabNavView,
+  TabNavWrapView,
+} from '../../style';
 
 export interface TabNavListProps {
   id: string;
@@ -136,13 +141,13 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
   });
 
   return (
-    <div
+    <TabNavView
       ref={ref}
       role="tablist"
       className={className}
       style={style}
     >
-      <div ref={tabsWrapperRef}>
+      <TabNavWrapView ref={tabsWrapperRef}>
         <TabListView
           ref={tabListRef}
           style={{
@@ -155,8 +160,8 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
             style={inkStyle}
           />
         </TabListView>
-      </div>
-    </div>
+      </TabNavWrapView>
+    </TabNavView>
   );
 }
 
