@@ -7,7 +7,8 @@ import {
 } from './interface';
 import {
   ModalView,
-  ModalInnerView,
+  ModalWrapView,
+  ModalMaskView,
 } from './style';
 
 function Modal(props: ModalProps) {
@@ -20,11 +21,13 @@ function Modal(props: ModalProps) {
   // const container = document.getElementById('rsg-root')
 
   const modal = (
-    <ModalView>
-      <ModalInnerView>
-        {children}
-      </ModalInnerView>
-    </ModalView>
+    <ModalWrapView>
+      {/* <ModalMaskView>
+        <ModalView>
+          {children}
+        </ModalView>
+      </ModalMaskView> */}
+    </ModalWrapView>
   )
 
   if (container) {

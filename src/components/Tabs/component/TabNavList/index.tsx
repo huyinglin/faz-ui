@@ -10,6 +10,8 @@ import {
   TabNavView,
   TabNavWrapView,
 } from '../../style';
+import { useTouchMove } from '../../../../hooks/useTouchMove';
+import { useSyncState } from '../../../../hooks/useSyncState';
 
 export interface TabNavListProps {
   id: string;
@@ -51,9 +53,15 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
   const tabListRef = React.useRef<HTMLDivElement | null>(null);
   const [getBtnRef, removeBtnRef] = useRefs<HTMLButtonElement>();
 
-  const [wrapperScrollWidth, setWrapperScrollWidth] = React.useState<number>(0);
+  const [wrapperScrollWidth, setWrapperScrollWidth] = React.useState<number>(0); // tabListRef, 整个 Nav 的宽度，包括不可见 Tab
+  const [wrapperWidth, setWrapperWidth] = React.useState<number>(0); // tabsWrapperRef
   const [tabSizes, setTabSizes] = React.useState<TabSizeMap>(new Map());
   const tabOffsets = useOffsets(tabs, tabSizes, wrapperScrollWidth);
+
+  const [transformLeft, setTransformLeft] = useSyncState(0, (next, prev) => {
+    console.log('prev: ', prev);
+    console.log('next: ', next);
+  });
 
 /* =================================== Ink ================================== */
 
@@ -81,20 +89,72 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
 
   }, [activeTabOffset, tabPositionTopOrBottom, rtl]);
 
+/* ================================ Transform =============================== */
+
+  let transformMin = 0; // 可滑动的最小值
+  let transformMax = 0; // 可滑动的最大值
+
+  if (!tabPositionTopOrBottom) {
+
+  } else if (rtl) {
+
+  } else {
+    // 正常模型
+    transformMin = Math.min(0, wrapperWidth - wrapperScrollWidth);
+    transformMax = 0;
+  }
+
+  // 防止越界
+  function alignInRange(value: number): [number, boolean] {
+    if (value < transformMin) {
+      return [transformMin, false];
+    }
+    if (value > transformMax) {
+      return [transformMax, false];
+    }
+    return [value, true];
+  }
+
+  useTouchMove(tabsWrapperRef, (offsetX, offsetY) => {
+    console.log('offsetY: ', offsetY);
+    console.log('offsetX: ', offsetX);
+    console.log('activeKey: ', activeKey);
+
+    let preventDefault = false;
+
+    function doMove(setState: React.Dispatch<React.SetStateAction<number>>, offset: number) {
+      setState(value => {
+        const [newValue, needPrevent] = alignInRange(value + offset);
+
+        preventDefault = needPrevent;
+        return newValue;
+      });
+    }
+
+    if (tabPositionTopOrBottom) {
+      if (wrapperWidth >= wrapperScrollWidth) {
+        return preventDefault;
+      }
+      doMove(setTransformLeft, offsetX);
+    }
+
+    return preventDefault;
+  });
 
   React.useEffect(() => {
     onListHolderResize();
   }, [activeKey]);
 
   const onListHolderResize = () => {
+    const offsetWidth = tabsWrapperRef.current?.offsetWidth || 0;
 
+    setWrapperWidth(offsetWidth);
     setWrapperScrollWidth(tabListRef.current?.offsetWidth || 0);
 
     setTabSizes(() => {
       const newSizes: TabSizeMap = new Map();
       tabs.forEach(({ key }) => {
         const btnNode = getBtnRef(key).current;
-        console.log('btnNode: ', btnNode);
         if (btnNode) {
           newSizes.set(key, {
             width: btnNode.offsetWidth,
@@ -151,7 +211,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
         <TabListView
           ref={tabListRef}
           style={{
-            // transform: `translate(${0}px, ${0}px)`,
+            transform: `translate(${transformLeft}px, ${0}px)`,
             // transition: lockAnimation ? 'none' : undefined,
           }}
         >
