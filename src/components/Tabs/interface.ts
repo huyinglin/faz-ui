@@ -2,7 +2,6 @@ export type TabSize = 'large' | 'default' | 'small';
 export type TabPosition = 'top' | 'right' | 'bottom' | 'left';
 
 export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  // prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -12,7 +11,7 @@ export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   defaultActiveKey?: string;
   direction?: 'ltr' | 'rtl'; // 文字方向
   // animated?: boolean | AnimatedConfig; // TODO
-  // renderTabBar?: RenderTabBar; // TODO
+  renderTabBar?: RenderTabBar;
   tabBarExtraContent?: React.ReactNode;
   tabBarGutter?: number;
   tabBarStyle?: React.CSSProperties;
@@ -65,6 +64,8 @@ export interface TabContextProps {
 export interface TabNavListProps extends TabPaneProps, TabsProps {
   onTabClick(key: string): void;
 }
+
+export type RenderTabBar = (props: any, DefaultTabBar: any) => React.ReactElement;
 
 export type TabSizeMap = Map<
   React.Key,

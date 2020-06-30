@@ -35,7 +35,6 @@ function parseTabList(children: React.ReactNode): Tab[] {
 function Tabs(props: TabsProps) {
   const {
     id,
-    // prefixCls = 'rc-tabs',
     className,
     children,
     direction,
@@ -51,7 +50,7 @@ function Tabs(props: TabsProps) {
     moreIcon,
     moreTransitionName,
     destroyInactiveTabPane,
-    // renderTabBar,
+    renderTabBar,
     onChange,
     onTabClick,
     // onTabScroll,
@@ -61,6 +60,8 @@ function Tabs(props: TabsProps) {
   const tabs = parseTabList(children);
 
   const rtl = direction === 'rtl';
+
+  let tabNavBar: React.ReactElement;
 
   /* =============================== Active key =============================== */
   const [mergedActiveKey, setMergedActiveKey] = useMergedState<string>(() => tabs[0]?.key, {
@@ -111,6 +112,12 @@ function Tabs(props: TabsProps) {
     style: tabBarStyle,
   };
 
+  if (renderTabBar) {
+    tabNavBar = renderTabBar(tabNavBarProps, TabNavList);
+  } else {
+    tabNavBar = <TabNavList {...tabNavBarProps} />;
+  }
+
   return (
     <TabContext.Provider value={{ tabs }}>
       <TabsView
@@ -119,7 +126,7 @@ function Tabs(props: TabsProps) {
         className={className}
         {...restProps}
       >
-        <TabNavList {...tabNavBarProps} />
+        {tabNavBar}
         <TabPaneList {...sharedProps}/>
       </TabsView>
     </TabContext.Provider>
