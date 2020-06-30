@@ -1,17 +1,21 @@
 import React from 'react';
+import ResizeObserver from 'rc-resize-observer';
+import raf from 'raf';
+
 import TabContext from '../TabContext';
 import TabNode from './TabNode';
-import useRefs from '../../../../hooks/useRefs';
 import { TabPosition, TabSizeMap } from '../../interface';
-import { useOffsets } from '../hooks/useOffsets';
 import {
   InkBarView,
   TabListView,
   TabNavView,
   TabNavWrapView,
 } from '../../style';
+import { useOffsets } from '../hooks/useOffsets';
+import { useRefs } from '../../../../hooks/useRefs';
 import { useTouchMove } from '../../../../hooks/useTouchMove';
 import { useSyncState } from '../../../../hooks/useSyncState';
+import { useRaf, useRafState } from '../../../../hooks/useRaf';
 
 export interface TabNavListProps {
   id: string;
@@ -55,7 +59,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
 
   const [wrapperScrollWidth, setWrapperScrollWidth] = React.useState<number>(0); // tabListRef, 整个 Nav 的宽度，包括不可见 Tab
   const [wrapperWidth, setWrapperWidth] = React.useState<number>(0); // tabsWrapperRef
-  const [tabSizes, setTabSizes] = React.useState<TabSizeMap>(new Map());
+  const [tabSizes, setTabSizes] = useRafState<TabSizeMap>(new Map());
   const tabOffsets = useOffsets(tabs, tabSizes, wrapperScrollWidth);
 
   const [transformLeft, setTransformLeft] = useSyncState(0, (next, prev) => {
@@ -66,7 +70,16 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
 /* =================================== Ink ================================== */
 
   const [inkStyle, setInkStyle] = React.useState<React.CSSProperties>();
+
   const activeTabOffset = tabOffsets.get(activeKey);
+
+
+  // 避免闪烁
+  const inkBarRafRef = React.useRef<number>();
+
+  function cleanInkBarRaf() {
+    raf.cancel(inkBarRafRef.current as number);
+  }
 
   React.useEffect(() => {
     const newInkStyle: React.CSSProperties = {};
@@ -85,8 +98,10 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
       }
     }
 
-    setInkStyle(newInkStyle);
+    cleanInkBarRaf();
+    inkBarRafRef.current = raf(() => setInkStyle(newInkStyle));
 
+    return cleanInkBarRaf;
   }, [activeTabOffset, tabPositionTopOrBottom, rtl]);
 
 /* ================================ Transform =============================== */
@@ -145,7 +160,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
     onListHolderResize();
   }, [activeKey]);
 
-  const onListHolderResize = () => {
+  const onListHolderResize = useRaf(() => {
     const offsetWidth = tabsWrapperRef.current?.offsetWidth || 0;
 
     setWrapperWidth(offsetWidth);
@@ -166,7 +181,7 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
       });
       return newSizes;
     });
-  };
+  });
 
   const tabNodes: React.ReactElement[] = tabs.map(tab => {
     const { key } = tab;
@@ -207,20 +222,24 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
       className={className}
       style={style}
     >
-      <TabNavWrapView ref={tabsWrapperRef}>
-        <TabListView
-          ref={tabListRef}
-          style={{
-            transform: `translate(${transformLeft}px, ${0}px)`,
-            // transition: lockAnimation ? 'none' : undefined,
-          }}
-        >
-          {tabNodes}
-          <InkBarView
-            style={inkStyle}
-          />
-        </TabListView>
-      </TabNavWrapView>
+      <ResizeObserver onResize={onListHolderResize}>
+        <TabNavWrapView ref={tabsWrapperRef}>
+          <ResizeObserver onResize={onListHolderResize}>
+            <TabListView
+              ref={tabListRef}
+              style={{
+                transform: `translate(${transformLeft}px, ${0}px)`,
+                // transition: lockAnimation ? 'none' : undefined,
+              }}
+            >
+              {tabNodes}
+              <InkBarView
+                style={inkStyle}
+              />
+            </TabListView>
+          </ResizeObserver>
+        </TabNavWrapView>
+      </ResizeObserver>
     </TabNavView>
   );
 }

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 export type UseRefs = ReturnType<typeof useRefs>; // ReturnType 的作用是获取函数的返回类型
 
-function useRefs<RefType>(): [
+export function useRefs<RefType>(): [
   (key: React.Key) => React.RefObject<RefType>,
   (key: React.Key) => void,
 ] {
@@ -22,5 +22,3 @@ function useRefs<RefType>(): [
 
   return [getRef, removeRef];
 }
-
-export default useRefs;
