@@ -59,6 +59,7 @@
     "@types/styled-components": "^5.1.0",
     "babel-plugin-macros": "^2.8.0",
     "ora": "^4.0.4",
+    "resize-observer-polyfill": "^1.5.1",
     "yargs": "^15.3.1"
   }
 }
