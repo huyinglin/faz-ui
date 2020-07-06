@@ -23,6 +23,7 @@ function generateComponentDirectory() {
   templateStyle();
   templateInterface();
   templateTest();
+  templateComponent();
 
   spinner.succeed(`${componentName} component created successfully. Check out to: "/src/components/${componentName}".`);
 }
@@ -70,6 +71,11 @@ function templateTest() {
     .replace(/\$\$component_name/g, componentName);
 
   fs.writeFileSync(path.join(testPath, `${componentName}.test.tsx`), template);
+}
+
+function templateComponent() {
+  const testPath = path.join(componentPath, 'component');
+  fs.mkdirSync(testPath);
 }
 
 generateComponentDirectory();

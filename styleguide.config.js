@@ -7,6 +7,7 @@ module.exports = {
     'src/components/**/index.{ts,tsx}',
     'src/components/**/__tests__/**',
     'src/components/**/component/**',
+    'src/components/**/hook/**',
   ],
   styles: function(theme) {
     return {
