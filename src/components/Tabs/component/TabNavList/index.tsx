@@ -131,10 +131,6 @@ function TabNavList(props: TabNavListProps, ref: React.Ref<HTMLDivElement>) {
   }
 
   useTouchMove(tabsWrapperRef, (offsetX, offsetY) => {
-    console.log('offsetY: ', offsetY);
-    console.log('offsetX: ', offsetX);
-    console.log('activeKey: ', activeKey);
-
     let preventDefault = false;
 
     function doMove(setState: React.Dispatch<React.SetStateAction<number>>, offset: number) {

@@ -1,13 +1,17 @@
 import React from 'react';
 import { CarouselItemProps } from '../interface';
+import { CarouselItemView } from '../style';
+import CarouselContext from './CarouselContext';
 
 function CarouselItem(props: CarouselItemProps) {
-  const { children } = props;
+  const { carouselItemWidth, children, carouselKey } = props;
+
+  const { activeIndex } = React.useContext(CarouselContext);
 
   return (
-    <div>
+    <CarouselItemView carouselItemWidth={carouselItemWidth}>
       {children}
-    </div>
+    </CarouselItemView>
   );
 }
 

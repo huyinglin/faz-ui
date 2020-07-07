@@ -163,9 +163,8 @@ export const TabNavView = styled.div`
 export const TabNavWrapView = styled.div`
   transform: translate(0);
   position: relative;
-  display: inline-block;
+  display: flex;
   flex: auto;
   white-space: nowrap;
   overflow: hidden;
-  display: flex;
 `;

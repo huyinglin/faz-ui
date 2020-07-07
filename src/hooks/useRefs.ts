@@ -16,7 +16,6 @@ export function useRefs<RefType>(): [
   }
 
   function removeRef(key: React.Key) {
-    console.log('removeRef', key);
     cacheRefs.current.delete(key);
   }
 

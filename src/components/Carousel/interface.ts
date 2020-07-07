@@ -26,7 +26,8 @@ export interface CarouselThis {
 }
 
 export interface CarouselItemProps {
-  key?: React.Key;
+  carouselKey?: React.Key;
+  carouselItemWidth?: number;
   children?: React.ReactNode;
 }
 
@@ -35,9 +36,36 @@ export interface CarouselCaptionProps {
 }
 
 export interface Carousels extends CarouselItemProps {
+  key: React.Key;
   node: React.ReactElement;
+}
+
+export type CarouselKey = {
+  next: React.Key;
+  prev: React.Key;
+  head: boolean;
+  tail: boolean;
+  index: number;
+}
+
+export type CarouselKeys = {
+  [key: string]: CarouselKey;
+}
+
+export interface CarouselPrevAndNextProps {
+  position: 'right' | 'left';
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+}
+
+export interface ChangeInfo {
+  type: 'next' | 'prev';
+  current: React.Key;
+  target: React.Key;
 }
 
 export interface CarouselContextProps {
   carousels: Carousels[];
+  activeIndex: string | number;
+  changeInfo: ChangeInfo | null;
+  carouselKeys: CarouselKeys;
 }

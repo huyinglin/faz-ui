@@ -1,4 +1,9 @@
 import { createContext } from 'react';
-import { Carousels } from '../interface';
+import { CarouselContextProps } from '../interface';
 
-export default createContext<Carousels>({ carousels: [] });
+export default createContext<CarouselContextProps>({
+  carousels: [],
+  changeInfo: null,
+  carouselKeys: {},
+  activeIndex: '',
+});
