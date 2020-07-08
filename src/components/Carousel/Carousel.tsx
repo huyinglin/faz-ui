@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import { throttle, debounce } from 'lodash';
 
 import {
   CarouselProps,
@@ -116,7 +117,7 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
   // function handleGoto(slideIndex: number) {
   // }
 
-  function onPrev() {
+  const onPrev = React.useCallback(throttle(() => {
     const prevIndex = carouselKeys[mergedActiveIndex].prev;
     setChangeInfo({
       type: 'prev',
@@ -124,9 +125,9 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
       target: prevIndex,
     });
     setMergedActiveIndex(prevIndex);
-  }
+  }, 600, { 'trailing': false }), []);
 
-  function onNext() {
+  const onNext = React.useCallback(throttle(() => {
     const nextIndex = carouselKeys[mergedActiveIndex].next;
     setChangeInfo({
       type: 'next',
@@ -134,7 +135,7 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
       target: nextIndex,
     });
     setMergedActiveIndex(nextIndex);
-  }
+  }, 600, { 'trailing': false }), []);
 
   // TODO
   function onGoto(key: React.Key) {

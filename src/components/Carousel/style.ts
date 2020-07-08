@@ -17,7 +17,7 @@ export const CarouselListView = styled.div`
   overflow: hidden; */
 
   display: flex;
-  transition: transform 0.3s ease;
+  transition: transform 0.6s ease;
 `;
 
 export const CarouselWrapperView = styled.div`
@@ -30,6 +30,7 @@ export const CarouselWrapperView = styled.div`
 
 export const CarouselItemView = styled.div<CarouselItemProps>`
   width: ${({ carouselItemWidth }) => `${carouselItemWidth}px`};
+  outline: none;
 `;
 
 export const CarouselPrevAndNextView = styled.div<CarouselPrevAndNextProps>`
