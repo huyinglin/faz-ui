@@ -1,12 +1,11 @@
 import React from 'react';
 import CarouselContext from './CarouselContext';
 import { Carousels, CarouselItemProps } from '../interface';
-import Carousel from '../Carousel';
 import { CarouselListView, CarouselWrapperView } from '../style';
 
 const TRANSFORM_SYMBOL = {
-  prev: 1,
-  next: -1,
+  ltr: 1,
+  rtl: -1,
 };
 
 function CarouselList() {
@@ -33,29 +32,31 @@ function CarouselList() {
 
   React.useEffect(() => {
     if (changeInfo) {
-      const { type, current, target } = changeInfo;
-      const symbol = TRANSFORM_SYMBOL[type];
+      const { direction, step } = changeInfo;
+      const symbol = TRANSFORM_SYMBOL[direction];
+      const distance = transformLeft + (step * symbol * wrapperWidth);
       setLockTransition(false);
-      setTransformLeft((transformLeft) + (symbol * wrapperWidth));
+      setTransformLeft(distance);
     }
-  }, [changeInfo]);
+  }, [changeInfo, wrapperWidth]);
 
   React.useEffect(() => {
+    let timer: number;
     if (wrapperWidth && Math.abs(transformLeft) === wrapperWidth * (carousels.length + 1)) {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setLockTransition(true);
         setTransformLeft(-wrapperWidth);
       }, 600);
     }
 
     if (transformLeft === 0 && !lockTransition) {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setLockTransition(true);
         setTransformLeft(-(wrapperWidth * carousels.length));
       }, 600);
     }
-
-  }, [transformLeft]);
+    return () => clearTimeout(timer);
+  }, [transformLeft, wrapperWidth]);
 
   const carouselStore: CarouselItemProps[] = React.useMemo(() => {
     const carouselStore = carousels.map((carousel: Carousels) =>

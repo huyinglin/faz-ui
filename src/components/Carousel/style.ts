@@ -43,3 +43,25 @@ export const CarouselPrevAndNextView = styled.div<CarouselPrevAndNextProps>`
   cursor: pointer;
   user-select: none;
 `;
+
+export const CarouselDotsWrapperView = styled.div`
+  height: 3px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+  margin: 0 10%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
+
+export const CarouselDotView = styled.div<{ active: boolean }>`
+  width: 30px;
+  height: 3px;
+  cursor: pointer;
+  background: yellow;
+  margin: 0 4px;
+  opacity: ${props => props.active ? '1' : '.5'};
+  transition: opacity 0.6s ease;
+`;

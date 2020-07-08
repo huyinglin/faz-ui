@@ -22,6 +22,7 @@ import CarouselCaption from './component/CarouselCaption';
 import CarouselItem from './component/CarouselItem';
 import CarouselContext from './component/CarouselContext';
 import useMergedState from '../../hooks/useMergedState';
+import { useThrottleState } from '../../hooks/useThrottleState';
 
 function parserCarousels(children: React.ReactNode): Carousels[] {
   const carousels: Carousels[] = [];
@@ -93,61 +94,63 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
 
   const carousels = React.useMemo(() => parserCarousels(children), [children]);
   const carouselKeys = React.useMemo(() => getCarouselKeys(carousels), [carousels]);
-  console.log('carouselKeys: ', carouselKeys);
 
-  const [changeInfo, setChangeInfo] = React.useState<ChangeInfo | null>(null);
+  const [changeInfo, setChangeInfo] = useThrottleState<ChangeInfo | null>(null, 600, { trailing: false });
   const [mergedActiveIndex, setMergedActiveIndex] = useMergedState(() => carousels[0]?.key, {
     value: activeIndex,
   });
 
+  const throttledSetMergedActiveIndex = React.useCallback(throttle(setMergedActiveIndex, 600, { trailing: false }), []);
+
 /* ============================== static method ============================= */
 
-  // this.next = handleNext();
-  // this.prev = handlePrev();
-  // this.goto = handleGoto();
-
-  // function handleNext() {
-  //   return 3;
-  // }
-
-  // function handlePrev() {
-  //   return 3;
-  // }
-
-  // function handleGoto(slideIndex: number) {
-  // }
-
-  const onPrev = React.useCallback(throttle(() => {
-    const prevIndex = carouselKeys[mergedActiveIndex].prev;
-    setChangeInfo({
-      type: 'prev',
-      current: mergedActiveIndex,
-      target: prevIndex,
-    });
-    setMergedActiveIndex(prevIndex);
-  }, 600, { 'trailing': false }), []);
-
-  const onNext = React.useCallback(throttle(() => {
-    const nextIndex = carouselKeys[mergedActiveIndex].next;
-    setChangeInfo({
-      type: 'next',
-      current: mergedActiveIndex,
-      target: nextIndex,
-    });
-    setMergedActiveIndex(nextIndex);
-  }, 600, { 'trailing': false }), []);
-
-  // TODO
-  function onGoto(key: React.Key) {
-    setChangeInfo({
-      type: 'next',
-      current: mergedActiveIndex,
-      target: key,
-    });
-    if (carouselKeys[key]) {
-      setMergedActiveIndex(key);
+  const onGoto = React.useCallback((key: React.Key, circle?: boolean) => {
+    const gotoInfo = carouselKeys[key];
+    if (!gotoInfo || key === mergedActiveIndex) {
+      return;
     }
-  }
+
+    const current = carouselKeys[mergedActiveIndex];
+    let direction: 'rtl' | 'ltr' = gotoInfo.index > current.index ? 'rtl' : 'ltr';
+    let step: number = Math.abs(gotoInfo.index - current.index);
+
+    if (current.tail && gotoInfo.head && circle) {
+      // last to first
+      step = 1;
+      direction = 'rtl';
+    }
+
+    if (current.head && gotoInfo.tail && circle) {
+      // first to last
+      step = 1;
+      direction = 'ltr';
+    }
+
+    setChangeInfo({
+      current: mergedActiveIndex,
+      direction,
+      step,
+    });
+    throttledSetMergedActiveIndex(key);
+
+  }, [
+    carouselKeys,
+    mergedActiveIndex,
+    setChangeInfo,
+    throttledSetMergedActiveIndex,
+  ]);
+
+  const onPrev = React.useCallback(() => onGoto(carouselKeys[mergedActiveIndex].prev, true), [
+    mergedActiveIndex,
+    carouselKeys,
+    onGoto,
+  ]);
+
+  const onNext = React.useCallback(() => onGoto(carouselKeys[mergedActiveIndex].next, true), [
+    mergedActiveIndex,
+    carouselKeys,
+    onGoto,
+  ]);
 
   const contextValue = {
     carousels,
@@ -165,7 +168,7 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
         <CarouselPrevAndNext position="left" onClick={onPrev}/>
         <CarouselPrevAndNext position="right" onClick={onNext}/>
         <CarouselList/>
-        <CarouselDots/>
+        <CarouselDots onGoto={onGoto}/>
       </CarouselView>
     </CarouselContext.Provider>
   );

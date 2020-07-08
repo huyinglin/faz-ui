@@ -58,9 +58,9 @@ export interface CarouselPrevAndNextProps {
 }
 
 export interface ChangeInfo {
-  type: 'next' | 'prev';
+  direction: 'rtl' | 'ltr'; // rtl: next direction; ltr: prev direction;
+  step: number;
   current: React.Key;
-  target: React.Key;
 }
 
 export interface CarouselContextProps {
@@ -68,4 +68,8 @@ export interface CarouselContextProps {
   activeIndex: string | number;
   changeInfo: ChangeInfo | null;
   carouselKeys: CarouselKeys;
+}
+
+export interface CarouselDotsProps {
+  onGoto: (key: React.Key) => void;
 }
