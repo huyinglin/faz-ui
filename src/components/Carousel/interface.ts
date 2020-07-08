@@ -1,22 +1,27 @@
 export type DotPosition = 'top' | 'bottom' | 'left' | 'right';
 
+export type CarouselAnimation = {
+  timingFunction: string;
+  duration: number;
+  delay: number;
+}
+
 export interface CarouselProps {
   activeIndex: number;
   autoplay: boolean;
   controls: boolean; // 显示上一个下一个箭头
   dotPosition: DotPosition;
-  dots: boolean;
+  showDots: boolean;
   style: React.CSSProperties;
   children: React.ReactNode;
   className: string;
-  easing: string; // 动画效果
+  animation: CarouselAnimation;
 
-  renderNext: () => React.ReactElement; // 自定义渲染下一张箭头
-  renderPrev: () => React.ReactElement; // 自定义渲染上一张箭头
-  renderDots: () => React.ReactElement; // 自定义渲染面板指示点
+  nextBar: React.ReactElement; // 自定义渲染下一张箭头
+  prevBar: React.ReactElement; // 自定义渲染上一张箭头
+  dot: React.ReactElement; // 自定义渲染单个面板指示点
 
-  onChange: (slideIndex: number, prevIndex: number, nextIndex: number) => void; // activeIndex 变化的回调
-  onSelect: (slideIndex: number) => void; // 点击 dots 的回调
+  onChange: (slideKey: React.Key) => void; // activeIndex 变化的回调
 }
 
 export interface CarouselThis {
@@ -50,11 +55,6 @@ export type CarouselKey = {
 
 export type CarouselKeys = {
   [key: string]: CarouselKey;
-}
-
-export interface CarouselPrevAndNextProps {
-  position: 'right' | 'left';
-  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export interface ChangeInfo {

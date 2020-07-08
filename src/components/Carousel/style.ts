@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import { themeColor } from '../../styled';
-import { CarouselPrevAndNextProps, CarouselItemProps } from './interface';
+import { CarouselItemProps } from './interface';
 
 export const CarouselView = styled.div`
   width: 100%;
@@ -33,7 +33,7 @@ export const CarouselItemView = styled.div<CarouselItemProps>`
   outline: none;
 `;
 
-export const CarouselPrevAndNextView = styled.div<CarouselPrevAndNextProps>`
+export const CarouselPrevAndNextView = styled.div<{ position: 'left' | 'right' }>`
   position: absolute;
   top: 0;
   ${({ position }) => position === 'left' ? 'left: 20px;' : 'right: 20px;'}

@@ -15,4 +15,6 @@ function CarouselItem(props: CarouselItemProps) {
   );
 }
 
+CarouselItem.displayName = 'CarouselItem';
+
 export default CarouselItem;

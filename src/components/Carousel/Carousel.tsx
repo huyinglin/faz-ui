@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { throttle, debounce } from 'lodash';
+import { throttle } from 'lodash';
 
 import {
   CarouselProps,
@@ -12,12 +12,12 @@ import {
 } from './interface';
 import {
   CarouselView,
+  CarouselPrevAndNextView,
 } from './style';
 
 import toArray from '../../utils/toArray';
 import CarouselList from './component/CarouselList';
 import CarouselDots from './component/CarouselDots';
-import CarouselPrevAndNext from './component/CarouselPrevAndNext';
 import CarouselCaption from './component/CarouselCaption';
 import CarouselItem from './component/CarouselItem';
 import CarouselContext from './component/CarouselContext';
@@ -80,16 +80,15 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
     activeIndex,
     autoplay,
     dotPosition,
-    dots,
+    showDots,
     controls,
     style,
     className,
     children,
-    renderNext,
-    renderPrev,
-    renderDots,
+    nextBar,
+    prevBar,
+    dot,
     onChange,
-    onSelect,
   } = props;
 
   const carousels = React.useMemo(() => parserCarousels(children), [children]);
@@ -102,7 +101,11 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
 
   const throttledSetMergedActiveIndex = React.useCallback(throttle(setMergedActiveIndex, 600, { trailing: false }), []);
 
-/* ============================== static method ============================= */
+  React.useEffect(() => {
+    if (onChange) {
+      onChange(mergedActiveIndex);
+    }
+  }, [mergedActiveIndex, onChange]);
 
   const onGoto = React.useCallback((key: React.Key, circle?: boolean) => {
     const gotoInfo = carouselKeys[key];
@@ -132,12 +135,11 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
       step,
     });
     throttledSetMergedActiveIndex(key);
-
   }, [
     carouselKeys,
     mergedActiveIndex,
-    setChangeInfo,
     throttledSetMergedActiveIndex,
+    setChangeInfo,
   ]);
 
   const onPrev = React.useCallback(() => onGoto(carouselKeys[mergedActiveIndex].prev, true), [
@@ -165,8 +167,24 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
         style={style}
         className={className}
       >
-        <CarouselPrevAndNext position="left" onClick={onPrev}/>
-        <CarouselPrevAndNext position="right" onClick={onNext}/>
+        {controls &&
+          <>
+            <CarouselPrevAndNextView
+              key="left"
+              position="left"
+              onClick={onPrev}
+            >
+              {nextBar || '<'}
+            </CarouselPrevAndNextView>
+            <CarouselPrevAndNextView
+              key="right"
+              position="right"
+              onClick={onNext}
+            >
+              {prevBar || '>'}
+            </CarouselPrevAndNextView>
+          </>
+        }
         <CarouselList/>
         <CarouselDots onGoto={onGoto}/>
       </CarouselView>
@@ -183,6 +201,7 @@ Carousel.defaultProps = {
   dotPosition: 'bottom',
   dots: true,
   autoplay: true,
+  controls: true,
 };
 
 Carousel.propTypes = {
