@@ -42,16 +42,19 @@ export interface CarouselProps {
   onChange?: (slideKey: React.Key) => void; // activeIndex 变化的回调
 }
 
-export interface CarouselThis {
-  next: () => number;
-  prev: () => number;
-  goto: (slideIndex: number) => void
-}
-
 export interface CarouselItemProps {
   carouselKey?: React.Key;
   carouselItemWidth?: number;
   children?: React.ReactNode;
+}
+
+export interface CarouselListProps {
+  duration: number;
+  carousels: Carousels[];
+  changeInfo: ChangeInfo | null;
+  carouselKeys: CarouselKeys;
+  animation: CarouselAnimation;
+  activeKeys: CarouselKey;
 }
 
 export interface Carousels extends CarouselItemProps {
@@ -74,14 +77,7 @@ export type CarouselKeys = {
 export interface ChangeInfo {
   direction: 'rtl' | 'ltr'; // rtl: next direction; ltr: prev direction;
   step: number;
-  current: React.Key;
-}
-
-export interface CarouselContextProps {
-  carousels: Carousels[];
-  activeIndex: string | number;
-  changeInfo: ChangeInfo | null;
-  carouselKeys: CarouselKeys;
+  lockAnimation: boolean;
 }
 
 export interface CarouselDotsProps {

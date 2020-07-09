@@ -6,7 +6,6 @@ import { throttle } from 'lodash';
 import {
   CarouselProps,
   Carousels,
-  CarouselThis,
   CarouselKeys,
   ChangeInfo,
 } from './interface';
@@ -20,14 +19,13 @@ import {
 import toArray from '../../utils/toArray';
 import CarouselList from './component/CarouselList';
 import CarouselItem from './component/CarouselItem';
-import CarouselContext from './component/CarouselContext';
 import useMergedState from '../../hooks/useMergedState';
 import { useThrottleState } from '../../hooks/useThrottleState';
 
 function parserCarousels(children: React.ReactNode): Carousels[] {
   const carousels: Carousels[] = [];
 
-  toArray(children).forEach((node: React.ReactElement<Carousels>, index: number) => {
+  toArray(children).forEach((node: React.ReactElement<Carousels>) => {
     if (React.isValidElement(node)) {
       const key: React.Key = node.key === undefined || node.key === null ? uuidv4() : node.key;
       carousels.push({
@@ -75,7 +73,7 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
   return carouselKeys;
 }
 
-function Carousel(this: CarouselThis, props: CarouselProps) {
+function Carousel(props: CarouselProps) {
   const {
     activeIndex,
     autoplay,
@@ -93,15 +91,17 @@ function Carousel(this: CarouselThis, props: CarouselProps) {
     onChange,
   } = props;
 
+  const duration = React.useMemo(() => animation.duration * 1000, [animation]);
   const carousels = React.useMemo(() => parserCarousels(children), [children]);
   const carouselKeys = React.useMemo(() => getCarouselKeys(carousels), [carousels]);
 
-  const [changeInfo, setChangeInfo] = useThrottleState<ChangeInfo | null>(null, 600, { trailing: false });
+  const [changeInfo, setChangeInfo] = useThrottleState<ChangeInfo | null>(null, duration, { trailing: false });
   const [mergedActiveIndex, setMergedActiveIndex] = useMergedState(() => carousels[0]?.key, {
     value: activeIndex,
   });
 
-  const throttledSetMergedActiveIndex = React.useCallback(throttle(setMergedActiveIndex, 600, { trailing: false }), []);
+  const throttledSetMergedActiveIndex = React.useCallback(
+    throttle(setMergedActiveIndex, duration, { trailing: false }), []);
 
   React.useEffect(() => {
     if (onChange) {
@@ -132,9 +132,9 @@ function Carousel(this: CarouselThis, props: CarouselProps) {
     }
 
     setChangeInfo({
-      current: mergedActiveIndex,
       direction,
       step,
+      lockAnimation: false,
     });
     throttledSetMergedActiveIndex(key);
   }, [
@@ -158,62 +158,61 @@ function Carousel(this: CarouselThis, props: CarouselProps) {
 
   React.useEffect(() => {
     let timer: number;
-    const minDuration = (animation.duration || 0) * 2;
-
-    timer = setInterval(() => {
-      onNext();
-    }, Math.max((autoplayDuration || 0), minDuration));
+    if (autoplay) {
+      const minDuration = (animation.duration || 0) * 2;
+      timer = setInterval(() => {
+        onNext();
+      }, Math.max((autoplayDuration || 0), minDuration));
+    }
 
     return () => clearInterval(timer);
   }, [animation, autoplay, autoplayDuration, onNext]);
 
-  const contextValue = {
-    carousels,
-    activeIndex: mergedActiveIndex,
-    changeInfo,
-    carouselKeys,
-  }
-
   return (
-    <CarouselContext.Provider value={contextValue}>
-      <CarouselView
-        style={style}
-        className={className}
-      >
-        {controls &&
-          <>
-            <CarouselPrevAndNextView
-              key="prev-bar"
-              position="left"
-              onClick={onPrev}
-            >
-              {nextBar || '<'}
-            </CarouselPrevAndNextView>
-            <CarouselPrevAndNextView
-              key="next-bar"
-              position="right"
-              onClick={onNext}
-            >
-              {prevBar || '>'}
-            </CarouselPrevAndNextView>
-          </>
-        }
-        <CarouselList/>
-        {showDots &&
-          <CarouselDotsWrapperView>
-            {carousels.map(carousel =>
-              <CarouselDotView
-                key={carousel.key}
-                dot={dot}
-                animation={animation}
-                active={mergedActiveIndex === carousel.key}
-                onClick={() => onGoto(carousel.key)}
-              />
-            )}
-          </CarouselDotsWrapperView>
-        }
-      </CarouselView>
-    </CarouselContext.Provider>
+    <CarouselView
+      style={style}
+      className={className}
+    >
+      {controls &&
+        <>
+          <CarouselPrevAndNextView
+            key="prev-bar"
+            position="left"
+            onClick={onPrev}
+          >
+            {nextBar || '<'}
+          </CarouselPrevAndNextView>
+          <CarouselPrevAndNextView
+            key="next-bar"
+            position="right"
+            onClick={onNext}
+          >
+            {prevBar || '>'}
+          </CarouselPrevAndNextView>
+        </>
+      }
+      <CarouselList
+        duration={duration}
+        animation={animation}
+        carousels={carousels}
+        changeInfo={changeInfo}
+        carouselKeys={carouselKeys}
+        activeKeys={carouselKeys[mergedActiveIndex]}
+      />
+      {showDots &&
+        <CarouselDotsWrapperView>
+          {carousels.map(carousel =>
+            <CarouselDotView
+              key={carousel.key}
+              dot={dot}
+              animation={animation}
+              active={mergedActiveIndex === carousel.key}
+              onClick={() => onGoto(carousel.key)}
+            />
+          )}
+        </CarouselDotsWrapperView>
+      }
+    </CarouselView>
   );
 }
 
@@ -224,7 +223,7 @@ Carousel.displayName = 'Carousel';
 Carousel.defaultProps = {
   dotPosition: 'bottom',
   showDots: true,
-  autoplay: true,
+  autoplay: false,
   autoplayDuration: 4 * 1000,
   controls: true,
   animation: {

@@ -16,15 +16,5 @@ Basic Carousel:
 renderBar Carousel:
 
 ```jsx
-<Carousel nextBar={<div>x</div>} prevBar={<div>x</div>}>
-  <Carousel.Item key="1">
-    <h3 style={{ margin: 0, background: 'yellowgreen' }}>1</h3>
-  </Carousel.Item>
-  <Carousel.Item key="2">
-    <h3 style={{ margin: 0, background: 'green' }}>2</h3>
-  </Carousel.Item>
-  <Carousel.Item key="3">
-    <h3 style={{ margin: 0, background: 'pink' }}>3</h3>
-  </Carousel.Item>
-</Carousel>
+
 ```

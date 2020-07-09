@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/macro';
-import { CarouselItemProps, CarouselDotViewProps } from './interface';
+import { CarouselItemProps, CarouselDotViewProps, CarouselAnimation } from './interface';
 
 export const CarouselView = styled.div`
   width: 100%;
@@ -10,9 +10,12 @@ export const CarouselView = styled.div`
   position: relative;
 `;
 
-export const CarouselListView = styled.div`
+export const CarouselListView = styled.div<{ transform: string; lockTransition: boolean; animation: CarouselAnimation; }>`
   display: flex;
-  transition: transform 0.6s ease;
+  transition: ${({ lockTransition, animation }) => lockTransition
+    ? 'none'
+    : `transform ${animation.duration}s ${animation.timingFunction}`};
+  transform: ${({ transform }) => transform};
 `;
 
 export const CarouselWrapperView = styled.div`
@@ -68,6 +71,6 @@ const CircleDotView = css<CarouselDotViewProps>`
 export const CarouselDotView = styled.div<CarouselDotViewProps>`
   ${({ dot }) => dot.type === 'line' ? LineDotView : CircleDotView}
   opacity: ${({ active, dot }) => active ? dot.style.activeOpacity : dot.style.opacity};
-  transition: ${({ animation }) => `opacity ${animation.duration} ${animation.timingFunction}`};
+  transition: ${({ animation }) => `opacity ${animation.duration}s ${animation.timingFunction}`};
   cursor: pointer;
 `;
