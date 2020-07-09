@@ -75,11 +75,10 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
 
 function Carousel(props: CarouselProps) {
   const {
-    activeIndex,
+    activeKey,
     autoplay,
     autoplayDuration,
     dot,
-    dotPosition,
     showDots,
     animation,
     controls,
@@ -97,7 +96,7 @@ function Carousel(props: CarouselProps) {
 
   const [changeInfo, setChangeInfo] = useThrottleState<ChangeInfo | null>(null, duration, { trailing: false });
   const [mergedActiveIndex, setMergedActiveIndex] = useMergedState(() => carousels[0]?.key, {
-    value: activeIndex,
+    value: activeKey,
   });
 
   const throttledSetMergedActiveIndex = React.useCallback(
@@ -223,7 +222,7 @@ Carousel.displayName = 'Carousel';
 Carousel.defaultProps = {
   dotPosition: 'bottom',
   showDots: true,
-  autoplay: false,
+  autoplay: true,
   autoplayDuration: 4 * 1000,
   controls: true,
   animation: {
@@ -244,7 +243,19 @@ Carousel.defaultProps = {
 };
 
 Carousel.propTypes = {
-
+  activeIndex: PropTypes.number,
+  autoplay: PropTypes.bool.isRequired,
+  autoplayDuration: PropTypes.number.isRequired,
+  controls: PropTypes.bool.isRequired,
+  showDots: PropTypes.bool.isRequired,
+  animation: PropTypes.object.isRequired,
+  style: PropTypes.object,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  nextBar: PropTypes.node,
+  prevBar: PropTypes.node,
+  dot: PropTypes.object.isRequired,
+  onChange: PropTypes.func,
 };
 
 /** @component */

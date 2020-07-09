@@ -61,10 +61,7 @@ const LineDotView = css<CarouselDotViewProps>`
 `;
 
 const CircleDotView = css<CarouselDotViewProps>`
-  background: ${({ dot }) => dot.style.background};
-  width: ${({ dot }) => typeof dot.style.width === 'number' ? `${dot.style.width}px` : dot.style.width};
-  height: ${({ dot }) => typeof dot.style.height === 'number' ? `${dot.style.height}px` : dot.style.height};
-  margin: ${({ dot }) => typeof dot.style.margin === 'number' ? `${dot.style.margin}px` : dot.style.margin};
+  ${LineDotView}
   border-radius: 50%;
 `;
 

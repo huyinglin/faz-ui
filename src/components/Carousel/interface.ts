@@ -1,5 +1,3 @@
-export type DotPosition = 'top' | 'bottom' | 'left' | 'right';
-
 export type CarouselAnimation = {
   timingFunction: string;
   duration: number;
@@ -24,12 +22,11 @@ export type Dot = {
 }
 
 export interface CarouselProps {
-  activeIndex?: number;
+  activeKey?: number;
   autoplay: boolean;
   autoplayDuration: number;
   controls: boolean; // 显示上一个下一个箭头
   showDots: boolean; // 显示面板指示点
-  dotPosition: DotPosition;
   animation: CarouselAnimation; // 面板过渡动画
   style?: React.CSSProperties;
   children: React.ReactNode;
