@@ -1,6 +1,5 @@
-import styled from 'styled-components/macro';
-import { themeColor } from '../../styled';
-import { CarouselItemProps } from './interface';
+import styled, { css } from 'styled-components/macro';
+import { CarouselItemProps, CarouselDotViewProps } from './interface';
 
 export const CarouselView = styled.div`
   width: 100%;
@@ -12,10 +11,6 @@ export const CarouselView = styled.div`
 `;
 
 export const CarouselListView = styled.div`
-  /* width: 100%;
-  white-space: nowrap;
-  overflow: hidden; */
-
   display: flex;
   transition: transform 0.6s ease;
 `;
@@ -40,12 +35,11 @@ export const CarouselPrevAndNextView = styled.div<{ position: 'left' | 'right' }
   color: #fff;
   z-index: 99;
   font-size: 20px;
-  cursor: pointer;
   user-select: none;
+  cursor: pointer;
 `;
 
 export const CarouselDotsWrapperView = styled.div`
-  height: 3px;
   position: absolute;
   left: 0;
   right: 0;
@@ -56,12 +50,24 @@ export const CarouselDotsWrapperView = styled.div`
   align-content: center;
 `;
 
-export const CarouselDotView = styled.div<{ active: boolean }>`
-  width: 30px;
-  height: 3px;
+const LineDotView = css<CarouselDotViewProps>`
+  background: ${({ dot }) => dot.style.background};
+  width: ${({ dot }) => typeof dot.style.width === 'number' ? `${dot.style.width}px` : dot.style.width};
+  height: ${({ dot }) => typeof dot.style.height === 'number' ? `${dot.style.height}px` : dot.style.height};
+  margin: ${({ dot }) => typeof dot.style.margin === 'number' ? `${dot.style.margin}px` : dot.style.margin};
+`;
+
+const CircleDotView = css<CarouselDotViewProps>`
+  background: ${({ dot }) => dot.style.background};
+  width: ${({ dot }) => typeof dot.style.width === 'number' ? `${dot.style.width}px` : dot.style.width};
+  height: ${({ dot }) => typeof dot.style.height === 'number' ? `${dot.style.height}px` : dot.style.height};
+  margin: ${({ dot }) => typeof dot.style.margin === 'number' ? `${dot.style.margin}px` : dot.style.margin};
+  border-radius: 50%;
+`;
+
+export const CarouselDotView = styled.div<CarouselDotViewProps>`
+  ${({ dot }) => dot.type === 'line' ? LineDotView : CircleDotView}
+  opacity: ${({ active, dot }) => active ? dot.style.activeOpacity : dot.style.opacity};
+  transition: ${({ animation }) => `opacity ${animation.duration} ${animation.timingFunction}`};
   cursor: pointer;
-  background: yellow;
-  margin: 0 4px;
-  opacity: ${props => props.active ? '1' : '.5'};
-  transition: opacity 0.6s ease;
 `;

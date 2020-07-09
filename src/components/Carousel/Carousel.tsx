@@ -13,12 +13,12 @@ import {
 import {
   CarouselView,
   CarouselPrevAndNextView,
+  CarouselDotView,
+  CarouselDotsWrapperView,
 } from './style';
 
 import toArray from '../../utils/toArray';
 import CarouselList from './component/CarouselList';
-import CarouselDots from './component/CarouselDots';
-import CarouselCaption from './component/CarouselCaption';
 import CarouselItem from './component/CarouselItem';
 import CarouselContext from './component/CarouselContext';
 import useMergedState from '../../hooks/useMergedState';
@@ -75,19 +75,21 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
   return carouselKeys;
 }
 
-function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
+function Carousel(this: CarouselThis, props: CarouselProps) {
   const {
     activeIndex,
     autoplay,
+    autoplayDuration,
+    dot,
     dotPosition,
     showDots,
+    animation,
     controls,
     style,
     className,
     children,
     nextBar,
     prevBar,
-    dot,
     onChange,
   } = props;
 
@@ -154,6 +156,17 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
     onGoto,
   ]);
 
+  React.useEffect(() => {
+    let timer: number;
+    const minDuration = (animation.duration || 0) * 2;
+
+    timer = setInterval(() => {
+      onNext();
+    }, Math.max((autoplayDuration || 0), minDuration));
+
+    return () => clearInterval(timer);
+  }, [animation, autoplay, autoplayDuration, onNext]);
+
   const contextValue = {
     carousels,
     activeIndex: mergedActiveIndex,
@@ -170,14 +183,14 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
         {controls &&
           <>
             <CarouselPrevAndNextView
-              key="left"
+              key="prev-bar"
               position="left"
               onClick={onPrev}
             >
               {nextBar || '<'}
             </CarouselPrevAndNextView>
             <CarouselPrevAndNextView
-              key="right"
+              key="next-bar"
               position="right"
               onClick={onNext}
             >
@@ -186,22 +199,49 @@ function Carousel(this: CarouselThis, props: Partial<CarouselProps>) {
           </>
         }
         <CarouselList/>
-        <CarouselDots onGoto={onGoto}/>
+        {showDots &&
+          <CarouselDotsWrapperView>
+            {carousels.map(carousel =>
+              <CarouselDotView
+                key={carousel.key}
+                dot={dot}
+                animation={animation}
+                active={mergedActiveIndex === carousel.key}
+                onClick={() => onGoto(carousel.key)}
+              />
+            )}
+          </CarouselDotsWrapperView>
+        }
       </CarouselView>
     </CarouselContext.Provider>
   );
 }
 
 Carousel.Item = CarouselItem;
-Carousel.Caption = CarouselCaption;
 
 Carousel.displayName = 'Carousel';
 
 Carousel.defaultProps = {
   dotPosition: 'bottom',
-  dots: true,
+  showDots: true,
   autoplay: true,
+  autoplayDuration: 4 * 1000,
   controls: true,
+  animation: {
+    timingFunction: 'ease',
+    duration: .6,
+  },
+  dot: {
+    type: 'circle',
+    style: {
+      background: '#000',
+      width: 10,
+      height: 10,
+      margin: '0 8px',
+      activeOpacity: .75,
+      opacity: .25,
+    },
+  },
 };
 
 Carousel.propTypes = {
