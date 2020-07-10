@@ -8,6 +8,8 @@ import {
   Carousels,
   CarouselKeys,
   ChangeInfo,
+  Dot,
+  CarouselAnimation,
 } from './interface';
 import {
   CarouselView,
@@ -73,7 +75,7 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
   return carouselKeys;
 }
 
-function Carousel(props: CarouselProps) {
+function Carousel(props: Partial<CarouselProps>) {
   const {
     activeKey,
     autoplay,
@@ -90,7 +92,26 @@ function Carousel(props: CarouselProps) {
     onChange,
   } = props;
 
-  const duration = React.useMemo(() => animation.duration * 1000, [animation]);
+  const mergedAnimation: CarouselAnimation = React.useMemo(() => ({
+    timingFunction: 'ease',
+    duration: .6,
+    delay: 0,
+    ...animation
+  }), [animation]);
+
+  const mergedDot: Dot = React.useMemo(() => ({
+    type: 'circle',
+    style: {
+      background: '#000',
+      width: 10,
+      height: 10,
+      margin: '0 8px',
+      activeOpacity: .75,
+      opacity: .25,
+    },
+    ...dot
+  }), [dot]);
+  const duration = React.useMemo(() => mergedAnimation.duration * 1000, [mergedAnimation]);
   const carousels = React.useMemo(() => parserCarousels(children), [children]);
   const carouselKeys = React.useMemo(() => getCarouselKeys(carousels), [carousels]);
 
@@ -158,14 +179,14 @@ function Carousel(props: CarouselProps) {
   React.useEffect(() => {
     let timer: number;
     if (autoplay) {
-      const minDuration = (animation.duration || 0) * 2;
+      const minDuration = (mergedAnimation.duration || 0) * 2;
       timer = setInterval(() => {
         onNext();
       }, Math.max((autoplayDuration || 0), minDuration));
     }
 
     return () => clearInterval(timer);
-  }, [animation, autoplay, autoplayDuration, onNext]);
+  }, [mergedAnimation, autoplay, autoplayDuration, onNext]);
 
   return (
     <CarouselView
@@ -192,7 +213,7 @@ function Carousel(props: CarouselProps) {
       }
       <CarouselList
         duration={duration}
-        animation={animation}
+        animation={mergedAnimation}
         carousels={carousels}
         changeInfo={changeInfo}
         carouselKeys={carouselKeys}
@@ -203,8 +224,8 @@ function Carousel(props: CarouselProps) {
           {carousels.map(carousel =>
             <CarouselDotView
               key={carousel.key}
-              dot={dot}
-              animation={animation}
+              dot={mergedDot}
+              animation={mergedAnimation}
               active={mergedActiveIndex === carousel.key}
               onClick={() => onGoto(carousel.key)}
             />
@@ -225,21 +246,6 @@ Carousel.defaultProps = {
   autoplay: true,
   autoplayDuration: 4 * 1000,
   controls: true,
-  animation: {
-    timingFunction: 'ease',
-    duration: .6,
-  },
-  dot: {
-    type: 'circle',
-    style: {
-      background: '#000',
-      width: 10,
-      height: 10,
-      margin: '0 8px',
-      activeOpacity: .75,
-      opacity: .25,
-    },
-  },
 };
 
 Carousel.propTypes = {

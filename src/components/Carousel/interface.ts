@@ -22,21 +22,21 @@ export type Dot = {
 }
 
 export interface CarouselProps {
-  activeKey?: number;
+  activeKey: number;
   autoplay: boolean;
   autoplayDuration: number;
   controls: boolean; // 显示上一个下一个箭头
   showDots: boolean; // 显示面板指示点
-  animation: CarouselAnimation; // 面板过渡动画
-  style?: React.CSSProperties;
+  animation: Partial<CarouselAnimation>; // 面板过渡动画
+  style: React.CSSProperties;
   children: React.ReactNode;
-  className?: string;
+  className: string;
 
-  nextBar?: React.ReactElement; // 自定义渲染下一张箭头
-  prevBar?: React.ReactElement; // 自定义渲染上一张箭头
-  dot: Dot; // 自定义渲染单个面板指示点
+  nextBar: React.ReactElement; // 自定义渲染下一张箭头
+  prevBar: React.ReactElement; // 自定义渲染上一张箭头
+  dot: Partial<Dot>; // 自定义渲染单个面板指示点
 
-  onChange?: (slideKey: React.Key) => void; // activeIndex 变化的回调
+  onChange: (slideKey: React.Key) => void; // activeIndex 变化的回调
 }
 
 export interface CarouselItemProps {
