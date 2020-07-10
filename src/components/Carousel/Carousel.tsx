@@ -198,6 +198,12 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     }
   }, [mergedActiveIndex, onChange]);
 
+  React.useEffect(() => {
+    if (activeKey && activeKey !== mergedActiveIndex) {
+      setMergedActiveIndex(activeKey);
+    }
+  }, [activeKey]);
+
 /* ================================= Render ================================= */
 
   return (

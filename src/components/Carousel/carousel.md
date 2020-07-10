@@ -24,11 +24,11 @@ import React, { useState } from 'react';
 const [activeKey, setActiveKey] = useState('1');
 
 function onChange(key) {
-  console.log('key:', key);
+  console.log('key:', key); // 问题： key 会调两次
   setActiveKey(key);
 }
 
-<Carousel activeKey={activeKey} onChange={onChange}>
+<Carousel onChange={onChange}>
   <Carousel.Item key="1">
     <h3 style={{ margin: 0, background: 'yellowgreen' }}>1</h3>
   </Carousel.Item>
