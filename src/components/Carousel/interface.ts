@@ -15,28 +15,25 @@ export type DotStyle = {
 
 export type DotType = 'line' | 'circle';
 
-export type Dot = {
-  type: DotType;
-  style: DotStyle;
-  renderDot?: React.ReactElement;
-}
-
 export interface CarouselProps {
   activeKey: number;
   autoplay: boolean;
   autoplayDuration: number;
-  controls: boolean; // 显示上一个下一个箭头
-  showDots: boolean; // 显示面板指示点
-  animation: Partial<CarouselAnimation>; // 面板过渡动画
+  controls: boolean;
+  showDots: boolean;
+  animation: Partial<CarouselAnimation>;
   style: React.CSSProperties;
   children: React.ReactNode;
   className: string;
 
-  nextBar: React.ReactElement; // 自定义渲染下一张箭头
-  prevBar: React.ReactElement; // 自定义渲染上一张箭头
-  dot: Partial<Dot>; // 自定义渲染单个面板指示点
+  nextBar: React.ReactElement;
+  prevBar: React.ReactElement;
 
-  onChange: (slideKey: React.Key) => void; // activeIndex 变化的回调
+  dotType: DotType;
+  dotStyle: DotStyle;
+  renderDot: React.ReactElement;
+
+  onChange: (slideKey: React.Key) => void;
 }
 
 export interface CarouselItemProps {
@@ -84,5 +81,6 @@ export interface CarouselDotsProps {
 export interface CarouselDotViewProps {
   active: boolean;
   animation: CarouselAnimation;
-  dot: Dot;
+  dotType?: DotType;
+  dotStyle: DotStyle;
 }

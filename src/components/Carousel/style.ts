@@ -34,11 +34,16 @@ export const CarouselItemView = styled.div<CarouselItemProps>`
 export const CarouselPrevAndNextView = styled.div<{ position: 'left' | 'right' }>`
   position: absolute;
   top: 0;
-  ${({ position }) => position === 'left' ? 'left: 20px;' : 'right: 20px;'}
+  bottom: 0;
+  ${({ position }) => position === 'left' ? 'left: 0;' : 'right: 0;'}
   color: #fff;
-  z-index: 99;
-  font-size: 20px;
+  z-index: 1;
+  width: 10%;
+  text-align: center;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -54,10 +59,10 @@ export const CarouselDotsWrapperView = styled.div`
 `;
 
 const LineDotView = css<CarouselDotViewProps>`
-  background: ${({ dot }) => dot.style.background};
-  width: ${({ dot }) => typeof dot.style.width === 'number' ? `${dot.style.width}px` : dot.style.width};
-  height: ${({ dot }) => typeof dot.style.height === 'number' ? `${dot.style.height}px` : dot.style.height};
-  margin: ${({ dot }) => typeof dot.style.margin === 'number' ? `${dot.style.margin}px` : dot.style.margin};
+  background: ${({ dotStyle }) => dotStyle.background};
+  width: ${({ dotStyle }) => typeof dotStyle.width === 'number' ? `${dotStyle.width}px` : dotStyle.width};
+  height: ${({ dotStyle }) => typeof dotStyle.height === 'number' ? `${dotStyle.height}px` : dotStyle.height};
+  margin: ${({ dotStyle }) => typeof dotStyle.margin === 'number' ? `${dotStyle.margin}px` : dotStyle.margin};
 `;
 
 const CircleDotView = css<CarouselDotViewProps>`
@@ -66,8 +71,8 @@ const CircleDotView = css<CarouselDotViewProps>`
 `;
 
 export const CarouselDotView = styled.div<CarouselDotViewProps>`
-  ${({ dot }) => dot.type === 'line' ? LineDotView : CircleDotView}
-  opacity: ${({ active, dot }) => active ? dot.style.activeOpacity : dot.style.opacity};
+  ${({ dotType }) => dotType === 'line' ? LineDotView : CircleDotView}
+  opacity: ${({ active, dotStyle }) => active ? dotStyle.activeOpacity : dotStyle.opacity};
   transition: ${({ animation }) => `opacity ${animation.duration}s ${animation.timingFunction}`};
   cursor: pointer;
 `;
