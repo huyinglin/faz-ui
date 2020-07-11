@@ -43,16 +43,6 @@ function onChange(key) {
 
 配置切换 page 的动画
 
-animation: {
-
-  timingFunction: string;
-
-  duration: number;
-
-  delay: number;
-
-}
-
 
 ```jsx
 <Carousel animation={{ timingFunction: 'ease', duration: 0.3, delay: 0 }}>
@@ -72,7 +62,7 @@ animation: {
 
 
 ```jsx
-<Carousel nextBar=">" prevBar="<">
+<Carousel nextArrow=">" prevArrow="<">
   <Carousel.Item key="1">
     <h3 style={{ margin: 0, background: 'yellowgreen' }}>1</h3>
   </Carousel.Item>
@@ -85,12 +75,12 @@ animation: {
 </Carousel>
 ```
 
-nextBar: React.ReactElement;
+nextArrow: React.ReactElement;
 
-prevBar: React.ReactElement;
+prevArrow: React.ReactElement;
 
 ```jsx
-<Carousel nextBar=">" prevBar="<">
+<Carousel nextArrow=">" prevArrow="<">
   <Carousel.Item key="1">
     <h3 style={{ margin: 0, background: 'yellowgreen' }}>1</h3>
   </Carousel.Item>

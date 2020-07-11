@@ -19,15 +19,15 @@ export interface CarouselProps {
   activeKey: number;
   autoplay: boolean;
   autoplayDuration: number;
-  controls: boolean;
+  arrows: boolean;
   showDots: boolean;
   animation: Partial<CarouselAnimation>;
   style: React.CSSProperties;
   children: React.ReactNode;
   className: string;
 
-  nextBar: React.ReactElement;
-  prevBar: React.ReactElement;
+  nextArrow: React.ReactElement;
+  prevArrow: React.ReactElement;
 
   dotType: DotType;
   dotStyle: DotStyle;

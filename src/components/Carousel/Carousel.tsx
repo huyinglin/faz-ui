@@ -82,15 +82,15 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     autoplayDuration,
     dotType,
     dotStyle,
-    renderDot,
+    renderDot, // TODO
     showDots,
     animation,
-    controls,
+    arrows,
     style,
     className,
     children,
-    nextBar,
-    prevBar,
+    nextArrow,
+    prevArrow,
     onChange,
   } = props;
 
@@ -212,14 +212,14 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
       style={style}
       className={className}
     >
-      {controls &&
+      {arrows &&
         <>
           <CarouselPrevAndNextView
             key="prev-bar"
             position="left"
             onClick={onPrev}
           >
-            {prevBar ||
+            {prevArrow ||
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="#fff"
@@ -240,7 +240,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
             position="right"
             onClick={onNext}
           >
-            {nextBar ||
+            {nextArrow ||
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="#fff"
@@ -288,7 +288,7 @@ Carousel.displayName = 'Carousel';
 
 Carousel.defaultProps = {
   dotType: 'line',
-  controls: true,
+  arrows: true,
   autoplay: true,
   showDots: true,
   autoplayDuration: 4000,
@@ -311,9 +311,9 @@ Carousel.propTypes = {
   autoplayDuration: PropTypes.number,
 
   /**
-   * 是否展示上一页下一页按钮
+   * 是否展示上一页下一页导航箭头
    */
-  controls: PropTypes.bool,
+  arrows: PropTypes.bool,
 
   /**
    * 是否展示面板指示点
@@ -326,14 +326,14 @@ Carousel.propTypes = {
   animation: PropTypes.object,
 
   /**
-   * 自定义渲染下一页按钮
+   * 自定义下一页导航箭头
    */
-  nextBar: PropTypes.element,
+  nextArrow: PropTypes.element,
 
   /**
-   * 自定义渲染上一页按钮
+   * 自定义上一页导航箭头
    */
-  prevBar: PropTypes.element,
+  prevArrow: PropTypes.element,
 
   /**
    * 面板指示点类型
