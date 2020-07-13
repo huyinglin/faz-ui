@@ -82,7 +82,6 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     autoplayDuration,
     dotType,
     dotStyle,
-    renderDot, // TODO
     showDots,
     animation,
     arrows,
@@ -122,7 +121,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
   const throttledSetMergedActiveIndex = React.useCallback(
     throttle(setMergedActiveIndex, duration, { trailing: false }), []);
 
-/* ============================= Exposes Methods ============================ */
+/* ============================= Methods ============================ */
 
   const onGoto = React.useCallback((key: React.Key, lockAnimation = false, circle?: boolean) => {
     const gotoInfo = carouselKeys[key];
@@ -152,11 +151,16 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
       lockAnimation,
     });
     throttledSetMergedActiveIndex(key);
+
+    if (onChange) {
+      onChange(key);
+    }
   }, [
     carouselKeys,
     mergedActiveIndex,
     throttledSetMergedActiveIndex,
     setChangeInfo,
+    onChange,
   ]);
 
   const onPrev = React.useCallback(() => onGoto(carouselKeys[mergedActiveIndex].prev, false, true), [
@@ -178,7 +182,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     goto: onGoto,
   }));
 
-/* ================================ Autoplay & onChange ================================ */
+/* ================================ Autoplay ================================ */
 
   React.useEffect(() => {
     let timer: number;
@@ -191,18 +195,6 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
 
     return () => clearInterval(timer);
   }, [mergedAnimation, autoplay, autoplayDuration, onNext]);
-
-  React.useEffect(() => {
-    if (onChange) {
-      onChange(mergedActiveIndex);
-    }
-  }, [mergedActiveIndex, onChange]);
-
-  React.useEffect(() => {
-    if (activeKey && activeKey !== mergedActiveIndex) {
-      setMergedActiveIndex(activeKey);
-    }
-  }, [activeKey]);
 
 /* ================================= Render ================================= */
 
@@ -265,6 +257,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
         changeInfo={changeInfo}
         carouselKeys={carouselKeys}
         activeKeys={carouselKeys[mergedActiveIndex]}
+        onActiveChange={setMergedActiveIndex}
       />
       {showDots &&
         <CarouselDotsWrapperView>
@@ -289,9 +282,9 @@ Carousel.displayName = 'Carousel';
 Carousel.defaultProps = {
   dotType: 'line',
   arrows: true,
-  autoplay: true,
+  autoplay: false,
   showDots: true,
-  autoplayDuration: 4000,
+  autoplayDuration: 3000,
 };
 
 Carousel.propTypes = {
@@ -344,11 +337,6 @@ Carousel.propTypes = {
    * 覆盖面板指示点样式
    */
   dotStyle: PropTypes.any,
-
-  /**
-   * 自定义渲染面板指示点
-   */
-  renderDot: PropTypes.element,
 
   /**
    *  activeKey 变化时的回调

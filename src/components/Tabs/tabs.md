@@ -1,13 +1,18 @@
 Basic Tabs:
 
 ```jsx
+import React, { useState } from 'react';
+
 const { TabPane } = Tabs;
+const [activeKey, setActiveKey] = useState('1');
+console.log('activeKey: ', activeKey);
 
 function callback(key) {
+  setActiveKey(key);
   console.log(key);
 }
 
-<Tabs defaultActiveKey="1" onChange={callback}>
+<Tabs activeKey={activeKey} onChange={callback}>
   <TabPane tab="Tab 1" key="1">
     Content of Tab Pane 1
   </TabPane>

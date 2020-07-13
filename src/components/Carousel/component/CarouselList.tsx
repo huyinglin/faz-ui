@@ -1,7 +1,9 @@
 import React from 'react';
 import ResizeObserver from 'rc-resize-observer';
-import { Carousels, CarouselItemProps, CarouselListProps } from '../interface';
+import { Carousels, CarouselItemProps, CarouselListProps, ChangeInfo } from '../interface';
 import { CarouselListView, CarouselWrapperView } from '../style';
+import { useTouchMove } from '../../../hooks/useTouchMove';
+import { useDebounceState } from '../../../hooks/useDebounceState';
 
 const TRANSFORM_SYMBOL = {
   ltr: 1,
@@ -15,12 +17,14 @@ function CarouselList(props: CarouselListProps) {
     changeInfo,
     animation,
     activeKeys,
+    onActiveChange,
   } = props;
 
   const carouselWrapRef = React.useRef<HTMLDivElement | null>(null);
 
   const [wrapperWidth, setWrapperWidth] = React.useState<number>(0);
   const [transformLeft, setTransformLeft] = React.useState<number>(0);
+  // const [transformLeft, setTransformLeft] = useDebounceState<number>(0, duration, { trailing: false });
   const [lockTransition, setLockTransition] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -99,6 +103,56 @@ function CarouselList(props: CarouselListProps) {
     }
     setWrapperWidth(width);
   }, [activeKeys, wrapperWidth, transformLeft]);
+
+  const onMouseDown = React.useCallback((e: MouseEvent) => {
+    const { clientX: startX } = e;
+    console.log('transformLeft: ', transformLeft);
+
+    function move(e: MouseEvent) {
+      requestAnimationFrame(() => {
+        const distance = transformLeft - (startX - e.clientX);
+        setLockTransition(true);
+        setTransformLeft(distance);
+      });
+    }
+
+    function up(e: MouseEvent) {
+      console.log('activeKeys.next: ', activeKeys);
+
+      requestAnimationFrame(() => {
+        const { clientX } = e;
+
+        let offset = 0;
+
+        const moveThreshold = wrapperWidth * .2;
+
+        if (clientX - startX > moveThreshold) {
+          // next page
+          offset = 1;
+        } else if (clientX - startX < -moveThreshold) {
+          // prev page
+          offset = -1;
+        }
+
+        const distance = transformLeft + (offset * wrapperWidth);
+        setLockTransition(false);
+        setTransformLeft(distance);
+      });
+
+
+      document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', up);
+    }
+
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+    document.addEventListener('selectstart', e => e.preventDefault()); // 取消选中效果
+  }, [transformLeft, wrapperWidth, activeKeys]);
+
+  React.useEffect(() => {
+    carouselWrapRef.current?.addEventListener('mousedown', onMouseDown);
+    return () => carouselWrapRef.current?.removeEventListener('mousedown', onMouseDown);
+  }, [onMouseDown]);
 
   return (
     <ResizeObserver onResize={onListWrapperResize}>

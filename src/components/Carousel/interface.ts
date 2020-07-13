@@ -31,7 +31,6 @@ export interface CarouselProps {
 
   dotType: DotType;
   dotStyle: DotStyle;
-  renderDot: React.ReactElement;
 
   onChange: (slideKey: React.Key) => void;
 }
