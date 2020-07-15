@@ -17,7 +17,7 @@ export const AlertView = styled.div<{ type: AlertType }>`
   align-items: center;
   align-content: center;
   justify-content: space-between;
-  width: 100%;
+  /* width: 100%; */
   min-height: 40px;
   margin-bottom: 16px;
   padding: 8px 16px;
