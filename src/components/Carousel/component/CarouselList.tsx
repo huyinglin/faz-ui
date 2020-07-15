@@ -155,9 +155,14 @@ function CarouselList(props: CarouselListProps) {
 
   const carouselList: CarouselItemProps[] = React.useMemo(() => {
     /**
+     *     Display Area
+     *       -------
+     *       |     |
      * -------------------------------
      * |  3  |  1  |  2  |  3  |  1  |
      * -------------------------------
+     *       |     |
+     *       -------
      */
     const carouselList = carousels.map((carousel: Carousels) =>
       React.cloneElement(carousel.node, {
