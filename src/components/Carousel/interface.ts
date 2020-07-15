@@ -48,6 +48,7 @@ export interface CarouselListProps {
   carouselKeys: CarouselKeys;
   animation: CarouselAnimation;
   activeKeys: CarouselKey;
+  onActiveChange: (value: React.ReactText) => void;
 }
 
 export interface Carousels extends CarouselItemProps {

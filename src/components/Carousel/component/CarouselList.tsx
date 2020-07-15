@@ -1,9 +1,9 @@
 import React from 'react';
 import ResizeObserver from 'rc-resize-observer';
-import { Carousels, CarouselItemProps, CarouselListProps, ChangeInfo } from '../interface';
+import { Carousels, CarouselItemProps, CarouselListProps } from '../interface';
 import { CarouselListView, CarouselWrapperView } from '../style';
-import { useTouchMove } from '../../../hooks/useTouchMove';
-import { useDebounceState } from '../../../hooks/useDebounceState';
+import { useMouseMove } from '../hook/useMouseMove';
+import { useRaf } from '../hook/useRaf';
 
 const TRANSFORM_SYMBOL = {
   ltr: 1,
@@ -24,7 +24,6 @@ function CarouselList(props: CarouselListProps) {
 
   const [wrapperWidth, setWrapperWidth] = React.useState<number>(0);
   const [transformLeft, setTransformLeft] = React.useState<number>(0);
-  // const [transformLeft, setTransformLeft] = useDebounceState<number>(0, duration, { trailing: false });
   const [lockTransition, setLockTransition] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -97,62 +96,48 @@ function CarouselList(props: CarouselListProps) {
   const onListWrapperResize = React.useCallback(() => {
     const { width } = carouselWrapRef.current?.getBoundingClientRect() || { width: 0 };
     if (wrapperWidth) {
-      const offsetNum = activeKeys.index + 1;
+      const offset = activeKeys.index + 1;
       setLockTransition(true);
-      setTransformLeft(transformLeft - (offsetNum * (width - wrapperWidth)));
+      setTransformLeft(transformLeft - (offset * (width - wrapperWidth)));
     }
     setWrapperWidth(width);
   }, [activeKeys, wrapperWidth, transformLeft]);
 
-  const onMouseDown = React.useCallback((e: MouseEvent) => {
-    const { clientX: startX } = e;
-    console.log('transformLeft: ', transformLeft);
+/* ============================= Mouse Event ============================ */
 
-    function move(e: MouseEvent) {
-      requestAnimationFrame(() => {
-        const distance = transformLeft - (startX - e.clientX);
-        setLockTransition(true);
-        setTransformLeft(distance);
-      });
+  const onMousemove = useRaf((offsetX: number) => {
+    setLockTransition(true);
+    setTransformLeft(transformLeft + offsetX);
+  });
+
+  const onMouseup = useRaf((offsetX: number) => {
+    let offset = 0;
+    let distance: number = 0;
+
+    const moveThreshold = wrapperWidth * .2;
+    if (offsetX > moveThreshold) {
+      // prev page
+      offset = 1;
+    } else if (offsetX < -moveThreshold) {
+      // next page
+      offset = -1;
     }
 
-    function up(e: MouseEvent) {
-      console.log('activeKeys.next: ', activeKeys);
-
-      requestAnimationFrame(() => {
-        const { clientX } = e;
-
-        let offset = 0;
-
-        const moveThreshold = wrapperWidth * .2;
-
-        if (clientX - startX > moveThreshold) {
-          // next page
-          offset = 1;
-        } else if (clientX - startX < -moveThreshold) {
-          // prev page
-          offset = -1;
-        }
-
-        const distance = transformLeft + (offset * wrapperWidth);
-        setLockTransition(false);
-        setTransformLeft(distance);
-      });
-
-
-      document.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseup', up);
+    if (offset === 0) {
+      distance = -wrapperWidth * (activeKeys.index + 1);
+    } else if (offset === -1) {
+      distance = offset * wrapperWidth * (activeKeys.index + 2);
+      onActiveChange(activeKeys.next);
+    } else if (offset === 1) {
+      distance = -offset * wrapperWidth * (activeKeys.index);
+      onActiveChange(activeKeys.prev);
     }
 
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', up);
-    document.addEventListener('selectstart', e => e.preventDefault()); // 取消选中效果
-  }, [transformLeft, wrapperWidth, activeKeys]);
+    setLockTransition(false);
+    setTransformLeft(distance);
+  });
 
-  React.useEffect(() => {
-    carouselWrapRef.current?.addEventListener('mousedown', onMouseDown);
-    return () => carouselWrapRef.current?.removeEventListener('mousedown', onMouseDown);
-  }, [onMouseDown]);
+  useMouseMove(carouselWrapRef, { onMousemove, onMouseup });
 
   return (
     <ResizeObserver onResize={onListWrapperResize}>
