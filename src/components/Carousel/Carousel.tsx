@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { throttle } from 'lodash';
+import { omit } from 'lodash';
 
 import {
   Carousels,
@@ -21,8 +21,25 @@ import {
 import toArray from '../../utils/toArray';
 import CarouselList from './component/CarouselList';
 import CarouselItem from './component/CarouselItem';
-import useMergedState from '../../hooks/useMergedState';
 import { useThrottleState } from '../../hooks/useThrottleState';
+
+const defaultLineDotTypeStyle = {
+  background: '#000',
+  width: 30,
+  height: 3,
+  margin: '0 4px',
+  activeOpacity: .75,
+  opacity: .25,
+};
+
+const defaultCircleDotTypeStyle = {
+  background: '#000',
+  width: 10,
+  height: 10,
+  margin: '0 8px',
+  activeOpacity: .75,
+  opacity: .25,
+};
 
 function parserCarousels(children: React.ReactNode): Carousels[] {
   const carousels: Carousels[] = [];
@@ -77,7 +94,6 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
 
 const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref<HTMLDivElement>) => {
   const {
-    activeKey,
     autoplay,
     autoplayDuration,
     dotType,
@@ -99,27 +115,23 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     delay: 0,
     ...animation
   }), [animation]);
+  const mergedDotStyle: DotStyle = React.useMemo(() => {
+    const defaultDotStyle: DotStyle = dotType === 'line'
+      ? defaultLineDotTypeStyle
+      : defaultCircleDotTypeStyle;
+    return {
+      ...defaultDotStyle,
+      ...dotStyle,
+    }
+  }, [dotType, dotStyle]);
 
-  const mergedDotStyle: DotStyle = React.useMemo(() => ({
-    background: '#000',
-    width: 30,
-    height: 3,
-    margin: '0 4px',
-    activeOpacity: .75,
-    opacity: .25,
-    ...dotStyle
-  }), [dotStyle]);
   const duration = React.useMemo(() => mergedAnimation.duration * 1000, [mergedAnimation]);
   const carousels = React.useMemo(() => parserCarousels(children), [children]);
   const carouselKeys = React.useMemo(() => getCarouselKeys(carousels), [carousels]);
   const carouselRef = React.useRef<HTMLDivElement>(null);
+  const [mergedAutoplay, setMergedAutoplay] = React.useState(autoplay);
   const [changeInfo, setChangeInfo] = useThrottleState<ChangeInfo | null>(null, duration, { trailing: false });
-  const [mergedActiveIndex, setMergedActiveIndex] = useMergedState(() => carousels[0]?.key, {
-    value: activeKey,
-  });
-
-  const throttledSetMergedActiveIndex = React.useCallback(
-    throttle(setMergedActiveIndex, duration, { trailing: false }), []);
+  const [mergedActiveIndex, setMergedActiveIndex] = useThrottleState(carousels[0]?.key, duration, { trailing: false });
 
 /* ============================= Methods ============================ */
 
@@ -150,7 +162,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
       step,
       lockAnimation,
     });
-    throttledSetMergedActiveIndex(key);
+    setMergedActiveIndex(key);
 
     if (onChange) {
       onChange(key);
@@ -158,7 +170,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
   }, [
     carouselKeys,
     mergedActiveIndex,
-    throttledSetMergedActiveIndex,
+    setMergedActiveIndex,
     setChangeInfo,
     onChange,
   ]);
@@ -186,7 +198,7 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
 
   React.useEffect(() => {
     let timer: number;
-    if (autoplay) {
+    if (mergedAutoplay) {
       const minDuration = (mergedAnimation.duration || 0) * 2;
       timer = setInterval(() => {
         onNext();
@@ -194,9 +206,26 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
     }
 
     return () => clearInterval(timer);
-  }, [mergedAnimation, autoplay, autoplayDuration, onNext]);
+  }, [mergedAnimation, mergedAutoplay, autoplayDuration, onNext]);
+
+  React.useEffect(() => {
+    setMergedAutoplay(autoplay);
+  }, [autoplay]);
+
+  function onAutoplay(value: boolean) {
+    if (autoplay) {
+      setMergedAutoplay(value && autoplay);
+    }
+  }
 
 /* ================================= Render ================================= */
+
+  function onActiveChange(value: React.ReactText) {
+    setMergedActiveIndex(value);
+    if (onChange) {
+      onChange(value);
+    }
+  }
 
   return (
     <CarouselView
@@ -257,14 +286,17 @@ const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref
         changeInfo={changeInfo}
         carouselKeys={carouselKeys}
         activeKeys={carouselKeys[mergedActiveIndex]}
-        onActiveChange={setMergedActiveIndex}
+        onActiveChange={onActiveChange}
+        onAutoplay={onAutoplay}
       />
       {showDots &&
         <CarouselDotsWrapperView>
           {carousels.map(carousel =>
             <CarouselDotView
               key={carousel.key}
-              dotStyle={mergedDotStyle}
+              style={omit(mergedDotStyle, ['activeOpacity', 'opacity'])}
+              activeOpacity={mergedDotStyle.activeOpacity}
+              opacity={mergedDotStyle.opacity}
               dotType={dotType}
               animation={mergedAnimation}
               active={mergedActiveIndex === carousel.key}
@@ -282,41 +314,31 @@ Carousel.displayName = 'Carousel';
 Carousel.defaultProps = {
   dotType: 'line',
   arrows: true,
-  autoplay: false,
+  autoplay: true,
   showDots: true,
   autoplayDuration: 3000,
 };
 
 Carousel.propTypes = {
   /**
-   *  当前激活 page 的 key
-   */
-  activeKey: PropTypes.number,
-
-  /**
-   * 是否自动播放
+   * 是否自动切换
    */
   autoplay: PropTypes.bool,
 
   /**
-   * 自动播放间隔时长
+   * 自动切换间隔时长
    */
   autoplayDuration: PropTypes.number,
+
+  /**
+   * 自定义面板切换动画，可定义 timingFunction; duration; delay;
+   */
+  animation: PropTypes.object,
 
   /**
    * 是否展示上一页下一页导航箭头
    */
   arrows: PropTypes.bool,
-
-  /**
-   * 是否展示面板指示点
-   */
-  showDots: PropTypes.bool,
-
-  /**
-   * 自定义 page 切换动画，可定义 timingFunction; duration; delay;
-   */
-  animation: PropTypes.object,
 
   /**
    * 自定义下一页导航箭头
@@ -329,6 +351,11 @@ Carousel.propTypes = {
   prevArrow: PropTypes.element,
 
   /**
+   * 是否展示面板指示点
+   */
+  showDots: PropTypes.bool,
+
+  /**
    * 面板指示点类型
    */
   dotType: PropTypes.oneOf(['line', 'circle']),
@@ -339,7 +366,7 @@ Carousel.propTypes = {
   dotStyle: PropTypes.any,
 
   /**
-   *  activeKey 变化时的回调
+   *  面板变化时的回调
    */
   onChange: PropTypes.func,
 };

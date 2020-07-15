@@ -18,6 +18,7 @@ function CarouselList(props: CarouselListProps) {
     animation,
     activeKeys,
     onActiveChange,
+    onAutoplay,
   } = props;
 
   const carouselWrapRef = React.useRef<HTMLDivElement | null>(null);
@@ -25,6 +26,9 @@ function CarouselList(props: CarouselListProps) {
   const [wrapperWidth, setWrapperWidth] = React.useState<number>(0);
   const [transformLeft, setTransformLeft] = React.useState<number>(0);
   const [lockTransition, setLockTransition] = React.useState<boolean>(true);
+  const [lastTimestamp, setLastTimestamp] = React.useState<number>(0);
+
+/* ================================= Do Move ================================ */
 
   React.useEffect(() => {
     const { width } = carouselWrapRef.current?.getBoundingClientRect() || { width: 0 };
@@ -41,13 +45,13 @@ function CarouselList(props: CarouselListProps) {
       const { direction, step, lockAnimation } = changeInfo;
       const symbol = TRANSFORM_SYMBOL[direction];
       const distance = transformLeft + (step * symbol * wrapperWidth);
-
       setLockTransition(lockAnimation);
       setTransformLeft(distance);
     }
   }, [changeInfo, transformLeft, wrapperWidth]);
 
   // Dealing with boundary conditions
+  // When moving to the first or last, we need to move the carouselList to the original position.
   React.useEffect(() => {
     let timer: number;
 
@@ -67,7 +71,94 @@ function CarouselList(props: CarouselListProps) {
     return () => clearTimeout(timer);
   }, [carousels, duration, lockTransition, transformLeft, wrapperWidth]);
 
+/* ============================= Mouse Event ============================ */
+
+  function onMousedown() {
+    // Stop Autoplay when mousedown occurs.
+    onAutoplay(false);
+  }
+
+  const onMousemove = useRaf((offsetX: number) => {
+    const now = Date.now();
+    const overallWidth = wrapperWidth * (carousels.length + 1);
+    const transform = transformLeft + offsetX;
+
+    // In transform, stop the mousemove event.
+    if (now - lastTimestamp < duration) {
+      return;
+    }
+
+    // Prevent dragging distances greater than the overall carousel width.
+    if (
+      Math.abs(transform) > overallWidth ||
+      transform > 0
+    ) {
+      return;
+    }
+
+    setLockTransition(true);
+    setTransformLeft(transform);
+  });
+
+  const onMouseup = useRaf((offsetX: number) => {
+    let offset = 0;
+    let distance: number = 0;
+    const now = Date.now();
+
+    if (now - lastTimestamp < duration) {
+      return;
+    }
+
+    const moveThreshold = wrapperWidth * .2;
+
+    if (offsetX > moveThreshold) {
+      // prev page
+      offset = 1;
+    } else if (offsetX < -moveThreshold) {
+      // next page
+      offset = -1;
+    }
+
+    if (offset === 0) {
+      distance = -wrapperWidth * (activeKeys.index + 1);
+    } else if (offset === -1) {
+      distance = offset * wrapperWidth * (activeKeys.index + 2);
+      onActiveChange(activeKeys.next);
+    } else if (offset === 1) {
+      distance = -offset * wrapperWidth * (activeKeys.index);
+      onActiveChange(activeKeys.prev);
+    }
+
+    // Restore the autoplay
+    onAutoplay(true);
+
+    setLastTimestamp(now);
+    setLockTransition(false);
+    setTransformLeft(distance);
+  });
+
+  useMouseMove(carouselWrapRef, { onMousedown, onMousemove, onMouseup });
+
+/* ================================= Resize ================================= */
+
+  const onListWrapperResize = React.useCallback(() => {
+    const { width } = carouselWrapRef.current?.getBoundingClientRect() || { width: 0 };
+    if (wrapperWidth) {
+      const offset = activeKeys.index + 1;
+      setLockTransition(true);
+      setTransformLeft(transformLeft - (offset * (width - wrapperWidth)));
+    }
+    setWrapperWidth(width);
+  }, [activeKeys, wrapperWidth, transformLeft]);
+
+/* ================================= render ================================= */
+
   const carouselList: CarouselItemProps[] = React.useMemo(() => {
+    /**
+     * -------------------------------
+     * |  3  |  1  |  2  |  3  |  1  |
+     * -------------------------------
+     */
     const carouselList = carousels.map((carousel: Carousels) =>
       React.cloneElement(carousel.node, {
         key: carousel.key,
@@ -92,52 +183,6 @@ function CarouselList(props: CarouselListProps) {
 
     return [clonedLastCarousel, ...carouselList, clonedFirstCarousel];
   }, [carousels, wrapperWidth]);
-
-  const onListWrapperResize = React.useCallback(() => {
-    const { width } = carouselWrapRef.current?.getBoundingClientRect() || { width: 0 };
-    if (wrapperWidth) {
-      const offset = activeKeys.index + 1;
-      setLockTransition(true);
-      setTransformLeft(transformLeft - (offset * (width - wrapperWidth)));
-    }
-    setWrapperWidth(width);
-  }, [activeKeys, wrapperWidth, transformLeft]);
-
-/* ============================= Mouse Event ============================ */
-
-  const onMousemove = useRaf((offsetX: number) => {
-    setLockTransition(true);
-    setTransformLeft(transformLeft + offsetX);
-  });
-
-  const onMouseup = useRaf((offsetX: number) => {
-    let offset = 0;
-    let distance: number = 0;
-
-    const moveThreshold = wrapperWidth * .2;
-    if (offsetX > moveThreshold) {
-      // prev page
-      offset = 1;
-    } else if (offsetX < -moveThreshold) {
-      // next page
-      offset = -1;
-    }
-
-    if (offset === 0) {
-      distance = -wrapperWidth * (activeKeys.index + 1);
-    } else if (offset === -1) {
-      distance = offset * wrapperWidth * (activeKeys.index + 2);
-      onActiveChange(activeKeys.next);
-    } else if (offset === 1) {
-      distance = -offset * wrapperWidth * (activeKeys.index);
-      onActiveChange(activeKeys.prev);
-    }
-
-    setLockTransition(false);
-    setTransformLeft(distance);
-  });
-
-  useMouseMove(carouselWrapRef, { onMousemove, onMouseup });
 
   return (
     <ResizeObserver onResize={onListWrapperResize}>

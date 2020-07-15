@@ -25,9 +25,6 @@ export function useRaf(callback: Function) {
 type Callback<T> = (value: T) => T;
 
 export function useRafState<T>(defaultValue: T | (() => T)): [T, (updater: Callback<T>) => void] {
-  // 在 useRaf 里使用的 setState 会有更新不同步的问题。
-  // 解决：在 raf 更新的时候批量更新
-
   const [, forceUpdate] = useState();
   const batchRef = useRef<Callback<T>[]>([]);
   const state = useRef(typeof defaultValue === 'function' ? (defaultValue as Function)() : defaultValue);

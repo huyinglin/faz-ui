@@ -1,11 +1,9 @@
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { CarouselItemProps, CarouselDotViewProps, CarouselAnimation } from './interface';
 
 export const CarouselView = styled.div`
   width: 100%;
-  height: 200px;
-  line-height: 200px;
-  text-align: center;
+  height: 100%;
   overflow: hidden;
   position: relative;
 `;
@@ -58,21 +56,9 @@ export const CarouselDotsWrapperView = styled.div`
   align-content: center;
 `;
 
-const LineDotView = css<CarouselDotViewProps>`
-  background: ${({ dotStyle }) => dotStyle.background};
-  width: ${({ dotStyle }) => typeof dotStyle.width === 'number' ? `${dotStyle.width}px` : dotStyle.width};
-  height: ${({ dotStyle }) => typeof dotStyle.height === 'number' ? `${dotStyle.height}px` : dotStyle.height};
-  margin: ${({ dotStyle }) => typeof dotStyle.margin === 'number' ? `${dotStyle.margin}px` : dotStyle.margin};
-`;
-
-const CircleDotView = css<CarouselDotViewProps>`
-  ${LineDotView}
-  border-radius: 50%;
-`;
-
 export const CarouselDotView = styled.div<CarouselDotViewProps>`
-  ${({ dotType }) => dotType === 'line' ? LineDotView : CircleDotView}
-  opacity: ${({ active, dotStyle }) => active ? dotStyle.activeOpacity : dotStyle.opacity};
-  transition: ${({ animation }) => `opacity ${animation.duration}s ${animation.timingFunction}`};
+  ${({ dotType }) => dotType === 'circle' && 'border-radius: 50%;'}
+  opacity: ${({ active, activeOpacity, opacity }) => active ? activeOpacity : opacity};
+  transition: ${({ animation: { duration, timingFunction } }) => `opacity ${duration}s ${timingFunction}`};
   cursor: pointer;
 `;

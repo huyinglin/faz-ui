@@ -31,10 +31,10 @@ export function useMouseMove(
     if (!mousePosition) {
       return;
     }
+    e.preventDefault(); // 使用 preventDefault() 来取消鼠标事件
 
     const { clientX, clientY } = e;
     setMousePosition({ x: clientX, y: clientY});
-
 
     if (onMousemove) {
       const offsetX = clientX - mousePosition.x;
@@ -91,6 +91,7 @@ export function useMouseMove(
 
     ref.current?.addEventListener('mousedown', onProxyMouseDown);
     ref.current?.addEventListener('selectstart', e => e.preventDefault());
+    ref.current?.addEventListener('dragstart', e => e.preventDefault());
 
     return () => {
       document.removeEventListener('mousemove', onProxyMouseMove);

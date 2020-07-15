@@ -16,7 +16,6 @@ export type DotStyle = {
 export type DotType = 'line' | 'circle';
 
 export interface CarouselProps {
-  activeKey: number;
   autoplay: boolean;
   autoplayDuration: number;
   arrows: boolean;
@@ -49,6 +48,7 @@ export interface CarouselListProps {
   animation: CarouselAnimation;
   activeKeys: CarouselKey;
   onActiveChange: (value: React.ReactText) => void;
+  onAutoplay: (value: boolean) => void;
 }
 
 export interface Carousels extends CarouselItemProps {
@@ -82,5 +82,6 @@ export interface CarouselDotViewProps {
   active: boolean;
   animation: CarouselAnimation;
   dotType?: DotType;
-  dotStyle: DotStyle;
+  activeOpacity: number;
+  opacity: number;
 }
