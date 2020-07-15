@@ -3,7 +3,7 @@ import ResizeObserver from 'rc-resize-observer';
 import { Carousels, CarouselItemProps, CarouselListProps } from '../interface';
 import { CarouselListView, CarouselWrapperView } from '../style';
 import { useMouseMove } from '../hook/useMouseMove';
-import { useRaf } from '../hook/useRaf';
+import { useRaf } from '../../../hooks/useRaf';
 
 const TRANSFORM_SYMBOL = {
   ltr: 1,

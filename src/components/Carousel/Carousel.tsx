@@ -331,7 +331,7 @@ Carousel.propTypes = {
   autoplayDuration: PropTypes.number,
 
   /**
-   * 自定义面板切换动画，可定义 timingFunction; duration; delay;
+   * 自定义面板切换动画，可定义 timingFunction | duration | delay
    */
   animation: PropTypes.object,
 
