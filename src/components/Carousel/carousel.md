@@ -4,6 +4,7 @@
 
 ```jsx
 import styled from 'styled-components';
+import Carousel from 'faz-ui/Carousel';
 
 const CarouselView = styled.h3`
   margin: 0;

@@ -4,8 +4,10 @@ export type ButtonType = 'primary' | 'default' | 'danger' | 'link';
 export interface BaseButtonProps {
   className: string;
   disabled: boolean;
-  size: ButtonSize;
-  type: ButtonType;
+  /** Button 的大小 */
+  size: 'large' | 'small';
+  /** Button 的类型 */
+  type: 'primary' | 'default' | 'danger' | 'link';
   href: string;
   style: React.CSSProperties;
   children: React.ReactNode;

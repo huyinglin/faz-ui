@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { animated } from 'react-spring';
 import {
   AlertType,
 } from './interface';
@@ -10,7 +11,7 @@ enum Color {
   danger = '#dc3545',
 }
 
-export const AlertView = styled.div<{ type: AlertType }>`
+export const AlertView = styled(animated.div)<{ type: AlertType }>`
   position: relative;
   display: flex;
   flex-direction: row;

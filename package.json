@@ -38,6 +38,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "d3-ease": "^1.0.6",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
     "omit.js": "^1.0.2",
@@ -48,6 +49,7 @@
     "react-dom": "^16.13.1",
     "react-is": "^16.13.1",
     "react-scripts": "3.4.1",
+    "react-spring": "^8.0.27",
     "react-styleguidist": "^11.0.8",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.5",
@@ -55,6 +57,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
+    "@types/d3-ease": "^1.0.9",
     "@types/jest": "^25.2.1",
     "@types/lodash": "^4.14.157",
     "@types/raf": "^3.4.0",
@@ -63,6 +66,7 @@
     "@types/uuid": "^8.0.0",
     "babel-plugin-macros": "^2.8.0",
     "ora": "^4.0.4",
+    "react-docgen-typescript": "^1.18.0",
     "resize-observer-polyfill": "^1.5.1",
     "yargs": "^15.3.1"
   }

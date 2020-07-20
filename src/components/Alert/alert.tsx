@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useSpring } from 'react-spring';
+import * as ease from 'd3-ease';
+
 import {
   AlertView,
   AlrtDescView,
@@ -8,7 +11,6 @@ import {
 } from './interface';
 import { styledFactory } from '../../styled';
 
-// const { Span } = styledElement;
 const Span = styledFactory('span');
 
 function Alert(props: AlertProps) {
@@ -23,6 +25,14 @@ function Alert(props: AlertProps) {
   } = props;
 
   const [closed, setClosed] = useState(false);
+  const springProps = useSpring({
+    opacity: closed ? 0 : 1,
+    config: {
+      duration: 300,
+      easing: ease.easeQuadOut,
+    },
+    onRest: () => closed && setAlert(null),
+  });
 
   function handleClose(e: React.MouseEvent<HTMLDivElement>) {
     if (e) {
@@ -34,38 +44,38 @@ function Alert(props: AlertProps) {
     }
   }
 
-  if (closed) {
-    return null;
-  }
+  const [alert, setAlert] = useState<React.ReactElement | null>(() => {
+    if (description) {
+      return (
+        <AlertView
+          style={{...style, ...springProps}}
+          type={type}
+          className={className}
+        >
+          <AlrtDescView>
+            {message}
+            {closable &&
+              <Span cursor="pointer" onClick={handleClose}>x</Span>
+            }
+          </AlrtDescView>
+          <div>{description}</div>
+        </AlertView>
+      );
+    }
 
-  if (description) {
     return (
       <AlertView
-        style={style}
+        style={{...style, ...springProps}}
         type={type}
         className={className}
       >
-        <AlrtDescView>
-          {message}
-          {closable &&
-            <Span cursor="pointer" onClick={handleClose}>x</Span>
-          }
-        </AlrtDescView>
-        <div>{description}</div>
+        {message}
+        {closable && <Span cursor="pointer" onClick={handleClose}>x</Span>}
       </AlertView>
     );
-  }
+  });
 
-  return (
-    <AlertView
-      style={style}
-      type={type}
-      className={className}
-    >
-      {message}
-      {closable && <Span cursor="pointer" onClick={handleClose}>x</Span>}
-    </AlertView>
-  );
+  return alert;
 }
 
 Alert.defaultProps = {

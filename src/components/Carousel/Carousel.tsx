@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { omit } from 'lodash';
@@ -92,7 +92,7 @@ function getCarouselKeys(carousels: Carousels[]): CarouselKeys {
   return carouselKeys;
 }
 
-const Carousel = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref<HTMLDivElement>) => {
+const Carousel: FC<Partial<CarouselProps>> = React.forwardRef((props: Partial<CarouselProps>, ref: React.Ref<HTMLDivElement>) => {
   const {
     autoplay,
     autoplayDuration,
@@ -319,57 +319,57 @@ Carousel.defaultProps = {
   autoplayDuration: 3000,
 };
 
-Carousel.propTypes = {
-  /**
-   * 是否自动切换
-   */
-  autoplay: PropTypes.bool,
+// Carousel.propTypes = {
+//   /**
+//    * 是否自动切换
+//    */
+//   autoplay: PropTypes.bool,
 
-  /**
-   * 自动切换间隔时长
-   */
-  autoplayDuration: PropTypes.number,
+//   /**
+//    * 自动切换间隔时长
+//    */
+//   autoplayDuration: PropTypes.number,
 
-  /**
-   * 自定义面板切换动画，可定义 timingFunction | duration | delay
-   */
-  animation: PropTypes.object,
+//   /**
+//    * 自定义面板切换动画，可定义 timingFunction | duration | delay
+//    */
+//   animation: PropTypes.object,
 
-  /**
-   * 是否展示上一页下一页导航箭头
-   */
-  arrows: PropTypes.bool,
+//   /**
+//    * 是否展示上一页下一页导航箭头
+//    */
+//   arrows: PropTypes.bool,
 
-  /**
-   * 自定义下一页导航箭头
-   */
-  nextArrow: PropTypes.element,
+//   /**
+//    * 自定义下一页导航箭头
+//    */
+//   nextArrow: PropTypes.element,
 
-  /**
-   * 自定义上一页导航箭头
-   */
-  prevArrow: PropTypes.element,
+//   /**
+//    * 自定义上一页导航箭头
+//    */
+//   prevArrow: PropTypes.element,
 
-  /**
-   * 是否展示面板指示点
-   */
-  showDots: PropTypes.bool,
+//   /**
+//    * 是否展示面板指示点
+//    */
+//   showDots: PropTypes.bool,
 
-  /**
-   * 面板指示点类型
-   */
-  dotType: PropTypes.oneOf(['line', 'circle']),
+//   /**
+//    * 面板指示点类型
+//    */
+//   dotType: PropTypes.oneOf(['line', 'circle']),
 
-  /**
-   * 覆盖面板指示点样式
-   */
-  dotStyle: PropTypes.any,
+//   /**
+//    * 覆盖面板指示点样式
+//    */
+//   dotStyle: PropTypes.any,
 
-  /**
-   *  面板变化时的回调
-   */
-  onChange: PropTypes.func,
-};
+//   /**
+//    *  面板变化时的回调
+//    */
+//   onChange: PropTypes.func,
+// };
 
 export type ForwardCarouselType = typeof Carousel & { Item: typeof CarouselItem };
 

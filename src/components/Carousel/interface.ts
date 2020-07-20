@@ -15,8 +15,13 @@ export type DotStyle = {
 
 export type DotType = 'line' | 'circle';
 
+/**
+ * Carousel properties.
+ */
 export interface CarouselProps {
+  /** 是否自动切换 */
   autoplay: boolean;
+  /** 自动切换间隔时长 */
   autoplayDuration: number;
   arrows: boolean;
   showDots: boolean;
@@ -25,10 +30,11 @@ export interface CarouselProps {
   children: React.ReactNode;
   className: string;
 
-  nextArrow: React.ReactElement;
-  prevArrow: React.ReactElement;
+  nextArrow: React.ReactNode;
+  prevArrow: React.ReactNode;
 
-  dotType: DotType;
+  dotType: 'line' | 'circle';
+  // dotType: DotType;
   dotStyle: DotStyle;
 
   onChange: (slideKey: React.Key) => void;

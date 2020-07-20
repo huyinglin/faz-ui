@@ -60,14 +60,14 @@ Button.defaultProps = {
   type: 'default',
 };
 
-Button.propTypes = {
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-  size: PropTypes.oneOf(['large', 'small']),
-  type: PropTypes.oneOf(['primary', 'default', 'danger', 'link']),
-  href: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
+// Button.propTypes = {
+//   className: PropTypes.string,
+//   disabled: PropTypes.bool,
+//   size: PropTypes.oneOf(['large', 'small']),
+//   type: PropTypes.oneOf(['primary', 'default', 'danger', 'link']),
+//   href: PropTypes.string,
+//   children: PropTypes.node.isRequired,
+// };
 
 /** @component */
 export default Button;
