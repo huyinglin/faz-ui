@@ -1,40 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  IconProps
-} from './interface';
-import {
+import { IconProps } from './interface';
 
-} from './style';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-
-library.add(fab, fas);
+import * as AiIcon from "react-icons/ai";
+import * as BsIcon from "react-icons/bs";
 
 function Icon(props: IconProps) {
   const {
-
+    type,
+    style,
+    className,
   } = props;
 
-  return (
-    <div>
-      <FontAwesomeIcon icon="arrow-down" />
-    </div>
-  );
+  const Icon = (AiIcon as any)[type] || (BsIcon as any)[type];
+
+  return Icon ? <Icon style={style} className={className}/> : <span/>;
 }
-
-Icon.displayName = 'Icon';
-
-Icon.defaultProps = {
-
-};
-
-Icon.propTypes = {
-
-};
 
 /** @component */
 export default Icon;
