@@ -7,7 +7,14 @@ let messagehub = null;
 let key = 0;
 
 useEffect(() => {
-  MessageHub.newInstance({}, instance => {
+  MessageHub.newInstance({
+    // maxCount: 3
+    placement: 'topRight',
+    position: {
+      top: 40,
+      right: 10
+    }
+  }, instance => {
     messagehub = instance;
   });
 }, []);
@@ -17,7 +24,7 @@ function onOpen() {
     key: key++,
     content: 44444 + key,
     closable: true,
-    duration: 3000,
+    // duration: 3000,
   });
 }
 

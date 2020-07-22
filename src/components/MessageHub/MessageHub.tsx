@@ -21,11 +21,18 @@ class MessageHub extends Component<MessageHubProps, MessageHubState> {
   }
 
   add = (message: MessageProps) => {
+    const { maxCount } = this.props;
+    const { queue } = this.state;
     const newMessage = {
       ...message,
       key: message.key || (Date.now() + Math.random())
     }
-    this.setState(({ queue }) => ({ queue: [...queue, newMessage] }));
+
+    if (maxCount && queue.length >= maxCount) {
+      queue.shift();
+    }
+
+    this.setState({ queue: [...queue, newMessage] });
   }
 
   remove = (key: React.Key) => {
@@ -34,11 +41,13 @@ class MessageHub extends Component<MessageHubProps, MessageHubState> {
 
   render() {
     const { queue } = this.state;
-    const {  } = this.props;
     return (
-      <MessageHubView>
+      <MessageHubView {...this.props}>
         {queue.map(({ onClose, ...messageProps}: MessageProps) =>
-          <Message onClose={() => this.remove(messageProps.key!)} {...messageProps}/>
+          <Message
+            onClose={() => this.remove(messageProps.key!)}
+            {...messageProps}
+          />
         )}
       </MessageHubView>
     )
