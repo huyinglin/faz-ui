@@ -9,7 +9,7 @@ let key = 0;
 useEffect(() => {
   MessageHub.newInstance({
     // maxCount: 3
-    placement: 'topRight',
+    placement: 'topLeft',
     position: {
       top: 40,
       right: 10

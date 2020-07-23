@@ -1,27 +1,37 @@
 Basic Notification:
 
 ```jsx
-import { useEffect } from 'react';
 
-let notification = null;
-let key = 0;
-
-useEffect(() => {
-  Notification.newInstance({}, n => {
-    notification = n;
-  });
-}, []);
+let val = 0;
 
 function onOpen() {
-  notification.open({
-    key: key++,
-    content: 44444 + key,
-    closable: true,
+  Notification.open({
+    title: 'NotificationT' + val++,
+    description: 'This is the content of the notification. This is theotification. This is the content of the notification. This is the content of the notification.',
+    closable: false,
   });
 }
 
 <>
   <button onClick={onOpen}>click</button>
-  <button onClick={() => notification.remove(key--)}>close</button>
+</>
+```
+
+```jsx
+
+const openNotificationWithIcon = type => {
+  Notification[type]({
+    title: 'Notification Title',
+    duration: null,
+    description:
+      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+  });
+};
+
+<>
+  <button onClick={() => openNotificationWithIcon('success')}>Success</button>
+  <button onClick={() => openNotificationWithIcon('info')}>Info</button>
+  <button onClick={() => openNotificationWithIcon('warning')}>Warning</button>
+  <button onClick={() => openNotificationWithIcon('error')}>Error</button>
 </>
 ```

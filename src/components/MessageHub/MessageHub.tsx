@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Transition } from 'react-spring/renderprops';
+import { v4 as uuid } from 'uuid';
+
 import {
   MessageHubProps,
   MessageHubState,
@@ -7,8 +10,11 @@ import {
 } from './interface';
 import {
   MessageHubView,
+  MessageAnimatedView,
 } from './style';
 import Message from './component/Message';
+
+const AnimationConfig = { tension: 125, friction: 20, precision: 0.1 };
 
 class MessageHub extends Component<MessageHubProps, MessageHubState> {
   static newInstance: (
@@ -23,9 +29,10 @@ class MessageHub extends Component<MessageHubProps, MessageHubState> {
   add = (message: MessageProps) => {
     const { maxCount } = this.props;
     const { queue } = this.state;
+    const key = message.key || uuid();
     const newMessage = {
       ...message,
-      key: message.key || (Date.now() + Math.random())
+      key,
     }
 
     if (maxCount && queue.length >= maxCount) {
@@ -43,12 +50,34 @@ class MessageHub extends Component<MessageHubProps, MessageHubState> {
     const { queue } = this.state;
     return (
       <MessageHubView {...this.props}>
-        {queue.map(({ onClose, ...messageProps}: MessageProps) =>
-          <Message
-            onClose={() => this.remove(messageProps.key!)}
-            {...messageProps}
-          />
-        )}
+        <Transition
+          items={queue}
+          unique
+          reset
+          keys={item => item.key as string}
+          from={{ opacity: 0, height: 0 }}
+          enter={item => async (next: Function) => {
+            await next({ opacity: 1, height: 'auto' })
+          }}
+          leave={item => async (next: Function, cancel: Function) => {
+            await next({ opacity: 0 });
+            await next({ height: 0 });
+            await next({ zIndex: -1 });
+          }}
+          config={(item: MessageProps, state: string) => ({
+            duration: state === 'leave' ? 120 : undefined,
+            ...AnimationConfig
+          })}
+        >
+          {({ onClose, ...messageProps}) => props =>
+            <MessageAnimatedView key={messageProps.key} style={props}>
+              <Message
+                onClose={() => this.remove(messageProps.key!)}
+                {...messageProps}
+              />
+            </MessageAnimatedView>
+          }
+        </Transition>
       </MessageHubView>
     )
   }

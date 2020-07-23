@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/macro';
 import { themeColor } from '../../styled';
 import { MessageHubProps } from './interface';
+import { animated } from 'react-spring';
 
 const TopPosition = css<MessageHubProps>`
   top: ${({ position }) => position && position.top ? position.top : 24 }px;
@@ -44,3 +45,5 @@ export const MessageView = styled.div`
   margin-bottom: 16px;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 `;
+
+export const MessageAnimatedView = styled(animated.div)``;

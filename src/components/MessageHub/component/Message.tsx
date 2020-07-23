@@ -1,16 +1,13 @@
 import React from 'react'
 import { MessageProps } from '../interface'
 import { MessageView } from '../style';
-import { AiOutlineClose } from 'react-icons/ai';
 
-function Message(props: MessageProps) {
+const Message = React.forwardRef((props: MessageProps, ref: React.Ref<HTMLDivElement>) => {
   const {
     style,
     className,
     duration,
     content,
-    closeIcon,
-    closable,
     onClick,
     onClose,
   } = props;
@@ -21,18 +18,18 @@ function Message(props: MessageProps) {
         onClose!();
       }, duration);
     }
-  }, [])
+  }, []);
 
   return (
     <MessageView
       style={style}
+      ref={ref}
       className={className}
       onClick={onClick}
     >
-      {content}
-      {closable && (closeIcon || <AiOutlineClose onClick={onClose}/>)}
+      {typeof content === 'function' ? content(onClose!) : content}
     </MessageView>
   )
-}
+});
 
 export default Message

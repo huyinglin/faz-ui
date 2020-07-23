@@ -26,9 +26,7 @@ export interface MessageProps {
   style?: React.CSSProperties;
   className?: string;
   duration?: number | null;
-  content?: React.ReactNode;
-  closeIcon?: React.ReactNode;
-  closable?: boolean;
+  content?: React.ReactNode | ((onClose: () => void) => React.ReactNode);
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onClose?: () => void;
 }
