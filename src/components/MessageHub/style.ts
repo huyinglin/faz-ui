@@ -4,19 +4,19 @@ import { MessageHubProps } from './interface';
 import { animated } from 'react-spring';
 
 const TopPosition = css<MessageHubProps>`
-  top: ${({ position }) => position && position.top ? position.top : 24 }px;
+  top: ${({ position }) => position && position.top ? position.top : '24px' };
 `;
 
 const RightPosition = css<MessageHubProps>`
-  right: ${({ position }) => position && position.right ? position.right : 24 }px;
+  right: ${({ position }) => position && position.right ? position.right : '24px' };
 `;
 
 const BottomPosition = css<MessageHubProps>`
-  bottom: ${({ position }) => position && position.bottom ? position.bottom : 24 }px;
+  bottom: ${({ position }) => position && position.bottom ? position.bottom : '24px' };
 `;
 
 const LeftPosition = css<MessageHubProps>`
-  left: ${({ position }) => position && position.left ? position.left : 24 }px;
+  left: ${({ position }) => position && position.left ? position.left : '24px' };
 `;
 
 const Placement = {

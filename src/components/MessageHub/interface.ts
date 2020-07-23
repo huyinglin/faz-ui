@@ -8,12 +8,15 @@ export interface MessageHubProps {
   /** 弹出位置 */
   placement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
+  style?: React.CSSProperties;
+  className?: string;
+
   /** 弹出位置距离文档的位置 */
   position?: {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
   }
 }
 

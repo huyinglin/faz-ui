@@ -8,7 +8,7 @@ function onOpen() {
   Notification.open({
     title: 'NotificationT' + val++,
     description: 'This is the content of the notification. This is theotification. This is the content of the notification. This is the content of the notification.',
-    closable: false,
+    duration: null,
   });
 }
 

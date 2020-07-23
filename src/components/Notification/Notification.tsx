@@ -19,9 +19,9 @@ import {
   DescriptionView,
 } from './style';
 
-const NotificationType = ['success', 'info', 'warning', 'error'];
+const notificationType = ['success', 'info', 'warning', 'error'];
 
-const NotificationTypeIcon = {
+const notificationTypeIcon = {
   success: <AiOutlineCheckCircle style={{ color: '#52c41a', fontSize: 24, marginRight: 16 }}/>,
   info: <AiOutlineInfoCircle style={{ color: '#1890ff', fontSize: 24, marginRight: 16 }}/>,
   error: <AiOutlineCloseCircle style={{ color: '#ff4d4f', fontSize: 24, marginRight: 16 }}/>,
@@ -35,8 +35,8 @@ let defaultConfig: MessageHubProps = {
   zIndex: undefined,
   placement: 'topRight',
   position: {
-    top: 24,
-    right: 24,
+    top: '24px',
+    right: '24px',
     bottom: undefined,
     left: undefined,
   },
@@ -81,7 +81,7 @@ function getNotificationMixedProps(props: NotificationProps): MessageProps {
   } = props;
 
   const content = (close: any) => (
-    <NotificationContentView style={style} className={className}>
+    <NotificationContentView>
       <div>{icon}</div>
       <div>
         <TitleView>
@@ -98,6 +98,8 @@ function getNotificationMixedProps(props: NotificationProps): MessageProps {
   return {
     key,
     duration,
+    style,
+    className,
     content,
     onClick,
     onClose,
@@ -117,12 +119,13 @@ const Notification: any = {
   },
   config(config: MessageHubProps) {
     defaultConfig = {...defaultConfig, ...config};
+    console.log('defaultConfig: ', defaultConfig);
   },
 }
 
-NotificationType.forEach((type: string) => {
+notificationType.forEach((type: string) => {
   Notification[type] = (props: NotificationProps) =>
-    Notification.open({...props, icon: (NotificationTypeIcon as any)[type] });
+    Notification.open({...props, icon: (notificationTypeIcon as any)[type] });
 });
 
 // TODO createChainedFunction
