@@ -30,7 +30,7 @@ const NotificationTypeIcon = {
 
 const cacheInstance: any = {};
 
-let defaultConfig = {
+let defaultConfig: MessageHubProps = {
   maxCount: undefined,
   zIndex: undefined,
   placement: 'topRight',
@@ -42,22 +42,27 @@ let defaultConfig = {
   },
 }
 
-function getNotificationInstance() {
-  const key = defaultConfig.placement;
+function getNotificationInstance(props: NotificationProps, callback: (instance: any) => void) {
+  const {
+    placement = defaultConfig.placement,
+  } = props;
+
+  const key = `notification-${placement}`;
 
   if (cacheInstance[key]) {
-    return cacheInstance[key];
+    callback(cacheInstance[key]);
+    return;
   }
 
   let notificationInstance = null;
 
-  MessageHub.newInstance(defaultConfig as MessageHubProps, instance => {
+  MessageHub.newInstance({...defaultConfig, placement}, instance => {
     notificationInstance = instance;
   });
 
   cacheInstance[key] = notificationInstance;
 
-  return notificationInstance;
+  callback(notificationInstance);
 }
 
 function getNotificationMixedProps(props: NotificationProps): MessageProps {
@@ -68,7 +73,6 @@ function getNotificationMixedProps(props: NotificationProps): MessageProps {
     closeIcon = <AiOutlineClose/>,
     key,
     closable = true,
-    placement,
     style,
     className,
     duration = 4500,
@@ -102,15 +106,17 @@ function getNotificationMixedProps(props: NotificationProps): MessageProps {
 
 const Notification: any = {
   open(props: NotificationProps) {
-    const instance = getNotificationInstance();
-    instance.open(getNotificationMixedProps(props));
+    getNotificationInstance(props, instance => {
+      instance.open(getNotificationMixedProps(props));
+    });
   },
   close(key: React.Key) {
-    const instance = getNotificationInstance();
-    instance.close(key);
+    Object.keys(cacheInstance).forEach(cacheKey => {
+      cacheInstance[cacheKey].close(key);
+    });
   },
   config(config: MessageHubProps) {
-    defaultConfig = {...defaultConfig, ...config} as any;
+    defaultConfig = {...defaultConfig, ...config};
   },
 }
 
@@ -118,6 +124,9 @@ NotificationType.forEach((type: string) => {
   Notification[type] = (props: NotificationProps) =>
     Notification.open({...props, icon: (NotificationTypeIcon as any)[type] });
 });
+
+// TODO createChainedFunction
+// TODO destroy
 
 /** @component */
 export default Notification;

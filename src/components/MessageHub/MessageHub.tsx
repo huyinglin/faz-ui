@@ -52,8 +52,6 @@ class MessageHub extends Component<MessageHubProps, MessageHubState> {
       <MessageHubView {...this.props}>
         <Transition
           items={queue}
-          unique
-          reset
           keys={item => item.key as string}
           from={{ opacity: 0, height: 0 }}
           enter={item => async (next: Function) => {
