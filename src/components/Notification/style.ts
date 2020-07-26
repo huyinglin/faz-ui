@@ -5,6 +5,7 @@ import { animated } from 'react-spring'
 export const NotificationContentView = styled.div`
   width: 336px;
   display: flex;
+  padding: 16px 24px;
 `;
 
 export const TitleView = styled.div`

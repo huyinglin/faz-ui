@@ -40,6 +40,7 @@ let defaultConfig: MessageHubProps = {
   },
   style: {
     transform: 'translateX(50%)',
+    padding: 0,
   },
 };
 
