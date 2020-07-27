@@ -11,11 +11,13 @@ import {
   InputContainerView,
 } from './style';
 import { useMeasure } from '../../hooks/useMeasure';
+import useMergedState from '../../hooks/useMergedState';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
 import Limit from './component/Limit';
 import Password from './component/Password';
 import TextArea from './component/TextArea';
+import Search from './component/Search';
 
 export function validatedValue(value: any) {
   return typeof value === 'undefined' || value === null ? '' : value;
@@ -37,7 +39,9 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     ...rest
   } = props;
 
-  const [mergedValue, setMergedValue] = React.useState(defaultValue);
+  const [mergedValue, setMergedValue] = useMergedState<string>(defaultValue || '', {
+    value: value,
+  });
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const prefixRef = React.useRef<HTMLSpanElement | null>(null);
@@ -45,6 +49,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
   const addonBeforeRef = React.useRef<HTMLSpanElement | null>(null);
   const addonAfterRef = React.useRef<HTMLSpanElement | null>(null);
 
+  const { height: inputHeight } = useMeasure(inputRef);
   const { width: prefixWidth } = useMeasure(prefixRef);
   const { width: suffixWidth } = useMeasure(suffixRef);
   const { width: addonBeforeWidth } = useMeasure(addonBeforeRef);
@@ -56,12 +61,6 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     blur: () => inputRef.current?.blur(),
     select: () => inputRef.current?.select(),
   }));
-
-  React.useEffect(() => {
-    if (value !== undefined || value !== mergedValue) {
-      setMergedValue(value);
-    }
-  }, [value]);
 
   React.useEffect(() => {
     clearPasswordValueAttribute();
@@ -104,7 +103,15 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
 
   return (
     <InputContainerView>
-      {addonBefore && <AddonView type="addonBefore" ref={addonBeforeRef}>{addonBefore}</AddonView>}
+      {addonBefore &&
+        <AddonView
+          inputHeight={inputHeight}
+          addonType="addonBefore"
+          ref={addonBeforeRef}
+        >
+          {addonBefore}
+        </AddonView>
+      }
       <InputView
         ref={inputRef}
         prefixWidth={prefixWidth}
@@ -117,12 +124,20 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
         onKeyDown={handleKeyDown}
         {...rest}
       />
-      {addonAfter && <AddonView type="addonAfter" ref={addonAfterRef}>{addonAfter}</AddonView>}
+      {addonAfter &&
+        <AddonView
+          inputHeight={inputHeight}
+          addonType="addonAfter"
+          ref={addonAfterRef}
+        >
+          {addonAfter}
+        </AddonView>
+      }
       {prefix &&
         <AffixView
           addonBeforeWidth={addonBeforeWidth}
           addonAfterWidth={addonAfterWidth}
-          type="prefix"
+          affixType="prefix"
           ref={prefixRef}
         >
           {prefix}
@@ -132,7 +147,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
         <AffixView
           addonBeforeWidth={addonBeforeWidth}
           addonAfterWidth={addonAfterWidth}
-          type="suffix"
+          affixType="suffix"
           ref={suffixRef}
         >
           {suffix}
@@ -144,7 +159,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           addonBeforeWidth={addonBeforeWidth}
           addonAfterWidth={addonAfterWidth}
           suffixWidth={suffixWidth}
-          type="suffix"
+          affixType="suffix"
         >
           <AiFillCloseCircle/>
         </ClearView>
@@ -166,11 +181,13 @@ export type ForwardInputType = typeof Input & {
   Limit: typeof Limit;
   Password: typeof Password;
   TextArea: typeof TextArea;
+  Search: typeof Search;
 };
 
 (Input as ForwardInputType).Limit = Limit;
 (Input as ForwardInputType).Password = Password;
 (Input as ForwardInputType).TextArea = TextArea;
+(Input as ForwardInputType).Search = Search;
 
 /** @component */
 export default Input;

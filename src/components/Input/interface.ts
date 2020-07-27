@@ -49,6 +49,11 @@ export interface PasswordProps extends Partial<InputProps> {
   invisibleIcon?: React.ReactNode;
 }
 
+export interface SearchProps extends Partial<InputProps> {
+  enterButton?: boolean | React.ReactNode;
+  onSearch?: (value: string, event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
 export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   defaultValue: string;
   value: string;

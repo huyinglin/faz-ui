@@ -69,15 +69,15 @@ export const InputContainerView = styled.div`
   }
 `;
 
-export const AffixView = styled.span<{ type: 'prefix' | 'suffix'; addonBeforeWidth: number; addonAfterWidth: number; }>`
+export const AffixView = styled.span<{ affixType: 'prefix' | 'suffix'; addonBeforeWidth: number; addonAfterWidth: number; }>`
   position: absolute;
   top: 0;
-  ${({ type, addonBeforeWidth, addonAfterWidth }) =>
-    type === 'prefix'
+  ${({ affixType, addonBeforeWidth, addonAfterWidth }) =>
+    affixType === 'prefix'
       ? `left: ${addonBeforeWidth ? addonBeforeWidth + 12 * 2 : 0}px;`
       : `right: ${addonAfterWidth ? addonAfterWidth + 12 * 2 : 0}px;`
   }
-  ${({ type }) => type === 'prefix' ? 'padding-left: 8px;' : 'padding-right: 8px;'}
+  ${({ affixType }) => affixType === 'prefix' ? 'padding-left: 8px;' : 'padding-right: 8px;'}
   z-index: 1;
   height: 100%;
   display: flex;
@@ -87,7 +87,7 @@ export const AffixView = styled.span<{ type: 'prefix' | 'suffix'; addonBeforeWid
   line-height: 1.5715;
 `;
 
-export const AddonView = styled.span<{ type: 'addonAfter' | 'addonBefore'; }>`
+export const AddonView = styled.span<{ addonType: 'addonAfter' | 'addonBefore'; inputHeight: number; }>`
   padding: 4px 12px;
   color: rgba(0, 0, 0, 0.65);
   box-sizing: border-box;
@@ -99,8 +99,12 @@ export const AddonView = styled.span<{ type: 'addonAfter' | 'addonBefore'; }>`
   line-height: 1.5715;
   transition: all 0.3s;
 
-  border-radius: ${({ type }) => type === 'addonBefore' ? '2px 0 0 2px' : '0 2px 2px 0'};
-  ${({ type }) => type === 'addonBefore' ? 'border-right: none;' : 'border-left: none;'}
+  height: ${({ inputHeight }) => inputHeight ? (inputHeight + 8 + 2) : 'auto'}px;
+  display: flex;
+  align-items: center;
+
+  border-radius: ${({ addonType }) => addonType === 'addonBefore' ? '2px 0 0 2px' : '0 2px 2px 0'};
+  ${({ addonType }) => addonType === 'addonBefore' ? 'border-right: none;' : 'border-left: none;'}
 `;
 
 export const ClearView = styled(AffixView)<{ suffixWidth: number; }>`
@@ -114,6 +118,35 @@ export const PasswordIconView = styled.span`
   display: flex;
   align-items: center;
   cursor: pointer;
+`;
+
+export const SearchView = styled.span<{ enterButton: boolean; }>`
+  ${AddonView} {
+    background: ${({ enterButton }) => enterButton ? '#1890ff' : '#fff'};
+    padding: ${({ enterButton }) => enterButton ? '4px 14px' : '4px 8px'};
+    cursor: pointer;
+
+    ${({ enterButton }) => enterButton && `
+      color: #fff;
+      border-color: #1890ff;
+
+      &:hover {
+        color: #fff;
+        background: #40a9ff;
+        border-color: #40a9ff;
+      }
+    `}
+  }
+
+  ${InputView} {
+    ${({ enterButton }) => enterButton ? 'border-right: none;' : ''}
+  }
+`;
+
+export const SearchIconView = styled(PasswordIconView)<{ enterButton: boolean; }>`
+  &:hover {
+    color: ${({ enterButton }) => enterButton ? '#fff' : '#40a9ff'};
+  }
 `;
 
 export const TextareaView = styled.textarea`

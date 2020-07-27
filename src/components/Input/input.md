@@ -21,7 +21,7 @@ useEffect(() => {
   <button onClick={() => ref.current.focus()}>focus</button>
   <button onClick={() => ref.current.blur()}>blur</button>
   <button onClick={() => ref.current.select()}>select</button>
-  <Input
+  <Input.Search
     ref={ref}
     defaultValue="323"
     onChange={onChange}
@@ -30,6 +30,52 @@ useEffect(() => {
     placeholder="This is placeholder"
   />
 </>
+```
+Search:
+
+onSearch
+
+```jsx
+function onSearch(value) {
+  console.log('onSearch', value);
+}
+
+<Input.Search
+  enterButton="Search"
+  defaultValue="323"
+  allowClear
+  onSearch={onSearch}
+  placeholder="This is placeholder"
+/>
+```
+Search:
+
+enterButton: string
+
+```jsx
+<Input.Search
+  enterButton="Search"
+  allowClear
+  placeholder="This is placeholder"
+/>
+```
+Search:
+
+enterButton
+
+```jsx
+<Input.Search
+  enterButton
+  allowClear
+  placeholder="This is placeholder"
+/>
+```
+Search:
+
+```jsx
+<Input.Search
+  placeholder="This is placeholder"
+/>
 ```
 TextArea:
 
