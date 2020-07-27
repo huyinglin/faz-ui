@@ -1,4 +1,3 @@
-
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix' | 'type'> {
   /** 带标签的 input，设置后置标签 */
   addonAfter: string | React.ReactNode;
@@ -38,4 +37,29 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 
   /** 按下回车的回调 */
   onPressEnter: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+export interface LimitProps extends Partial<InputProps> {
+  maxLength: number;
+}
+
+export interface PasswordProps extends Partial<InputProps> {
+  visibilityToggle?: boolean;
+  visibleIcon?: React.ReactNode;
+  invisibleIcon?: React.ReactNode;
+}
+
+export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  defaultValue: string;
+  value: string;
+
+  autoSize: boolean | { minRows: number; maxRows: number };
+
+  /** 输入框内容变化时的回调 */
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+
+  /** 按下回车的回调 */
+  onPressEnter: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+
+  onResize: (width: number, height: number) => void;
 }

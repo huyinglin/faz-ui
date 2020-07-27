@@ -109,3 +109,54 @@ export const ClearView = styled(AffixView)<{ suffixWidth: number; }>`
   padding: 0;
   cursor: pointer;
 `;
+
+export const PasswordIconView = styled.span`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+export const TextareaView = styled.textarea`
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 32px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px 12px;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s;
+  line-height: 1.5715;
+  border-radius: 2px;
+  font-family: inherit;
+  overflow: auto;
+  resize: vertical;
+
+  &:placeholder-shown {
+    text-overflow: ellipsis;
+  }
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  &:focus {
+    border-color: #40a9ff;
+    border-right-width: 1px;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+
+  &:hover {
+    border-color: #40a9ff;
+    border-right-width: 1px;
+  }
+`;

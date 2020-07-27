@@ -47,4 +47,47 @@ module.exports = {
   styles,
   propsParser: require("react-docgen-typescript").withDefaultConfig(options).parse,
   theme,
+  sections: [
+    {
+      name: '通用',
+      components: () => ([
+        path.resolve(__dirname, 'src/components/Button', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Icon', 'index.tsx'),
+      ])
+    },
+    {
+      name: '布局',
+      components: () => ([
+      ])
+    },
+    {
+      name: '导航',
+      components: () => ([
+        path.resolve(__dirname, 'src/components/Menu', 'index.tsx'),
+      ])
+    },
+    {
+      name: '数据录入',
+      components: () => ([
+        path.resolve(__dirname, 'src/components/Input', 'index.tsx'),
+      ])
+    },
+    {
+      name: '数据展示',
+      components: () => ([
+        path.resolve(__dirname, 'src/components/Carousel', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Tree', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Tabs', 'index.tsx'),
+      ])
+    },
+    {
+      name: '反馈',
+      components: () => ([
+        path.resolve(__dirname, 'src/components/Alert', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Modal', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Message', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Notification', 'index.tsx'),
+      ])
+    },
+  ],
 }

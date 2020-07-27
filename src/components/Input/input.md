@@ -5,12 +5,8 @@ import React, { useRef, useEffect } from 'react';
 
 const ref = useRef(null);
 
-function onFocus(e) {
-  console.log('onFocus', e.target.value);
-}
-
-function onBlur(e) {
-  console.log('onBlur', e.target.value);
+function onChange(e) {
+  console.log('onChange', e.target.value);
 }
 
 function onPressEnter(e) {
@@ -28,13 +24,61 @@ useEffect(() => {
   <Input
     ref={ref}
     defaultValue="323"
-    onFocus={onFocus}
-    onBlur={onBlur}
+    onChange={onChange}
+    allowClear
     onPressEnter={onPressEnter}
     placeholder="This is placeholder"
   />
 </>
 ```
+TextArea:
+
+```jsx
+<Input.TextArea
+  // rows={3}
+  autoSize
+  placeholder="This is placeholder"
+/>
+```
+Controlled:
+
+```jsx
+import React from 'react';
+
+const [value, setValue] = React.useState();
+
+<>
+  <button onClick={() => setValue(undefined)}>click</button>
+  <Input
+    value={value}
+    onChange={e => setValue(e.target.value)}
+    placeholder="This is placeholder"
+  />
+</>
+```
+Input.Password:
+
+使用 Input.Password 时，suffix 和 type 属性将失效
+
+```jsx
+import { BsLock, BsUnlock } from 'react-icons/ai';
+
+<Input.Password
+  // visibilityToggle={false}
+  placeholder="This is placeholder"
+/>
+```
+Input.Limit:
+
+maxLength 必填
+
+```jsx
+<Input.Limit
+  maxLength={20}
+  placeholder="This is placeholder"
+/>
+```
+
 AllowClear:
 
 ```jsx

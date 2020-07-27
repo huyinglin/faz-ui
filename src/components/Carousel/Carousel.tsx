@@ -376,4 +376,4 @@ export type ForwardCarouselType = typeof Carousel & { Item: typeof CarouselItem 
 (Carousel as ForwardCarouselType).Item = CarouselItem;
 
 /** @component */
-export default Carousel as ForwardCarouselType;
+export default Carousel;

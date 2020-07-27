@@ -13,14 +13,22 @@ import {
 import { useMeasure } from '../../hooks/useMeasure';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
+import Limit from './component/Limit';
+import Password from './component/Password';
+import TextArea from './component/TextArea';
+
+export function validatedValue(value: any) {
+  return typeof value === 'undefined' || value === null ? '' : value;
+}
+
 const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLInputElement>) => {
   const {
     addonAfter,
     addonBefore,
     prefix,
     suffix,
-    value = '',
-    defaultValue = '',
+    value,
+    defaultValue,
     size,
     allowClear,
     onChange,
@@ -50,10 +58,17 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
   }));
 
   React.useEffect(() => {
-    setMergedValue(value);
+    if (value !== undefined || value !== mergedValue) {
+      setMergedValue(value);
+    }
   }, [value]);
 
+  React.useEffect(() => {
+    clearPasswordValueAttribute();
+  }, [props.type]);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    clearPasswordValueAttribute();
     setMergedValue(e.target.value);
     if (onChange) {
       onChange(e);
@@ -64,7 +79,11 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     setMergedValue('');
     inputRef.current?.focus();
     if (onChange) {
-      onChange(e);
+      const event = Object.create(e);
+      event.target = inputRef.current;
+      event.currentTarget = inputRef.current;
+      event.target.value = '';
+      onChange(event);
     }
   }
 
@@ -77,13 +96,11 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     }
   }
 
-  // function onFocus(e: React.ChangeEvent<HTMLInputElement>) {
-  //   console.log('onFocus', e.target.value);
-  // }
-
-  // function onBlur(e: React.ChangeEvent<HTMLInputElement>) {
-  //   console.log('onBlur', e.target.value);
-  // }
+  function clearPasswordValueAttribute() {
+    if (props.type === 'password') {
+      setTimeout(() => inputRef.current?.removeAttribute('value'), 0);
+    }
+  }
 
   return (
     <InputContainerView>
@@ -94,13 +111,11 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
         suffixWidth={suffixWidth}
         addonAfter={addonAfter}
         addonBefore={addonBefore}
-        value={mergedValue}
+        value={validatedValue(mergedValue)}
         allowClear={allowClear}
-        {...rest}
-        // onFocus={onFocus}
-        // onBlur={onBlur}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        {...rest}
       />
       {addonAfter && <AddonView type="addonAfter" ref={addonAfterRef}>{addonAfter}</AddonView>}
       {prefix &&
@@ -146,6 +161,16 @@ Input.displayName = 'Input';
 Input.defaultProps = {
 
 };
+
+export type ForwardInputType = typeof Input & {
+  Limit: typeof Limit;
+  Password: typeof Password;
+  TextArea: typeof TextArea;
+};
+
+(Input as ForwardInputType).Limit = Limit;
+(Input as ForwardInputType).Password = Password;
+(Input as ForwardInputType).TextArea = TextArea;
 
 /** @component */
 export default Input;
