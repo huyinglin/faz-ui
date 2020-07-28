@@ -11,7 +11,7 @@ import {
   InputContainerView,
 } from './style';
 import { useMeasure } from '../../hooks/useMeasure';
-import useMergedState from '../../hooks/useMergedState';
+import { useMergedState } from '../../hooks/useMergedState';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
 import Limit from './component/Limit';
@@ -40,7 +40,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
   } = props;
 
   const [mergedValue, setMergedValue] = useMergedState<string>(defaultValue || '', {
-    value: value,
+    value,
   });
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);

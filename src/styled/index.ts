@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { firstUpperCase, styledFormat } from './utils';
 import { domElements, DomElements } from './htmlElements';
 import * as tools from './tools';
-import { themeColor, themeVariables } from './theme';
+import { themeColor, themeVariables, browserPresetColors } from './theme';
 
 export const tuple = <T extends string[]>(...args: T) => args;
 
@@ -32,6 +32,7 @@ export {
   styled,
   styledFactory,
   styledElement,
+  browserPresetColors,
   tools,
   themeColor,
   themeVariables,

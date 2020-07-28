@@ -78,6 +78,7 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Carousel', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Tree', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Tabs', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Tag', 'index.tsx'),
       ])
     },
     {

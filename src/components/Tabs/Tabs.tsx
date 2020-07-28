@@ -6,7 +6,7 @@ import TabPaneList from './component/TabPaneList';
 import TabPane from './component/TabPane';
 import TabNavList from './component/TabNavList';
 import toArray from '../../utils/toArray';
-import useMergedState from '../../hooks/useMergedState';
+import { useMergedState } from '../../hooks/useMergedState';
 
 import {
   Tab,

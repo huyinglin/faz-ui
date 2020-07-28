@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function useControlledState<T, R = T>(
+export function useMergedState<T, R = T>(
   defaultStateValue: T | (() => T),
   option?: {
     defaultValue?: T | (() => T);
