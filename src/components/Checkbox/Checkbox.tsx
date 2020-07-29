@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   CheckboxProps
@@ -16,12 +15,12 @@ import { MdCheckBox, MdCheckBoxOutlineBlank, MdIndeterminateCheckBox } from "rea
 function Checkbox(props: Partial<CheckboxProps>) {
   const {
     defaultChecked = false,
-    disabled,
+    disabled = false,
     children,
     icon = <MdCheckBoxOutlineBlank/>,
     checkedIcon = <MdCheckBox/>,
     color = '#1890ff',
-    indeterminate,
+    indeterminate = false,
     style,
     className,
     inputRef,
@@ -42,14 +41,13 @@ function Checkbox(props: Partial<CheckboxProps>) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setChecked(e.target.checked);
     if (onChange) {
-      console.log('e.target.checked: ', e.target.checked);
       onChange(e);
     }
   }
 
   return (
     <CheckboxView
-      disabled={!!disabled}
+      disabled={disabled}
       style={style}
       className={className}
     >
@@ -57,9 +55,10 @@ function Checkbox(props: Partial<CheckboxProps>) {
         <CheckIconView
           color={color}
           checked={checked}
-          disabled={!!disabled}
+          disabled={disabled}
+          indeterminate={indeterminate}
         >
-          {checked ? checkedIcon : icon}
+          {indeterminate ? <MdIndeterminateCheckBox/> : (checked ? checkedIcon : icon)}
         </CheckIconView>
         <CheckboxInnerInputView
           type="checkbox"

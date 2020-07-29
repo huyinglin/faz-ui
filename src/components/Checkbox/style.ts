@@ -17,8 +17,16 @@ export const CheckboxView = styled.label<{ disabled: boolean; }>`
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `;
 
-export const CheckIconView = styled.span<{ color: string; checked: boolean; disabled: boolean; }>`
-  color: ${({ color, checked, disabled }) => disabled ? 'rgba(0, 0, 0, 0.26)' : checked ? color : 'rgba(0, 0, 0, 0.54)'};
+export const CheckIconView = styled.span<{ color: string; checked: boolean; disabled: boolean; indeterminate: boolean; }>`
+  color: ${({ color, checked, disabled, indeterminate }) =>
+    indeterminate
+      ? color
+      : disabled
+        ? 'rgba(0, 0, 0, 0.26)'
+        : checked
+          ? color
+          : 'rgba(0, 0, 0, 0.54)'
+  };
   font-size: 20px;
   width: 1em;
   height: 1em;
