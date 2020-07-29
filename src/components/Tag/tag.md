@@ -9,7 +9,15 @@ Basic Tag:
 设置标签的颜色，可设置 background、borderColor、color。同时，color 属性将失效。
 
 ```jsx
-<Tag styleConfig={{ background: '#fff', borderColor: '#108ee9', color: '#108ee9' }}>Tag</Tag>
+<Tag
+  styleConfig={{
+    background: '#fff',
+    borderColor: '#108ee9',
+    color: '#108ee9'
+  }}
+>
+  Tag
+</Tag>
 ```
 CheckedBackground:
 
@@ -20,7 +28,13 @@ import { useState } from 'react';
 
 const [checked, setChecked] = useState(true);
 
-<Tag checkedBackground="#f50" checked={checked} onCheck={check => setChecked(check)}>Tag</Tag>
+<Tag
+  checkedBackground="#f50"
+  checked={checked}
+  onCheck={check => setChecked(check)}
+>
+  Tag
+</Tag>
 ```
 Preset Type Tag:
 
