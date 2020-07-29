@@ -12,35 +12,47 @@ import {
   CheckboxValueView,
 } from './style';
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdIndeterminateCheckBox } from "react-icons/md";
-import { useMergedState } from '../../hooks/useMergedState';
 
 function Checkbox(props: Partial<CheckboxProps>) {
   const {
-    defaultChecked,
+    defaultChecked = false,
     disabled,
     children,
     icon = <MdCheckBoxOutlineBlank/>,
     checkedIcon = <MdCheckBox/>,
     color = '#1890ff',
     indeterminate,
+    style,
+    className,
     inputRef,
     inputProps,
     onChange,
   } = props;
 
-  const [checked, setChecked] = useMergedState<boolean>(!!defaultChecked, {
-    value: props.checked,
-  });
+  const controlled = 'checked' in props;
+
+  const [checked, setChecked] = React.useState<boolean>(controlled ? props.checked! : defaultChecked);
+
+  React.useEffect(() => {
+    if (controlled) {
+      setChecked(props.checked!);
+    }
+  }, [props.checked]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setChecked(e.target.checked);
     if (onChange) {
+      console.log('e.target.checked: ', e.target.checked);
       onChange(e);
     }
   }
 
   return (
-    <CheckboxView disabled={!!disabled}>
+    <CheckboxView
+      disabled={!!disabled}
+      style={style}
+      className={className}
+    >
       <CheckboxIconView>
         <CheckIconView
           color={color}
@@ -51,9 +63,11 @@ function Checkbox(props: Partial<CheckboxProps>) {
         </CheckIconView>
         <CheckboxInnerInputView
           type="checkbox"
+          ref={inputRef}
           checked={checked}
           disabled={disabled}
           onChange={handleChange}
+          {...inputProps}
         />
       </CheckboxIconView>
       <CheckboxValueView>{children}</CheckboxValueView>

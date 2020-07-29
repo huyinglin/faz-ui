@@ -42,7 +42,6 @@ export const CheckboxInnerInputView = styled.input`
 `;
 
 export const CheckboxIconView = styled.span`
-  width: 100%;
   position: relative;
   display: flex;
   align-items: inherit;

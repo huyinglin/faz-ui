@@ -28,6 +28,10 @@ export interface CheckboxProps {
 
   children: React.ReactNode;
 
+  style: React.CSSProperties;
+
+  className: string;
+
   /** 变化时回调函数 */
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
