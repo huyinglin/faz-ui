@@ -12,7 +12,7 @@ import {
 } from './style';
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdIndeterminateCheckBox } from "react-icons/md";
 
-function Checkbox(props: Partial<CheckboxProps>) {
+const Checkbox = React.forwardRef((props: Partial<CheckboxProps>, ref: React.Ref<HTMLLabelElement>) => {
   const {
     defaultChecked = false,
     disabled = false,
@@ -47,6 +47,7 @@ function Checkbox(props: Partial<CheckboxProps>) {
 
   return (
     <CheckboxView
+      ref={ref}
       disabled={disabled}
       style={style}
       className={className}
@@ -72,7 +73,7 @@ function Checkbox(props: Partial<CheckboxProps>) {
       <CheckboxValueView>{children}</CheckboxValueView>
     </CheckboxView>
   );
-}
+});
 
 Checkbox.displayName = 'Checkbox';
 

@@ -24,7 +24,7 @@ export function useMergedState<T, R = T>(
       : defaultStateValue;
   });
 
-  let mergedValue = value || innerValue;
+  let mergedValue = value !== undefined ? value : innerValue;
   if (postState) {
     mergedValue = postState(mergedValue);
   }
