@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   ButtonProps,
@@ -7,29 +6,43 @@ import {
 import {
   ButtonView,
   AncharView,
+  ButtonIconView,
 } from './style';
 
-function Button(props: ButtonProps) {
+const Button = React.forwardRef((props: ButtonProps, ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>) => {
   const {
-    className,
-    disabled,
-    size,
-    type,
+    disabled = false,
+    ghost = false,
+    block = false,
+    danger = false,
+    size = 'default',
+    type = 'default',
+    htmlType = 'button',
     href,
-    htmlType,
     children,
+    shape,
+    icon,
     ...rest
   } = props;
 
-  // const buttonRef = ref || React.createRef<HTMLButtonElement>();
+  const shareProps = {
+    buttonSize: size,
+    buttonType: type,
+    disabled,
+    danger,
+    block,
+    ghost,
+    ref,
+  };
 
   if (type === 'link' && href) {
     return (
       <AncharView
-        className={className}
         href={href}
+        {...shareProps}
         {...rest}
       >
+        {icon && <ButtonIconView iconOnly={!!children}>{icon}</ButtonIconView>}
         {children}
       </AncharView>
     )
@@ -37,37 +50,28 @@ function Button(props: ButtonProps) {
 
   return (
     <ButtonView
-      buttonType={type}
-      buttonSize={size}
       type={htmlType}
-      className={className}
-      disabled={disabled}
-      // ref={buttonRef}
+      shape={shape}
+      {...shareProps}
       {...rest}
     >
+      {icon && <ButtonIconView iconOnly={!!children}>{icon}</ButtonIconView>}
       {children}
     </ButtonView>
   );
-}
-
-// const Button = React.forwardRef(InternalButton as any);
+});
 
 Button.displayName = 'Button';
 
 Button.defaultProps = {
   disabled: false,
-  htmlType: 'button',
+  ghost: false,
+  block: false,
+  danger: false,
+  size: 'default',
   type: 'default',
+  htmlType: 'button',
 };
-
-// Button.propTypes = {
-//   className: PropTypes.string,
-//   disabled: PropTypes.bool,
-//   size: PropTypes.oneOf(['large', 'small']),
-//   type: PropTypes.oneOf(['primary', 'default', 'danger', 'link']),
-//   href: PropTypes.string,
-//   children: PropTypes.node.isRequired,
-// };
 
 /** @component */
 export default Button;

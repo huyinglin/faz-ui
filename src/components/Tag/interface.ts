@@ -71,11 +71,3 @@ export type TagColorProps = {
   checkedBackground: string;
   styleConfig?: Partial<StyleConfig>;
 }
-
-export type PresetColor = {
-  [name: string]: {
-    background: string;
-    borderColor: string;
-    color: string;
-  };
-}

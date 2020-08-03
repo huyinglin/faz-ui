@@ -7,54 +7,191 @@ import {
 import {
   TooltipView,
   TooltipContentView,
-  TooltipChildrenView,
+  TooltipArrowView,
 } from './style';
+import { useCopyRef } from '../../hooks/useCopyRef';
+import { useMeasure } from '../../hooks/useMeasure';
+import { usePortal } from '../../hooks/usePortal';
+import { AiOutlineCaretDown } from 'react-icons/ai';
+import { useSpring } from 'react-spring'
+import { useMergedState } from '../../hooks/useMergedState';
+import * as ease from 'd3-ease';
 
 function Tooltip(props: Partial<TooltipProps>) {
   const {
     children,
+    title,
+    arrow = true,
+    color = 'rgba(0, 0, 0, 0.75)',
+    defaultVisible = false,
+    container,
+    placement,
+    trigger = 'click',
+    enterDelay = 100,
+    leaveDelay = 100,
+    className,
+    style,
+    onChange,
   } = props;
 
-  const [visible, setVisible] = React.useState<boolean>(false);
+  const validChildRef = React.useRef<HTMLSpanElement | null>(null);
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
+
+  const enterTimer = React.useRef<number>();
+  const leaveTimer = React.useRef<number>();
+
+  let hystersisOpen = false;
+  let hystersisTimer: number;
+
+  const { Portal } = usePortal(container);
+
+  const [rect, setRect] = React.useState({ top: 0, left: 0, height: 0, width: 0});
+  const [top, setTop] = React.useState(0);
+  const [left, setLeft] = React.useState(0);
+
+  const [visible, setVisible] = useMergedState<boolean>(defaultVisible, {
+    value: props.visible,
+  });
+
+  const child: React.ReactElement = React.isValidElement(children) ? children : <span>{children}</span>;
+
+  const {
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    onFocus,
+    onBlur,
+  } = child.props;
+
+  const contentRect = useMeasure(contentRef);
+
+  React.useEffect(() => {
+    const rect = validChildRef.current?.getBoundingClientRect();
+    if (rect) {
+      setTop(window.scrollY + rect.top - contentRect.height - 16 - 8);
+      setLeft(rect.left - (contentRect.width - rect.width) / 2 - 8);
+      console.log('rect.width: ', rect.width);
+    }
+  }, [validChildRef, contentRect]);
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(enterTimer.current);
+      clearTimeout(leaveTimer.current);
+    };
+  }, []);
+
+  function handleOpen() {
+    // clearTimeout(hystersisTimer);
+    // hystersisOpen = true;
+
+    setVisible(true);
+
+    if (onChange) {
+      onChange(true);
+    }
+  }
+
+  function handleClose() {
+    // clearTimeout(hystersisTimer);
+    // hystersisTimer = setTimeout(() => {
+    //   hystersisOpen = false;
+    // }, 800 + leaveDelay);
+
+    setVisible(false);
+
+    if (onChange) {
+      onChange(false);
+    }
+  }
+
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
+    if (onClick) {
+      onClick(e);
+    }
+    setVisible(true);
+  }
 
   function handleMouseEnter(e: React.MouseEvent<HTMLElement>) {
-    console.log('onMouseEnter');
-    setVisible(true);
+    if (onMouseEnter) {
+      onMouseEnter(e);
+    }
+
+    clearTimeout(enterTimer.current);
+    clearTimeout(leaveTimer.current);
+
+    // Remove the title ahead of time.
+    validChildRef.current?.removeAttribute('title');
+
+    // if (enterDelay || hystersisOpen) {
+      enterTimer.current = setTimeout(handleOpen, enterDelay);
+    // } else {
+    //   handleOpen();
+    // }
   }
 
   function handleMouseLeave(e: React.MouseEvent<HTMLElement>) {
-    console.log('onMouseLeave');
-    setVisible(false);
+    if (onMouseLeave) {
+      onMouseLeave(e);
+    }
+
+    clearTimeout(enterTimer.current);
+    clearTimeout(leaveTimer.current);
+
+    leaveTimer.current = setTimeout(handleClose, leaveDelay);
   }
 
   function handleFocus(e: React.FocusEvent<HTMLElement>) {
-    console.log('onFocus');
-    setVisible(true);
+    if (onFocus) {
+      onFocus(e);
+    }
+    handleOpen();
   }
 
   function handleBlur(e: React.FocusEvent<HTMLElement>) {
-    console.log('onFocus');
-    setVisible(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+    handleClose();
   }
 
+  const childrenProps = {
+    ...child.props,
+    onClick: handleClick,
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    ref: useCopyRef((child as any).ref, validChildRef),
+  };
+
+  const animationProps = useSpring({ opacity: visible ? 1 : 0, config: { duration: 200, easing: ease.easeQuadOut, } });
 
   return (
     <>
-      <TooltipChildrenView
-        role="tooltip"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onClick={() => setVisible(!visible)}
-      >
-        {children}
-      </TooltipChildrenView>
-      {visible &&
-        <TooltipContentView>
-          222
-        </TooltipContentView>
-      }
+      {React.cloneElement(child, childrenProps)}
+      <Portal>
+        <TooltipView>
+          {title !== null &&
+            <TooltipContentView
+              className={className}
+              style={{...style, ...animationProps}}
+              ref={contentRef}
+              position={{ top, left }}
+              visibility={visible}
+              color={color}
+              role="Tooltip"
+            >
+              {title}
+              {arrow &&
+                <TooltipArrowView color={color}>
+                  <AiOutlineCaretDown/>
+                </TooltipArrowView>
+              }
+            </TooltipContentView>
+          }
+        </TooltipView>
+      </Portal>
     </>
   );
 }
@@ -62,7 +199,9 @@ function Tooltip(props: Partial<TooltipProps>) {
 Tooltip.displayName = 'Tooltip';
 
 Tooltip.defaultProps = {
-
+  enterDelay: 100,
+  leaveDelay: 100,
+  arrow: true,
 };
 
 Tooltip.propTypes = {

@@ -1,105 +1,10 @@
 import styled from 'styled-components/macro';
-import { TagColorProps, PresetColor } from './interface';
-
-export const presetColor: PresetColor = {
-  pink: {
-    background: '#fff0f6',
-    borderColor: '#ffadd2',
-    color: '#eb2f96',
-  },
-  magenta: {
-    background: '#fff0f6',
-    borderColor: '#ffadd2',
-    color: '#eb2f96',
-  },
-  red: {
-    background: '#fff1f0',
-    borderColor: '#ffa39e',
-    color: '#f5222d',
-  },
-  volcano: {
-    background: '#fff2e8',
-    borderColor: '#ffbb96',
-    color: '#fa541c',
-  },
-  orange: {
-    background: '#fff7e6',
-    borderColor: '#ffd591',
-    color: '#fa8c16',
-  },
-  yellow: {
-    background: '#feffe6',
-    borderColor: '#fffb8f',
-    color: '#fadb14',
-  },
-  gold: {
-    background: '#fffbe6',
-    borderColor: '#ffe58f',
-    color: '#faad14',
-  },
-  cyan: {
-    background: '#e6fffb',
-    borderColor: '#87e8de',
-    color: '#13c2c2',
-  },
-  lime: {
-    background: '#fcffe6',
-    borderColor: '#eaff8f',
-    color: '#a0d911',
-  },
-  green: {
-    background: '#f6ffed',
-    borderColor: '#b7eb8f',
-    color: '#52c41a',
-  },
-  blue: {
-    background: '#e6f7ff',
-    borderColor: '#91d5ff',
-    color: '#1890ff',
-  },
-  geekblue: {
-    background: '#f0f5ff',
-    borderColor: '#adc6ff',
-    color: '#2f54eb',
-  },
-  purple: {
-    background: '#f9f0ff',
-    borderColor: '#d3adf7',
-    color: '#722ed1',
-  },
-};
-
-export const presetType: PresetColor = {
-  success: {
-    background: '#f6ffed',
-    borderColor: '#b7eb8f',
-    color: '#52c41a',
-  },
-  processing: {
-    background: '#e6f7ff',
-    borderColor: '#91d5ff',
-    color: '#1890ff',
-  },
-  error: {
-    background: '#fff1f0',
-    borderColor: '#ffa39e',
-    color: '#f5222d',
-  },
-  default: {
-    background: '#fafafa',
-    borderColor: '#d9d9d9',
-    color: 'rgba(0, 0, 0, 0.65)',
-  },
-  warning: {
-    background: '#fff7e6',
-    borderColor: '#ffd591',
-    color: '#fa8c16',
-  },
-};
+import { TagColorProps } from './interface';
+import { presetColor, presetType } from '../../styled';
 
 function getColor(props: TagColorProps) {
   const { checked, checkedBackground, styleConfig } = props;
-  const preset: PresetColor = {...presetColor, ...presetType};
+  const preset = {...presetColor, ...presetType};
   const presetValue = preset[props.color];
 
   let background;

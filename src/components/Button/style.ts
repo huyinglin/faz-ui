@@ -1,135 +1,311 @@
 import styled, { css } from 'styled-components/macro';
-import { lighten } from 'polished';
 import {
   ButtonType,
   ButtonSize,
+  ButtonShap,
 } from './interface';
 import { themeColor } from '../../styled';
 
-function generateTypeCSS(
+type TypeCSSType = {
+  color: string,
   background: string,
   borderColor: string,
-  color: string,
-  hoverBackground: string = lighten(0.75, background),
-  hoverBorderColor: string = lighten(0.1, borderColor),
-  hoverColor: string = color,
+  otherCSS?: string,
+}
+
+function getTypeCSS(
+  base: TypeCSSType,
+  hover: TypeCSSType,
+  active: TypeCSSType,
 ) {
   return css`
-    background: ${background};
-    border-color: ${borderColor};
-    color: ${color};
+    color: ${base.color};
+    background: ${base.background};
+    border-color: ${base.borderColor};
+    ${base.otherCSS}
 
-    &:hover {
-      color: ${hoverColor};
-      background: ${hoverBackground};
-      border-color: ${hoverBorderColor};
+    &:hover, &.focus {
+      color: ${hover.color};
+      background: ${hover.background};
+      border-color: ${hover.borderColor};
+      ${hover.otherCSS}
     }
-    &:focus, &.focus {
-      color: ${hoverColor};
-      background: ${hoverBackground};
-      border-color: ${hoverBorderColor};
+
+    &:active {
+      color: ${active.color};
+      background: ${active.background};
+      border-color: ${active.borderColor};
       outline: 0;
-    }
-    &:disabled, &.disabled {
-      color: ${color};
-      background: ${background};
-      border-color: ${borderColor};
+      box-shadow: none;
+      ${active.otherCSS}
     }
   `;
 }
 
-function generateSizeCSS(
-  paddingY: string,
-  paddingX: string,
-  fontSize: string,
-  borderRaduis: string,
-) {
-  return css`
-    padding: ${paddingY} ${paddingX};
-    font-size: ${fontSize};
-    border-radius: ${borderRaduis};
-  `;
-}
+const defaultType = getTypeCSS(
+  {
+    color: 'rgba(0, 0, 0, 0.65)',
+    background: '#fff',
+    borderColor: '#d9d9d9',
+  },
+  {
+    color: '#40a9ff',
+    background: '#fff',
+    borderColor: '#40a9ff',
+  },
+  {
+    color: '#096dd9',
+    background: '#fff',
+    borderColor: '#096dd9',
+  },
+);
 
-const Size = {
-  large: generateSizeCSS('.5rem', '1rem', '1.25rem', '.3rem'),
-  small: generateSizeCSS('.25rem', '.5rem', '.875rem', '.2rem'),
+const primaryType = getTypeCSS(
+  {
+    color: '#fff',
+    background: '#1890ff',
+    borderColor: '#1890ff',
+    otherCSS: 'text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);',
+  },
+  {
+    color: '#fff',
+    background: '#40a9ff',
+    borderColor: '#40a9ff',
+  },
+  {
+    color: '#fff',
+    background: '#096dd9',
+    borderColor: '#096dd9',
+  },
+);
+
+const dashedType = getTypeCSS(
+  {
+    color: 'rgba(0, 0, 0, 0.65)',
+    background: '#fff',
+    borderColor: '#d9d9d9',
+    otherCSS: 'border-style: dashed;'
+  },
+  {
+    color: '#40a9ff',
+    background: '#fff',
+    borderColor: '#40a9ff',
+  },
+  {
+    color: '#096dd9',
+    background: '#fff',
+    borderColor: '#096dd9',
+  },
+);
+
+const textType = getTypeCSS(
+  {
+    color: 'rgba(0, 0, 0, 0.65)',
+    background: 'transparent',
+    borderColor: 'transparent',
+    otherCSS: 'box-shadow: none;'
+  },
+  {
+    color: 'rgba(0, 0, 0, 0.65)',
+    background: 'rgba(0, 0, 0, 0.018)',
+    borderColor: 'transparent',
+  },
+  {
+    color: 'rgba(0, 0, 0, 0.65)',
+    background: 'rgba(0, 0, 0, 0.028)',
+    borderColor: 'transparent',
+  },
+);
+
+const linkType = getTypeCSS(
+  {
+    color: '#1890ff',
+    background: 'transparent',
+    borderColor: 'transparent',
+    otherCSS: 'box-shadow: none;'
+  },
+  {
+    color: '#40a9ff',
+    background: 'transparent',
+    borderColor: 'transparent',
+  },
+  {
+    color: '#096dd9',
+    background: 'transparent',
+    borderColor: 'transparent',
+  },
+);
+
+const Size: any = {
+  default: css`
+    height: 32px;
+    font-size: 14px;
+    padding: ${({ shape }: { shape?: ButtonShap; }) => shape &&
+      shape === 'round'
+        ? '4px 16px'
+        : shape === 'circle'
+          ? 'padding: 0;'
+          : '4px 12px'
+    };
+  `,
+  large: css`
+    height: 40px;
+    padding: 6px 16px;
+    font-size: 16px;
+    ${({ shape }: { shape?: ButtonShap; }) => shape &&
+      (shape === 'circle'
+        ? 'min-width: 40px;width: 40px;padding: 0;'
+        : 'width: auto;padding: 6px 20px;border-radius: 40px;')
+    }
+  `,
+  small: css`
+    height: 24px;
+    padding: 0px 7px;
+    font-size: 14px;
+    ${({ shape }: { shape?: ButtonShap; }) => shape &&
+      (shape === 'circle'
+        ? 'min-width: 24px;width: 24px;padding: 0;'
+        : 'width: auto;padding: 0px 12px;border-radius: 24px;')
+    }
+  `,
 };
 
-const TypeDefault = generateTypeCSS(
-  themeColor.white,
-  '#ced4da',
-  '#212529',
-  themeColor.white,
-  themeColor.primary,
-  themeColor.primary,
-);
-
-const TypePrimary = generateTypeCSS(
-  themeColor.primary,
-  themeColor.primary,
-  themeColor.white,
-);
-
-const TypeDanger = generateTypeCSS(
-  themeColor.danger,
-  themeColor.danger,
-  themeColor.white,
-);
-
-const Type = {
-  default: TypeDefault,
-  primary: TypePrimary,
-  danger: TypeDanger,
-  link: '',
+const Type: any = {
+  default: defaultType,
+  primary: primaryType,
+  dashed: dashedType,
+  link: linkType,
+  text: textType,
 };
 
-export const ButtonView = styled.button<Partial<{ buttonType: ButtonType; buttonSize: ButtonSize }>>`
+const Shap: any = {
+  circle: css`
+    min-width: 32px;
+    padding: 0;
+    text-align: center;
+    border-radius: 50%;
+  `,
+  round: css`
+    height: 32px;
+    padding: 4px 16px;
+    font-size: 14px;
+    border-radius: 32px;
+  `,
+};
+
+const baseDisabled = css`
+  color: rgba(0, 0, 0, 0.25);
+  text-shadow: none;
+  box-shadow: none;
+  cursor: not-allowed;
+`;
+
+const ancharDisabled = css`
+  background: transparent;
+  border-color: transparent;
+  pointer-events: none;
+  ${baseDisabled}
+`;
+
+const buttonBase = css`
+  line-height: 1.5715;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
   white-space: nowrap;
   text-align: center;
-  vertical-align: middle;
   background-image: none;
   border: 1px solid transparent;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  border-radius: .25rem;
-  box-shadow: inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075);
-  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  border-radius: 2px;
+  text-decoration: none;
+  outline: 0;
+  box-sizing: border-box;
   cursor: pointer;
+`;
 
-  ${({ buttonSize }) => buttonSize && Size[buttonSize]}
-  ${({ buttonType }) => buttonType && Type[buttonType]}
+const ghostCSS = css<{ buttonType: ButtonType; }>`
+  color: ${({ buttonType }) => buttonType === 'primary' ? '#1890ff' : '#fff'};
+  background: transparent;
 
-  &.disabled, &[disabled] {
-    cursor: not-allowed;
-    opacity: .65;
-    box-shadow: none;
-    > * {
-      pointer-events: none;
-    }
+  &:hover,
+  &.focus,
+  &:active {
+    color: ${({ buttonType }) => buttonType === 'primary' && '#1890ff'};
+    background: transparent;
   }
 `;
 
-export const AncharView = styled.a`
-  font-weight: 400;
-  color: #0d6efd;
-  text-decoration: none;
-  box-shadow: none;
-  &:hover {
-    color: darken(0.15, '#0d6efd');
-    text-decoration: underline;
+const dangerCSS = css<{ buttonType: ButtonType; }>`
+  color: ${({ buttonType }) => buttonType === 'primary' ? '#fff' : '#ff4d4f'};
+  background: ${({ buttonType }) => buttonType === 'primary' ? '#ff4d4f' : '#fff'};
+  border-color: ${({ buttonType }) => buttonType !== 'link' && buttonType !== 'text' && '#ff4d4f'};
+
+  &:hover, &.focus {
+    color: ${({ buttonType }) => buttonType === 'primary' ? '#fff' : '#ff7875'};
+    background: ${({ buttonType }) => buttonType === 'primary' ? '#ff7875' : '#fff'};
+    border-color: ${({ buttonType }) => buttonType !== 'link' && buttonType !== 'text' && '#ff7875'};
   }
-  &:focus, &.focus {
-    text-decoration: underline;
-    box-shadow: none;
+
+  &:active {
+    color: ${({ buttonType }) => buttonType === 'primary' ? '#fff' : '#d9363e'};
+    background: ${({ buttonType }) => buttonType === 'primary' ? '#d9363e' : '#fff'};
+    border-color: ${({ buttonType }) => buttonType !== 'link' && buttonType !== 'text' && '#d9363e'};
   }
-  &:disabled, &.disabled {
-    color: #6c757d;
-    pointer-events: none;
+`;
+
+type ButtonViewProps = {
+  buttonType: ButtonType;
+  buttonSize: ButtonSize;
+  block: boolean;
+  ghost: boolean;
+  danger: boolean;
+  shape?: ButtonShap;
+}
+
+type AncharViewProps = {
+  buttonType: ButtonType;
+  disabled: boolean;
+  buttonSize: ButtonSize;
+  danger: boolean;
+  block: boolean;
+}
+
+export const ButtonView = styled.button<ButtonViewProps>`
+  ${buttonBase}
+  ${({ buttonType }) => Type[buttonType]}
+  ${({ shape }) => shape && Shap[shape]}
+  ${({ buttonSize }) => Size[buttonSize]}
+  ${({ block }) => block && 'width: 100%;'}
+  ${({ ghost }) => ghost && ghostCSS}
+  ${({ danger }) => danger && dangerCSS}
+
+  &[disabled],
+  &[disabled]:hover,
+  &[disabled]:focus,
+  &[disabled]:active {
+    ${baseDisabled}
+    background: #f5f5f5;
+    border-color: #d9d9d9;
   }
+`;
+
+export const AncharView = styled.a<AncharViewProps>`
+  ${buttonBase}
+  ${Type.link}
+  ${({ buttonSize }) => buttonSize && Size[buttonSize]}
+  ${({ disabled }) => disabled && ancharDisabled}
+  ${({ block }) => block && 'width: 100%;'}
+  ${({ danger }) => danger && dangerCSS}
+`;
+
+export const ButtonIconView = styled.span<{ iconOnly: boolean; }>`
+  display: flex;
+  align-items: center;
+  ${({ iconOnly }) => iconOnly && 'margin-right: 8px;'}
 `;
