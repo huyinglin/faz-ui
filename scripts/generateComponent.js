@@ -52,7 +52,10 @@ function templateIndex() {
 }
 
 function templateStyle() {
-  const template = fs.readFileSync(path.join(__dirname, `../template/style.ts`), "utf-8");
+  const template = fs.readFileSync(path.join(__dirname, `../template/style.ts`), "utf-8")
+    .replace(/\$\$component_name/g, componentName)
+    .replace(/\$\$component_displayName/g, componentName)
+    .replace(/\$\$component_props/g, `${componentName}Props`);
 
   fs.writeFileSync(path.join(componentPath, 'style.ts'), template);
 }
