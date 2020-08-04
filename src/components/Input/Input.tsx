@@ -10,7 +10,7 @@ import {
   ClearView,
   InputContainerView,
 } from './style';
-import { useMeasure } from '../../hooks/useMeasure';
+import { useMeasureDirty as useMeasure } from '../../hooks/useMeasure';
 import { useMergedState } from '../../hooks/useMergedState';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
@@ -33,6 +33,8 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     defaultValue,
     size,
     allowClear,
+    style,
+    className,
     onChange,
     onPressEnter,
     onKeyDown,
@@ -102,7 +104,10 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
   }
 
   return (
-    <InputContainerView>
+    <InputContainerView
+      style={style}
+      className={className}
+    >
       {addonBefore &&
         <AddonView
           inputHeight={inputHeight}

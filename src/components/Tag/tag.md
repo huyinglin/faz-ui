@@ -110,11 +110,13 @@ Visible Tag:
 
 ```jsx
 import { useState } from 'react';
+import Button from '../Button';
 
 const [visible, setVisible] = useState(true);
 
 <>
-  <button style={{ marginRight: 8 }} onClick={() => setVisible(!visible)}>Toggle</button>
+  <Button style={{ marginBottom: 8 }} type="primary" onClick={() => setVisible(!visible)}>Toggle Visible</Button>
+  <br/>
   <Tag visible={visible}>Tag</Tag>
 </>
 ```

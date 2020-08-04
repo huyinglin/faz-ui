@@ -2,6 +2,7 @@ Basic MessageHub:
 
 ```jsx
 import { useEffect } from 'react';
+import Button from '../Button';
 
 let messagehub = null;
 let key = 0;
@@ -29,7 +30,7 @@ function onOpen() {
 }
 
 <>
-  <button onClick={onOpen}>click</button>
-  <button onClick={() => messagehub.close(--key)}>close</button>
+  <Button onClick={onOpen}>click</Button>
+  <Button onClick={() => messagehub.close(--key)}>close</Button>
 </>
 ```

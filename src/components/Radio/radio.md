@@ -8,6 +8,7 @@ Radio Group:
 
 ```jsx
 import { useState } from 'react';
+import Button from '../Button';
 
 const [value, setValue] = useState(1);
 const [mode, setMode] = useState('row');
@@ -17,10 +18,10 @@ function onChange(e) {
   setValue(e.target.value);
 }
 <>
-  <button onClick={() => setMode(mode === 'row' ? 'col' : 'row')}>
-    {mode === 'row' ? 'Row-Mode' : 'Col-Mode'}
-  </button>
-  <hr/>
+  <Button style={{ marginBottom: 8 }} onClick={() => setMode(mode === 'row' ? 'col' : 'row')}>
+    {mode === 'row' ? 'Row - Mode' : 'Col - Mode'}
+  </Button>
+  <br/>
   <Radio.Group name="radio-button-demo" mode={mode} onChange={onChange} value={value}>
     <Radio value={1}>A</Radio>
     <Radio value={2}>B</Radio>

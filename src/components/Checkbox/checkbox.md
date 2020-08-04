@@ -63,6 +63,7 @@ function onCheckAll(e) {
 
 ```jsx
 import { useState } from 'react';
+import Button from '../Button';
 
 const [checked, setChecked] = useState(true);
 const [disabled, setDisabled] = useState(false);
@@ -77,8 +78,8 @@ function onChange(e) {
     {checked ? 'Checked' : 'Unchecked'}-{disabled ? 'Disabled' : 'Enabled'}
   </Checkbox>
   <div style={{ marginTop: 16 }}>
-    <button style={{ marginRight: 8 }} onClick={() => setChecked(!checked)}>{checked ? 'Check' : 'Uncheck'}</button>
-    <button onClick={() => setDisabled(!disabled)}>{disabled ? 'Enable' : 'Disable'}</button>
+    <Button style={{ marginRight: 8 }} onClick={() => setChecked(!checked)}>{checked ? 'Check' : 'Uncheck'}</Button>
+    <Button onClick={() => setDisabled(!disabled)}>{disabled ? 'Enable' : 'Disable'}</Button>
   </div>
 </>
 ```

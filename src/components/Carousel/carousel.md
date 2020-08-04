@@ -281,6 +281,8 @@ goto: (key: React.Key, lockAnimation: boolean) => void;
 ```jsx
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import Button from '../Button';
+import Input from '../Input';
 
 const CarouselView = styled.h3`
   margin: 0;
@@ -293,13 +295,13 @@ const CarouselView = styled.h3`
 const carouselRef = useRef(null);
 
 <>
-  <button style={{ margin: 8 }} onClick={() => carouselRef.current.prev()}>
+  <Button style={{ margin: 8 }} onClick={() => carouselRef.current.prev()}>
     prev
-  </button>
-  <button style={{ margin: 8 }} onClick={() => carouselRef.current.next()}>
+  </Button>
+  <Button style={{ margin: 8 }} onClick={() => carouselRef.current.next()}>
     next
-  </button>
-  <input
+  </Button>
+  <Input
     style={{ margin: 8 }}
     placeholder="input goto key"
     onChange={e => carouselRef.current.goto(e.target.value, true)}

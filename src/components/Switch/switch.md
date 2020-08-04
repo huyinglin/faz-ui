@@ -18,7 +18,7 @@ Size:
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 <>
-  <Switch size="small" checkedChildren="开启" unCheckedChildren="关闭" defaultChecked />
+  <Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked />
   <br />
   <Switch checkedChildren="1" unCheckedChildren="0" />
   <br />
@@ -33,12 +33,13 @@ Disabled:
 
 ```jsx
 import { useState } from 'react';
+import Button from '../Button';
 
 const [disabled, setDisabled] = useState(true);
 
 <>
-  <button onClick={() => setDisabled(!disabled)}>Toggle disabled</button>
-  <hr/>
+  <Button style={{ marginBottom: 8 }} onClick={() => setDisabled(!disabled)}>Toggle disabled</Button>
+  <br/>
   <Switch disabled={disabled}/>
 </>
 ```

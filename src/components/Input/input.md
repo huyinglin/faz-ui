@@ -2,6 +2,7 @@ Basic Input:
 
 ```jsx
 import React, { useRef, useEffect } from 'react';
+import Button from '../Button';
 
 const ref = useRef(null);
 
@@ -18,14 +19,15 @@ useEffect(() => {
 });
 
 <>
-  <button onClick={() => ref.current.focus()}>focus</button>
-  <button onClick={() => ref.current.blur()}>blur</button>
-  <button onClick={() => ref.current.select()}>select</button>
-  <Input.Search
+  <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.focus()}>focus</Button>
+  <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.blur()}>blur</Button>
+  <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.select()}>select</Button>
+  <Input
     ref={ref}
-    defaultValue="323"
+    defaultValue="This is defaultValue"
     onChange={onChange}
     allowClear
+    style={{ width: 200 }}
     onPressEnter={onPressEnter}
     placeholder="This is placeholder"
   />
@@ -42,7 +44,7 @@ function onSearch(value) {
 
 <Input.Search
   enterButton="Search"
-  defaultValue="323"
+  defaultValue="This is defaultValue"
   allowClear
   onSearch={onSearch}
   placeholder="This is placeholder"
@@ -90,11 +92,12 @@ Controlled:
 
 ```jsx
 import React from 'react';
+import Button from '../Button';
 
 const [value, setValue] = React.useState();
 
 <>
-  <button onClick={() => setValue(undefined)}>click</button>
+  <Button type="primary" style={{ marginBottom: 8 }} onClick={() => setValue(undefined)}>Clear Value</Button>
   <Input
     value={value}
     onChange={e => setValue(e.target.value)}
@@ -152,16 +155,6 @@ Prefix & Suffix:
   addonBefore="http://"
   addonAfter=".com"
   allowClear
-  placeholder="This is placeholder"
-/>
-```
-Prefix & Suffix:
-
-```jsx
-<Input
-  prefix="￥"
-  allowClear
-  suffix="RMB"
   placeholder="This is placeholder"
 />
 ```

@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   $$component_props
 } from './interface';
 import {
-
+  $$component_nameView,
 } from './style';
 
 function $$component_name(props: $$component_props) {
@@ -14,17 +13,15 @@ function $$component_name(props: $$component_props) {
   } = props;
 
   return (
-    <div></div>
+    <$$component_nameView>
+
+    </$$component_nameView>
   );
 }
 
 $$component_name.displayName = '$$component_displayName';
 
 $$component_name.defaultProps = {
-
-};
-
-$$component_name.propTypes = {
 
 };
 
