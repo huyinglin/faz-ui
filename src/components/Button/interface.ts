@@ -20,6 +20,9 @@ export interface BaseButtonProps {
   /** 幽灵属性，使按钮背景透明 */
   ghost: boolean;
 
+  /** 加载中状态 */
+  loading: boolean;
+
   /** 设置危险按钮 */
   danger: boolean;
 

@@ -8,6 +8,7 @@ import {
   AncharView,
   ButtonIconView,
 } from './style';
+import Spin from '../Spin';
 
 const Button = React.forwardRef((props: ButtonProps, ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>) => {
   const {
@@ -15,6 +16,7 @@ const Button = React.forwardRef((props: ButtonProps, ref: React.Ref<HTMLAnchorEl
     ghost = false,
     block = false,
     danger = false,
+    loading = false,
     size = 'default',
     type = 'default',
     htmlType = 'button',
@@ -52,9 +54,14 @@ const Button = React.forwardRef((props: ButtonProps, ref: React.Ref<HTMLAnchorEl
     <ButtonView
       type={htmlType}
       shape={shape}
+      loading={loading}
       {...shareProps}
       {...rest}
     >
+      {loading && type !== 'text' &&
+        <ButtonIconView iconOnly={!!children}>
+          <Spin size="small" color={type === 'primary' ? '#fff' : 'rgba(0, 0, 0, 0.65)'}/>
+        </ButtonIconView>}
       {icon && <ButtonIconView iconOnly={!!children}>{icon}</ButtonIconView>}
       {children}
     </ButtonView>

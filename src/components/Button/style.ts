@@ -259,12 +259,18 @@ const dangerCSS = css<{ buttonType: ButtonType; }>`
   }
 `;
 
+const loadingCSS = css`
+  opacity: .65;
+  pointer-events: none;
+`;
+
 type ButtonViewProps = {
   buttonType: ButtonType;
   buttonSize: ButtonSize;
   block: boolean;
   ghost: boolean;
   danger: boolean;
+  loading: boolean;
   shape?: ButtonShap;
 }
 
@@ -284,6 +290,7 @@ export const ButtonView = styled.button<ButtonViewProps>`
   ${({ block }) => block && 'width: 100%;'}
   ${({ ghost }) => ghost && ghostCSS}
   ${({ danger }) => danger && dangerCSS}
+  ${({ loading }) => loading && loadingCSS}
 
   &[disabled],
   &[disabled]:hover,

@@ -99,7 +99,7 @@ Ghost:
 ```
 Danger:
 
-危险按钮。
+危险按钮
 
 ```jsx
 <Button danger type="primary" style={{ margin: 8 }}>Primary</Button>
@@ -107,4 +107,26 @@ Danger:
 <Button danger type="dashed" style={{ margin: 8 }}>Dashed</Button>
 <Button danger type="text" style={{ margin: 8 }}>Text</Button>
 <Button danger type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }}>Link</Button>
+```
+Loading:
+
+加载中状态
+
+```jsx
+import { useState } from 'react';
+
+const [loading, setLoading] = useState(false);
+
+<>
+  <Button
+    type="primary"
+    style={{ margin: 8 }}
+    onClick={() => setLoading(!loading)}
+  >
+    Toggle Loading
+  </Button>
+  <br/>
+  <Button loading={loading} type="primary" style={{ margin: 8 }}>Primary</Button>
+  <Button loading={loading} style={{ margin: 8 }}>Default</Button>
+</>
 ```
