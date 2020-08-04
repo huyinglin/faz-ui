@@ -83,6 +83,7 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Tabs', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Tag', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Tooltip', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Popover', 'index.tsx'),
       ])
     },
     {

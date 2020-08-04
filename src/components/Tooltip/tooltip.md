@@ -1,5 +1,7 @@
 Basic Tooltip:
 
+请确保 Tooltip 的子元素能接受 onMouseEnter、onMouseLeave、onFocus、onClick 事件。
+
 ```jsx
 <Tooltip title="Tooltip"><span>Tooltip</span></Tooltip>
 ```

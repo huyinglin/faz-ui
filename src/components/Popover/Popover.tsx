@@ -5,16 +5,33 @@ import {
 } from './interface';
 import {
   PopoverView,
+  PopoverTitleView,
+  PopoverContentView,
 } from './style';
 
 function Popover(props: PopoverProps) {
   const {
-
+    content,
+    title,
+    children,
+    color,
+    ...other
   } = props;
 
-  return (
-    <PopoverView>
+  const popoverContent = (
+    <div>
+      <PopoverTitleView>{title}</PopoverTitleView>
+      <PopoverContentView>{content}</PopoverContentView>
+    </div>
+  );
 
+  return (
+    <PopoverView
+      {...other}
+      color="#fff"
+      title={popoverContent}
+    >
+      {children}
     </PopoverView>
   );
 }
