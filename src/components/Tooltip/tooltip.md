@@ -3,6 +3,7 @@ Basic Tooltip:
 ```jsx
 <Tooltip title="Tooltip"><span>Tooltip</span></Tooltip>
 ```
+
 Trigger:
 
 支持三种触发方式，鼠标移入、聚集、点击。
@@ -96,4 +97,54 @@ function onChange(value) {
 >
   <span>Tooltip</span>
 </Tooltip>
+```
+Placement:
+
+支持 12 个方向的位置。
+
+```jsx
+import styled from 'styled-components';
+import Button from '../Button';
+
+const ButtonView = styled(Button)`
+  width: 88px;
+  margin: 8px;
+`;
+
+const TopAndButtomView = styled.div`
+  margin-left: 104px;
+`;
+
+const CenterView = styled.div`
+  width: 520px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const tooltipTitle = "Tooltip Title Tooltip Title Tooltip Title Tooltip Title Tooltip Title Tooltip Title";
+
+<>
+  <TopAndButtomView>
+    <Tooltip placement="topLeft" title={tooltipTitle}><ButtonView>topLeft</ButtonView></Tooltip>
+    <Tooltip placement="top" title={tooltipTitle}><ButtonView>top</ButtonView></Tooltip>
+    <Tooltip placement="topRight" title={tooltipTitle}><ButtonView>topRight</ButtonView></Tooltip>
+  </TopAndButtomView>
+  <CenterView>
+    <Tooltip placement="leftTop" title={tooltipTitle}><ButtonView>leftTop</ButtonView></Tooltip>
+    <Tooltip placement="rightTop" title={tooltipTitle}><ButtonView>rightTop</ButtonView></Tooltip>
+  </CenterView>
+  <CenterView>
+    <Tooltip placement="left" title={tooltipTitle}><ButtonView>left</ButtonView></Tooltip>
+    <Tooltip placement="right" title={tooltipTitle}><ButtonView>right</ButtonView></Tooltip>
+  </CenterView>
+  <CenterView>
+    <Tooltip placement="leftBottom" title={tooltipTitle}><ButtonView>leftBottom</ButtonView></Tooltip>
+    <Tooltip placement="rightBottom" title={tooltipTitle}><ButtonView>rightBottom</ButtonView></Tooltip>
+  </CenterView>
+  <TopAndButtomView>
+    <Tooltip placement="bottomLeft" title={tooltipTitle}><ButtonView>bottomLeft</ButtonView></Tooltip>
+    <Tooltip placement="bottom" title={tooltipTitle}><ButtonView>bottom</ButtonView></Tooltip>
+    <Tooltip placement="bottomRight" title={tooltipTitle}><ButtonView>bottomRight</ButtonView></Tooltip>
+  </TopAndButtomView>
+</>
 ```

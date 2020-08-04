@@ -25,7 +25,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     color = 'rgba(0, 0, 0, 0.75)',
     defaultVisible = false,
     container,
-    placement,
+    placement = 'top',
     trigger = 'hover',
     enterDelay = 100,
     leaveDelay = 100,
@@ -35,7 +35,7 @@ function Tooltip(props: Partial<TooltipProps>) {
   } = props;
 
   const triggerList: string[] = React.useMemo(() => typeof trigger === 'string' ? [trigger] : trigger, [trigger]);
-  const validChildRef = React.useRef<HTMLSpanElement | null>(null);
+  const childRef = React.useRef<HTMLSpanElement | null>(null);
   const contentRef = React.useRef<HTMLDivElement | null>(null);
 
   const enterTimer = React.useRef<number>();
@@ -48,9 +48,9 @@ function Tooltip(props: Partial<TooltipProps>) {
 
   const { Portal } = usePortal(container);
 
-  const [rect, setRect] = React.useState({ top: 0, left: 0, height: 0, width: 0});
-  const [top, setTop] = React.useState(0);
-  const [left, setLeft] = React.useState(0);
+  const [top, setTop] = React.useState<number | undefined>(0);
+  const [left, setLeft] = React.useState<number | undefined>(0);
+  const [right, setRight] = React.useState<number | undefined>(0);
 
   const [visible, setVisible] = useMergedState<boolean>(defaultVisible, {
     value: props.visible,
@@ -67,12 +67,73 @@ function Tooltip(props: Partial<TooltipProps>) {
   } = child.props;
 
   React.useEffect(() => {
-    const rect = validChildRef.current?.getBoundingClientRect();
-    if (rect) {
-      setTop(window.scrollY + rect.top - contentRect.height - 16 - 8);
-      setLeft(rect.left - (contentRect.width - rect.width) / 2 - 8);
+    const childRect = childRef.current?.getBoundingClientRect();
+    if (childRect) {
+      /** Tooltip 的内容和 children 基于居中线水平方向的偏移，目的是让 Tooltip 的内容和 children 对齐。 */
+      const verticalOffset = (contentRect.width - childRect.width) / 2;
+      const horizontalOffset = (contentRect.height - childRect.height) / 2;
+
+      /** children 的距离文档顶部的距离 */
+      const tooltipTopOffset = window.scrollY + childRect.top;
+
+      const { offsetWidth } = document.body;
+
+      const placementObj: any = {
+        top: {
+          top: tooltipTopOffset - contentRect.height - 24,
+          left: childRect.left - verticalOffset - 8,
+        },
+        topLeft: {
+          top: tooltipTopOffset - contentRect.height - 24,
+          left: childRect.left,
+        },
+        topRight: {
+          top: tooltipTopOffset - contentRect.height - 24,
+          right: offsetWidth - childRect.right,
+        },
+        left: {
+          top: tooltipTopOffset - horizontalOffset - 6,
+          left: childRect.left - contentRect.width - 28,
+        },
+        leftTop: {
+          top: tooltipTopOffset,
+          left: childRect.left - contentRect.width - 28,
+        },
+        leftBottom: {
+          top: window.scrollY + childRect.bottom - contentRect.height - 12,
+          left: childRect.left - contentRect.width - 28,
+        },
+        rightTop: {
+          top: tooltipTopOffset,
+          left: childRect.right + 12,
+        },
+        right: {
+          top: tooltipTopOffset - horizontalOffset - 6,
+          left: childRect.right + 12,
+        },
+        rightBottom: {
+          top: window.scrollY + childRect.bottom - contentRect.height - 12,
+          left: childRect.right + 12,
+        },
+        bottomLeft: {
+          top: window.scrollY + childRect.bottom + 12,
+          left: childRect.left,
+        },
+        bottomRight: {
+          top: window.scrollY + childRect.bottom + 12,
+          right: offsetWidth - childRect.right,
+        },
+        bottom: {
+          top: window.scrollY + childRect.bottom + 12,
+          left: childRect.left - verticalOffset - 8,
+        },
+      };
+
+      setTop(placementObj[placement].top);
+      setLeft(placementObj[placement].left);
+      setRight(placementObj[placement].right);
     }
-  }, [validChildRef, contentRect]);
+  }, [childRef, contentRect, placement]);
 
   React.useEffect(() => {
     return () => {
@@ -128,7 +189,7 @@ function Tooltip(props: Partial<TooltipProps>) {
       clearTimeout(leaveTimer.current);
 
       // Remove the title ahead of time.
-      validChildRef.current?.removeAttribute('title');
+      childRef.current?.removeAttribute('title');
 
       // if (enterDelay || hystersisOpen) {
         enterTimer.current = setTimeout(handleOpen, enterDelay);
@@ -176,7 +237,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     onMouseLeave: handleMouseLeave,
     onFocus: handleFocus,
     onBlur: handleBlur,
-    ref: useCopyRef((child as any).ref, validChildRef),
+    ref: useCopyRef((child as any).ref, childRef),
   };
 
   const animationProps = useSpring({ opacity: visible ? 1 : 0, config: { duration: 200, easing: ease.easeQuadOut, } });
@@ -191,14 +252,17 @@ function Tooltip(props: Partial<TooltipProps>) {
               className={className}
               style={{...style, ...animationProps}}
               ref={contentRef}
-              position={{ top, left }}
-              visibility={visible}
+              position={{ top, left, right }}
+              visible={visible}
               color={color}
               role="Tooltip"
             >
               {title}
               {arrow &&
-                <TooltipArrowView color={color}>
+                <TooltipArrowView
+                  color={color}
+                  placement={placement}
+                >
                   <AiOutlineCaretDown/>
                 </TooltipArrowView>
               }

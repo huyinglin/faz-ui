@@ -54,7 +54,7 @@ const Button = React.forwardRef((props: ButtonProps, ref: React.Ref<HTMLAnchorEl
     <ButtonView
       type={htmlType}
       shape={shape}
-      loading={loading}
+      isLoading={loading}
       {...shareProps}
       {...rest}
     >

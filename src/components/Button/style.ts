@@ -270,7 +270,7 @@ type ButtonViewProps = {
   block: boolean;
   ghost: boolean;
   danger: boolean;
-  loading: boolean;
+  isLoading: boolean;
   shape?: ButtonShap;
 }
 
@@ -290,7 +290,7 @@ export const ButtonView = styled.button<ButtonViewProps>`
   ${({ block }) => block && 'width: 100%;'}
   ${({ ghost }) => ghost && ghostCSS}
   ${({ danger }) => danger && dangerCSS}
-  ${({ loading }) => loading && loadingCSS}
+  ${({ isLoading }) => isLoading && loadingCSS}
 
   &[disabled],
   &[disabled]:hover,
