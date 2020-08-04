@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
 
-export function useMeasure(ref: React.RefObject<HTMLElement>) {
+export function useMeasure(ref?: React.RefObject<HTMLElement>) {
   const frame = useRef(0);
   const [rect, set] = useState({
     width: 0,
@@ -28,11 +28,15 @@ export function useMeasure(ref: React.RefObject<HTMLElement>) {
   );
 
   useEffect(() => {
-    observer.disconnect();
-
-    if (ref.current) {
+    if (ref && ref.current) {
       observer.observe(ref.current);
+    } else {
+      observer.observe(document.body);
     }
+
+    return () => {
+      observer.disconnect();
+    };
   }, [ref]);
 
   return rect;

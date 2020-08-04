@@ -54,3 +54,9 @@ export interface TooltipProps {
   /** 显示隐藏的回调 */
   onChange: (visible: boolean) => void;
 }
+
+export interface Place {
+  top?: number;
+  left?: number;
+  right?: number;
+}

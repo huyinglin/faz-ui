@@ -1,19 +1,17 @@
 import styled, { css } from 'styled-components/macro';
-import { animated } from 'react-spring'
 import { presetColor } from '../../styled';
 import { TooltipPlacement } from './interface';
 
 type TooltipContentViewProps = {
-  position: { top?: number; left?: number; right?: number; };
-  visible: boolean;
-  color: string;
+  placement: { top?: number; left?: number; right?: number; };
+  background: string;
 }
 
-export const TooltipContentView = styled(animated.div)<TooltipContentViewProps>`
+export const TooltipContentView = styled.div<TooltipContentViewProps>`
   position: absolute;
-  top: ${({ position }) => position.top === undefined ? 'unset' : `${position.top}px`};
-  left: ${({ position }) => position.left === undefined ? 'unset' : `${position.left}px`};
-  right: ${({ position }) => position.right === undefined ? 'unset' : `${position.right}px`};
+  top: ${({ placement }) => placement.top === undefined ? 'unset' : `${placement.top}px`};
+  left: ${({ placement }) => placement.left === undefined ? 'unset' : `${placement.left}px`};
+  right: ${({ placement }) => placement.right === undefined ? 'unset' : `${placement.right}px`};
   min-width: 30px;
   max-width: 260px;
   min-height: 32px;
@@ -26,18 +24,10 @@ export const TooltipContentView = styled(animated.div)<TooltipContentViewProps>`
   font-feature-settings: 'tnum';
   padding: 6px 8px;
   border-radius: 2px;
-  background: ${({ color }) => presetColor[color] ? presetColor[color].color : color};
+  background: ${({ background }) => presetColor[background] ? presetColor[background].color : background};
   color: #fff;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-
-  visibility: ${({ visible }) => visible ? 'visible' : 'hidden'};
-`;
-
-export const TooltipView = styled.div`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
+  visibility: ${({ placement }) => !!placement ? 'visible' : 'hidden'};
 `;
 
 function arrowHorizontal(placement: TooltipPlacement) {
@@ -92,9 +82,9 @@ function arrowPlacement(placement: TooltipPlacement) {
   return '';
 }
 
-export const TooltipArrowView = styled.div<{ color: string; placement: TooltipPlacement; }>`
+export const TooltipArrowView = styled.div<{ background: string; placement: TooltipPlacement; }>`
   font-size: 10px;
   position: absolute;
+  color: ${({ background }) => presetColor[background] ? presetColor[background].color : background};
   ${({ placement }) => arrowPlacement(placement)};
-  color: ${({ color }) => presetColor[color] ? presetColor[color].color : color};
 `;
