@@ -5,6 +5,7 @@ import {
   Place,
 } from './interface';
 import {
+  TooltipView,
   TooltipContentView,
   TooltipArrowView,
 } from './style';
@@ -270,26 +271,28 @@ function Tooltip(props: Partial<TooltipProps>) {
       {React.cloneElement(child, childrenProps)}
       <Portal>
         {title !== null &&
-          <animated.div style={animationProps}>
-            <TooltipContentView
-              className={className}
-              style={style}
-              ref={contentRef}
-              placement={place || {}}
-              background={color}
-              role="Tooltip"
-            >
-                {title}
-                {arrow &&
-                  <TooltipArrowView
-                    background={color}
-                    placement={placement}
-                  >
-                    <AiOutlineCaretDown/>
-                  </TooltipArrowView>
-                }
-            </TooltipContentView>
-          </animated.div>
+          <TooltipView>
+            <animated.div style={animationProps}>
+              <TooltipContentView
+                className={className}
+                style={style}
+                ref={contentRef}
+                placement={place || {}}
+                background={color}
+                role="Tooltip"
+              >
+                  {title}
+                  {arrow &&
+                    <TooltipArrowView
+                      background={color}
+                      placement={placement}
+                    >
+                      <AiOutlineCaretDown/>
+                    </TooltipArrowView>
+                  }
+              </TooltipContentView>
+            </animated.div>
+          </TooltipView>
         }
       </Portal>
     </>

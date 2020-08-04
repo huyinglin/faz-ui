@@ -105,9 +105,6 @@ Placement:
 ```jsx
 import styled from 'styled-components';
 import Button from '../Button';
-import { useState } from 'react';
-
-const [content, setContent] = useState('title');
 
 const ButtonView = styled(Button)`
   width: 88px;
@@ -128,9 +125,9 @@ const tooltipTitle = "Tooltip Title Tooltip Title Tooltip Title Tooltip Title To
 
 <>
   <TopAndButtomView>
-    <Tooltip visible placement="topLeft" title={tooltipTitle}><ButtonView>topLeft</ButtonView></Tooltip>
+    <Tooltip placement="topLeft" title={tooltipTitle}><ButtonView>topLeft</ButtonView></Tooltip>
     <Tooltip placement="top" title={tooltipTitle}><ButtonView>top</ButtonView></Tooltip>
-    <Tooltip placement="topRight" title={content}><ButtonView>topRight</ButtonView></Tooltip>
+    <Tooltip placement="topRight" title={tooltipTitle}><ButtonView>topRight</ButtonView></Tooltip>
   </TopAndButtomView>
   <CenterView>
     <Tooltip placement="leftTop" title={tooltipTitle}><ButtonView>leftTop</ButtonView></Tooltip>

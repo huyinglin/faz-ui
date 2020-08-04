@@ -88,3 +88,10 @@ export const TooltipArrowView = styled.div<{ background: string; placement: Tool
   color: ${({ background }) => presetColor[background] ? presetColor[background].color : background};
   ${({ placement }) => arrowPlacement(placement)};
 `;
+
+export const TooltipView = styled.div`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+`;
