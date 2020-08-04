@@ -26,7 +26,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     defaultVisible = false,
     container,
     placement,
-    trigger = 'click',
+    trigger = 'hover',
     enterDelay = 100,
     leaveDelay = 100,
     className,
@@ -34,11 +34,14 @@ function Tooltip(props: Partial<TooltipProps>) {
     onChange,
   } = props;
 
+  const triggerList: string[] = React.useMemo(() => typeof trigger === 'string' ? [trigger] : trigger, [trigger]);
   const validChildRef = React.useRef<HTMLSpanElement | null>(null);
   const contentRef = React.useRef<HTMLDivElement | null>(null);
 
   const enterTimer = React.useRef<number>();
   const leaveTimer = React.useRef<number>();
+
+  const contentRect = useMeasure(contentRef);
 
   let hystersisOpen = false;
   let hystersisTimer: number;
@@ -63,14 +66,11 @@ function Tooltip(props: Partial<TooltipProps>) {
     onBlur,
   } = child.props;
 
-  const contentRect = useMeasure(contentRef);
-
   React.useEffect(() => {
     const rect = validChildRef.current?.getBoundingClientRect();
     if (rect) {
       setTop(window.scrollY + rect.top - contentRect.height - 16 - 8);
       setLeft(rect.left - (contentRect.width - rect.width) / 2 - 8);
-      console.log('rect.width: ', rect.width);
     }
   }, [validChildRef, contentRect]);
 
@@ -109,7 +109,13 @@ function Tooltip(props: Partial<TooltipProps>) {
     if (onClick) {
       onClick(e);
     }
-    setVisible(true);
+
+    if (triggerList.includes('click')) {
+      clearTimeout(enterTimer.current);
+      clearTimeout(leaveTimer.current);
+
+      enterTimer.current = setTimeout(visible ? handleClose : handleOpen, enterDelay);
+    }
   }
 
   function handleMouseEnter(e: React.MouseEvent<HTMLElement>) {
@@ -117,17 +123,19 @@ function Tooltip(props: Partial<TooltipProps>) {
       onMouseEnter(e);
     }
 
-    clearTimeout(enterTimer.current);
-    clearTimeout(leaveTimer.current);
+    if (triggerList.includes('hover')) {
+      clearTimeout(enterTimer.current);
+      clearTimeout(leaveTimer.current);
 
-    // Remove the title ahead of time.
-    validChildRef.current?.removeAttribute('title');
+      // Remove the title ahead of time.
+      validChildRef.current?.removeAttribute('title');
 
-    // if (enterDelay || hystersisOpen) {
-      enterTimer.current = setTimeout(handleOpen, enterDelay);
-    // } else {
-    //   handleOpen();
-    // }
+      // if (enterDelay || hystersisOpen) {
+        enterTimer.current = setTimeout(handleOpen, enterDelay);
+      // } else {
+      //   handleOpen();
+      // }
+    }
   }
 
   function handleMouseLeave(e: React.MouseEvent<HTMLElement>) {
@@ -135,24 +143,30 @@ function Tooltip(props: Partial<TooltipProps>) {
       onMouseLeave(e);
     }
 
-    clearTimeout(enterTimer.current);
-    clearTimeout(leaveTimer.current);
+    if (triggerList.includes('hover')) {
+      clearTimeout(enterTimer.current);
+      clearTimeout(leaveTimer.current);
 
-    leaveTimer.current = setTimeout(handleClose, leaveDelay);
+      leaveTimer.current = setTimeout(handleClose, leaveDelay);
+    }
   }
 
   function handleFocus(e: React.FocusEvent<HTMLElement>) {
     if (onFocus) {
       onFocus(e);
     }
-    handleOpen();
+    if (triggerList.includes('focus')) {
+      handleOpen();
+    }
   }
 
   function handleBlur(e: React.FocusEvent<HTMLElement>) {
     if (onBlur) {
       onBlur(e);
     }
-    handleClose();
+    if (triggerList.includes('focus') || triggerList.includes('click')) {
+      handleClose();
+    }
   }
 
   const childrenProps = {
@@ -202,6 +216,7 @@ Tooltip.defaultProps = {
   enterDelay: 100,
   leaveDelay: 100,
   arrow: true,
+  trigger: 'hover',
 };
 
 Tooltip.propTypes = {
