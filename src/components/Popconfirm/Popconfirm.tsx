@@ -89,7 +89,7 @@ function Popconfirm(props: PopconfirmProps) {
       color="#fff"
       trigger="click"
       visible={innerVisible}
-      title={popconfirmContent}
+      title={title === null ? null : popconfirmContent}
       onChange={handleChange}
     >
       {children}

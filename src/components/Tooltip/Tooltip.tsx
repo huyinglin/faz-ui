@@ -209,7 +209,7 @@ function Tooltip(props: Partial<TooltipProps>) {
 
       enterTimer.current = setTimeout(() => {
         if (visible) {
-          if (!tooltipHover && !props.visible) {
+          if (!tooltipHover) {
             handleClose();
           }
         } else {
@@ -242,8 +242,7 @@ function Tooltip(props: Partial<TooltipProps>) {
 
     if (
       triggerList.includes('hover') &&
-      !tooltipHover &&
-      !props.visible
+      !tooltipHover
     ) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);
@@ -282,8 +281,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     }
     if (
       (triggerList.includes('focus') || triggerList.includes('click')) &&
-      !tooltipHover &&
-      !props.visible
+      !tooltipHover
     ) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);
