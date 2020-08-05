@@ -12,7 +12,7 @@ function Option(props: SelectOptionProps) {
     children,
   } = props;
 
-  const { value: selectdValue, onSelect, onFocus } = React.useContext(SelectContext);
+  const { width, value: selectdValue, onSelect, onFocus } = React.useContext(SelectContext);
 
   function handleClick() {
     if (disabled) {
@@ -23,6 +23,7 @@ function Option(props: SelectOptionProps) {
 
   return (
     <SelectOptionView
+      width={width}
       style={style}
       className={className}
       disabled={disabled}

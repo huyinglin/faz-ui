@@ -49,6 +49,7 @@ export interface SelectOptionProps {
 }
 
 export interface SelectContextProps {
+  width: number;
   value?: string | number;
   onSelect: (selectValue: string | number, label?: string) => void;
   onFocus: () => void;

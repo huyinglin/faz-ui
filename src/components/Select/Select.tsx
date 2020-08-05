@@ -12,6 +12,7 @@ import {
 import { SelectContext } from './component/SelectContext';
 import { useMergedState } from '../../hooks/useMergedState';
 import { AiOutlineDown, AiFillCloseCircle } from 'react-icons/ai';
+import { useMeasureDirty } from '../../hooks/useMeasure';
 
 function Select(props: SelectProps) {
   const {
@@ -20,20 +21,23 @@ function Select(props: SelectProps) {
     disabled,
     showSearch = false,
     defaultValue,
-    placeholder,
     suffixIcon = <AiOutlineDown style={{ color: 'rgba(0, 0, 0, 0.25)' }}/>,
     clearIcon = <AiFillCloseCircle style={{ color: 'rgba(0, 0, 0, 0.25)' }}/>,
-    listHeight,
+    listHeight = 256,
     style,
     className,
     children,
   } = props;
 
   const selectInputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const { width } = useMeasureDirty(inputRef);
   const hideCaret = React.useMemo(() => !showSearch, [showSearch]);
   const [inputValue, setInputValue] = React.useState<string>();
   const [visible, setVisible] = React.useState<boolean>(false);
   const [suffixHover, setSuffixHover] = React.useState<boolean>(false);
+  const [placeholder, setPlaceholder] = React.useState<string | undefined>(props.placeholder);
 
   const [value, setValue] = useMergedState(defaultValue, {
     value: props.value,
@@ -105,6 +109,7 @@ function Select(props: SelectProps) {
 
   const contextValue = {
     value,
+    width,
     onSelect: handleSelect,
     onFocus: handleSelectInputFocus,
   };
@@ -114,7 +119,7 @@ function Select(props: SelectProps) {
       <SelectView
         trigger="click"
         color="#fff"
-        placement="bottom"
+        placement="bottomLeft"
         space={4}
         enterDelay={50}
         arrow={false}
@@ -132,6 +137,7 @@ function Select(props: SelectProps) {
           onChange={handleInputChange}
           hideCaret={hideCaret}
           style={style}
+          ref={inputRef}
           className={className}
         />
       </SelectView>

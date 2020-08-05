@@ -34,8 +34,8 @@ const disabledCSS = css`
   }
 `;
 
-export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolean; }>`
-  width: 120px;
+export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolean; width: number; }>`
+  width: ${({ width }) => width}px;
   min-height: 32px;
   padding: 6px 12px;
   box-sizing: border-box;
