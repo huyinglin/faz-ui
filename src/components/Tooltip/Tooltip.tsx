@@ -33,6 +33,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     space = 12,
     className,
     style,
+    childrenFocus,
     onChange,
   } = props;
 
@@ -49,8 +50,10 @@ function Tooltip(props: Partial<TooltipProps>) {
   const [place, setPlace] = React.useState<Place | null>(null);
   const [tooltipHover, setTooltipHover] = React.useState<boolean>(false);
 
-  const [visible, setVisible] = useMergedState<boolean>(defaultVisible, {
+  const [visible, setVisible] = useMergedState<boolean>(props.visible || defaultVisible, {
     value: props.visible,
+    isProps: 'visible' in props,
+    innerControlled: true,
   });
 
   const child: React.ReactElement = React.isValidElement(children) ? children : <span>{children}</span>;
@@ -64,8 +67,6 @@ function Tooltip(props: Partial<TooltipProps>) {
   } = child.props;
 
   React.useEffect(() => {
-    console.log('childRef: ', childRef);
-
     const childRect = childRef.current?.getBoundingClientRect();
     if (childRect && visible) {
       handlePlacement(childRect);
@@ -183,7 +184,6 @@ function Tooltip(props: Partial<TooltipProps>) {
 
   function handleOpen() {
     setVisible(true);
-
     if (onChange) {
       onChange(true);
     }
@@ -192,7 +192,6 @@ function Tooltip(props: Partial<TooltipProps>) {
   function handleClose() {
     setVisible(false);
     setPlace(null);
-
     if (onChange) {
       onChange(false);
     }
@@ -251,15 +250,19 @@ function Tooltip(props: Partial<TooltipProps>) {
     }
   }
 
-  function handleTooltipClick(e: React.MouseEvent<HTMLElement>) {
-    childRef.current?.focus();
+  function handleTooltipClick() {
+    if (childrenFocus) {
+      childrenFocus();
+    } else {
+      childRef.current?.focus();
+    }
   }
 
-  function handleTooltipMouseEnter(e: React.MouseEvent<HTMLElement>) {
+  function handleTooltipMouseEnter() {
     setTooltipHover(true);
   }
 
-  function handleTooltipMouseLeave(e: React.MouseEvent<HTMLElement>) {
+  function handleTooltipMouseLeave() {
     setTooltipHover(false);
   }
 
@@ -280,8 +283,8 @@ function Tooltip(props: Partial<TooltipProps>) {
       onBlur(e);
     }
     if (
-      (triggerList.includes('focus') || triggerList.includes('click')) &&
-      !tooltipHover
+      triggerList.includes('focus') ||
+      (triggerList.includes('click') && !tooltipHover)
     ) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);

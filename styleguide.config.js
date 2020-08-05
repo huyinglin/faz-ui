@@ -70,10 +70,10 @@ module.exports = {
       name: '数据录入',
       components: () => ([
         path.resolve(__dirname, 'src/components/Input', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Select', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Checkbox', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Radio', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Switch', 'index.tsx'),
-        path.resolve(__dirname, 'src/components/Select', 'index.tsx'),
       ]),
     },
     {

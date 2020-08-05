@@ -160,8 +160,6 @@ Prefix & Suffix:
 <Input
   prefix="￥"
   suffix="RMB"
-  addonBefore="http://"
-  addonAfter=".com"
   allowClear
   placeholder="This is placeholder"
 />

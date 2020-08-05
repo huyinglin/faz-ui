@@ -5,12 +5,19 @@ export function useMergedState<T, R = T>(
   option?: {
     defaultValue?: T | (() => T);
     value?: T;
+    isProps?: boolean; // 是否为 props 中的属性
+    innerControlled?: boolean; // 当内部值需要主动变化时，忽略外部的控制
     onChange?: (value: T, prevValue: T) => void;
-    postState?: (value: T) => T;
   },
 ): [R, (value: T) => void] {
-  const { defaultValue, value, onChange, postState } = option || {};
-  const [innerValue, setInnerValue] = React.useState<T>(() => {
+  const {
+    defaultValue,
+    value,
+    onChange,
+    isProps,
+    innerControlled,
+  } = option || {};
+  const [innerValue, setInnerValue] = React.useState<T | undefined>(() => {
     if (value !== undefined) {
       return value;
     }
@@ -25,11 +32,11 @@ export function useMergedState<T, R = T>(
   });
 
   let mergedValue = value !== undefined ? value : innerValue;
-  if (postState) {
-    mergedValue = postState(mergedValue);
-  }
 
   function triggerChange(newValue: T) {
+    if (isProps && !innerControlled) {
+      return;
+    }
     setInnerValue(newValue);
     if (mergedValue !== newValue && onChange) {
       onChange(newValue, mergedValue);
@@ -44,7 +51,7 @@ export function useMergedState<T, R = T>(
       return;
     }
 
-    if (value === undefined) {
+    if (isProps) {
       setInnerValue(value);
     }
   }, [value]);

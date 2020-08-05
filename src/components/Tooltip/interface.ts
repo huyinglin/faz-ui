@@ -18,6 +18,9 @@ export interface TooltipProps {
   /** Tooltip 内容，设置 title 为 null 时，Tooltip 不会显示。*/
   title: React.ReactNode;
 
+  /** 私有属性。当 trigger 为 click 时，如果children 的 ref 中不存在 focus 方法，会有点击 Tooltip 后，再点击其他区域无法关闭的问题 */
+  childrenFocus: () => void;
+
   /** 背景颜色 */
   color: string;
 

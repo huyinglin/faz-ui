@@ -67,6 +67,7 @@ function Tabs(props: TabsProps) {
   const [mergedActiveKey, setMergedActiveKey] = useMergedState<string>(() => tabs[0]?.key, {
     value: activeKey,
     defaultValue: defaultActiveKey,
+    isProps: 'activeKey' in props,
   });
 
   const [activeIndex, setActiveIndex] = React.useState(() =>

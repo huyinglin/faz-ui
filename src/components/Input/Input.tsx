@@ -31,7 +31,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     prefix,
     suffix,
     value,
-    defaultValue,
+    defaultValue = '',
     size,
     allowClear,
     style,
@@ -43,9 +43,12 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     ...rest
   } = props;
 
-  const [mergedValue, setMergedValue] = useMergedState<string>(defaultValue || '', {
+  const [mergedValue, setMergedValue] = useMergedState<string>(value || defaultValue, {
     value,
+    isProps: 'value' in props,
   });
+
+  const [hover, setHover] = React.useState(false);
 
   const innerInputRef = React.useRef<HTMLInputElement | null>(null);
   const prefixRef = React.useRef<HTMLSpanElement | null>(null);
@@ -99,6 +102,20 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     }
   }
 
+  function handleMouseEnter() {
+    if (props.disabled) {
+      return;
+    }
+    setHover(true);
+  }
+
+  function handleMouseLeave() {
+    if (props.disabled) {
+      return;
+    }
+    setHover(false);
+  }
+
   return (
     <InputContainerView
       style={style}
@@ -110,12 +127,16 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           inputHeight={inputHeight}
           addonType="addonBefore"
           ref={addonBeforeRef}
+          hover={hover}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {addonBefore}
         </AddonView>
       }
       <InputView
         ref={mergedRef}
+        hover={hover}
         prefixWidth={prefixWidth}
         suffixWidth={suffixWidth}
         addonAfter={addonAfter}
@@ -124,6 +145,8 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
         allowClear={allowClear}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         {...rest}
       />
       {addonAfter &&
@@ -131,6 +154,9 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           inputHeight={inputHeight}
           addonType="addonAfter"
           ref={addonAfterRef}
+          hover={hover}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {addonAfter}
         </AddonView>
@@ -141,6 +167,8 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           addonAfterWidth={addonAfterWidth}
           affixType="prefix"
           ref={prefixRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {prefix}
         </AffixView>
@@ -151,6 +179,8 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           addonAfterWidth={addonAfterWidth}
           affixType="suffix"
           ref={suffixRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {suffix}
         </AffixView>
@@ -162,6 +192,8 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
           addonAfterWidth={addonAfterWidth}
           suffixWidth={suffixWidth}
           affixType="suffix"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <AiFillCloseCircle/>
         </ClearView>

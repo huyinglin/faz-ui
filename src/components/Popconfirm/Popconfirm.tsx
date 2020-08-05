@@ -33,6 +33,7 @@ function Popconfirm(props: PopconfirmProps) {
 
   const [innerVisible, setInnerVisible] = useMergedState<boolean>(defaultVisible, {
     value: visible,
+    isProps: 'visible' in props,
   });
 
   function handleCancel(e: React.MouseEvent<HTMLElement>) {
@@ -57,7 +58,7 @@ function Popconfirm(props: PopconfirmProps) {
   }
 
   const popconfirmContent = (
-    <PopconfirmContentView onClick={e => e.stopPropagation()}>
+    <PopconfirmContentView>
       <PopconfirmBoxView>
         <PopconfirmIconView>{icon}</PopconfirmIconView>
         <PopconfirmTitleView>{title}</PopconfirmTitleView>

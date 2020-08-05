@@ -17,6 +17,7 @@ const RadioGroup = React.forwardRef((props: Partial<RadioGroupProps>, ref: React
 
   const [value, setValue] = useMergedState(defaultValue, {
     value: props.value,
+    isProps: 'value' in props,
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

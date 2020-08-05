@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import { themeColor } from '../../styled';
 import { InputProps } from './interface';
 
@@ -15,7 +15,7 @@ function getAddonBorderRadius(addonBefore: boolean, addonAfter: boolean) {
   return '2px';
 }
 
-export const InputView = styled.input<Partial<InputProps> & { prefixWidth: number; suffixWidth: number; }>`
+export const InputView = styled.input<Partial<InputProps> & { prefixWidth: number; suffixWidth: number; hover: boolean; }>`
   box-sizing: border-box;
   margin: 0;
   width: 100%;
@@ -29,7 +29,7 @@ export const InputView = styled.input<Partial<InputProps> & { prefixWidth: numbe
   font-size: 14px;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${({ hover }) => hover ? '#40a9ff' : '#d9d9d9'};
   transition: all 0.3s;
   line-height: 1.5715;
   border-radius: ${({ addonBefore, addonAfter }) => getAddonBorderRadius(!!addonBefore, !!addonAfter)};
@@ -49,9 +49,10 @@ export const InputView = styled.input<Partial<InputProps> & { prefixWidth: numbe
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: #40a9ff;
-    border-right-width: 1px;
+    border-left-color: ${({ addonBefore }) => !!addonBefore ? '#d9d9d9' : '#40a9ff'};
+    border-right-color: ${({ addonAfter }) => !!addonAfter ? '#d9d9d9' : '#40a9ff'};
   }
 `;
 
@@ -87,7 +88,7 @@ export const AffixView = styled.span<{ affixType: 'prefix' | 'suffix'; addonBefo
   line-height: 1.5715;
 `;
 
-export const AddonView = styled.span<{ addonType: 'addonAfter' | 'addonBefore'; inputHeight: number; }>`
+export const AddonView = styled.span<{ addonType: 'addonAfter' | 'addonBefore'; inputHeight: number; hover: boolean; }>`
   padding: 4px 12px;
   color: rgba(0, 0, 0, 0.65);
   box-sizing: border-box;
@@ -95,10 +96,9 @@ export const AddonView = styled.span<{ addonType: 'addonAfter' | 'addonBefore'; 
   font-size: 14px;
   text-align: center;
   background-color: #fafafa;
-  border: 1px solid #d9d9d9;
   line-height: 1.5715;
   transition: all 0.3s;
-
+  border: 1px solid ${({ hover }) => hover ? '#40a9ff' : '#d9d9d9'};
   height: ${({ inputHeight }) => inputHeight ? (inputHeight + 8 + 2) : 'auto'}px;
   display: flex;
   align-items: center;
@@ -120,22 +120,24 @@ export const PasswordIconView = styled.span`
   cursor: pointer;
 `;
 
+const enterButtonCSS = css`
+  color: #fff;
+  border-color: #1890ff;
+
+  &:hover {
+    color: #fff;
+    background: #40a9ff;
+    border-color: #40a9ff;
+  }
+`;
+
 export const SearchView = styled.span<{ enterButton: boolean; }>`
   ${AddonView} {
     background: ${({ enterButton }) => enterButton ? '#1890ff' : '#fff'};
     padding: ${({ enterButton }) => enterButton ? '4px 14px' : '4px 8px'};
     cursor: pointer;
 
-    ${({ enterButton }) => enterButton && `
-      color: #fff;
-      border-color: #1890ff;
-
-      &:hover {
-        color: #fff;
-        background: #40a9ff;
-        border-color: #40a9ff;
-      }
-    `}
+    ${({ enterButton }) => enterButton && enterButtonCSS}
   }
 
   ${InputView} {
