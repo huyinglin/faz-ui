@@ -12,11 +12,11 @@ import {
 import { useCopyRef } from '../../hooks/useCopyRef';
 import { useMeasure } from '../../hooks/useMeasure';
 import { usePortal } from '../../hooks/usePortal';
+import { useMergedState } from '../../hooks/useMergedState';
+import { useRaf } from '../../hooks/useRaf';
 import { AiOutlineCaretDown } from 'react-icons/ai';
 import { useSpring, animated } from 'react-spring'
-import { useMergedState } from '../../hooks/useMergedState';
 import * as ease from 'd3-ease';
-import { useRaf } from '../../hooks/useRaf';
 
 function Tooltip(props: Partial<TooltipProps>) {
   const {
@@ -38,16 +38,15 @@ function Tooltip(props: Partial<TooltipProps>) {
   const triggerList: string[] = React.useMemo(() => typeof trigger === 'string' ? [trigger] : trigger, [trigger]);
   const childRef = React.useRef<HTMLSpanElement | null>(null);
   const contentRef = React.useRef<HTMLDivElement | null>(null);
-
   const enterTimer = React.useRef<number>();
   const leaveTimer = React.useRef<number>();
 
-  const contentRect = useMeasure(contentRef);
   const windowRect = useMeasure();
 
   const { Portal } = usePortal(container);
 
-  const [place, setPlace] = React.useState<Place | null>(null)
+  const [place, setPlace] = React.useState<Place | null>(null);
+  const [tooltipHover, setTooltipHover] = React.useState<boolean>(false);
 
   const [visible, setVisible] = useMergedState<boolean>(defaultVisible, {
     value: props.visible,
@@ -66,9 +65,12 @@ function Tooltip(props: Partial<TooltipProps>) {
   React.useEffect(() => {
     const childRect = childRef.current?.getBoundingClientRect();
     if (childRect && visible) {
-      handlePlacement(childRect, contentRect);
+      handlePlacement(childRect);
     }
-  }, [windowRect, contentRect, childRef, placement, visible]);
+    if (!visible) {
+      handleClose();
+    }
+  }, [windowRect, childRef, placement, visible]);
 
   React.useEffect(() => {
     return () => {
@@ -77,91 +79,102 @@ function Tooltip(props: Partial<TooltipProps>) {
     };
   }, []);
 
-  const handlePlacement = useRaf((childRect: DOMRect, contentRect: DOMRect) => {
-    /** Tooltip 的内容和 children 基于居中线水平方向的偏移，目的是让 Tooltip 的内容和 children 对齐。 */
-    const verticalOffset = (contentRect.width - childRect.width) / 2;
-    const horizontalOffset = (contentRect.height - childRect.height) / 2;
+  const handlePlacement = useRaf((childRect: DOMRect) => {
+    const tooltipHeight = contentRef.current?.offsetHeight || 0;
+    const tooltipWidth = contentRef.current?.offsetWidth || 0;
+
+    /** Tooltip 和 children 基于居中线水平方向的偏移 */
+    const verticalOffset = (tooltipWidth - childRect.width) / 2;
+    const horizontalOffset = (tooltipHeight - childRect.height) / 2;
 
     /** children 的距离文档顶部的距离 */
-    const tooltipTopOffset = window.scrollY + childRect.top;
+    const childTopOffset = window.scrollY + childRect.top;
 
-    const { offsetWidth } = document.body;
+    /** Tooltip 和 children 的间距 */
+    const space = 12;
+
+    const topPlacementTop = childTopOffset - tooltipHeight - space;
+    const buttomPlacementTop = window.scrollY + childRect.bottom + space;
+    const leftPlacementLeft = childRect.left - tooltipWidth - space;
+    const rightPlacementLeft = childRect.right + space;
 
     let newPlace: Place | null = place;
+
     switch (placement) {
       case 'top':
         newPlace = {
-          top: tooltipTopOffset - contentRect.height - 24,
-          left: childRect.left - verticalOffset - 8,
+          top: topPlacementTop,
+          left: childRect.left - verticalOffset,
         };
         break;
       case 'topLeft':
         newPlace = {
-          top: tooltipTopOffset - contentRect.height - 24,
+          top: topPlacementTop,
           left: childRect.left,
         };
         break;
       case 'topRight':
         newPlace = {
-          top: tooltipTopOffset - contentRect.height - 24,
-          right: offsetWidth - childRect.right,
+          top: topPlacementTop,
+          right: document.body.offsetWidth - childRect.right,
         };
         break;
-      case 'left':
+      case 'bottom':
         newPlace = {
-          top: tooltipTopOffset - horizontalOffset - 6,
-          left: childRect.left - contentRect.width - 28,
-        };
-        break;
-      case 'leftTop':
-        newPlace = {
-          top: tooltipTopOffset,
-          left: childRect.left - contentRect.width - 28,
-        };
-        break;
-      case 'leftBottom':
-        newPlace = {
-          top: window.scrollY + childRect.bottom - contentRect.height - 12,
-          left: childRect.left - contentRect.width - 28,
-        };
-        break;
-      case 'rightTop':
-        newPlace = {
-          top: tooltipTopOffset,
-          left: childRect.right + 12,
-        };
-        break;
-      case 'right':
-        newPlace = {
-          top: tooltipTopOffset - horizontalOffset - 6,
-          left: childRect.right + 12,
-        };
-        break;
-      case 'rightBottom':
-        newPlace = {
-          top: window.scrollY + childRect.bottom - contentRect.height - 12,
-          left: childRect.right + 12,
+          top: buttomPlacementTop,
+          left: childRect.left - verticalOffset,
         };
         break;
       case 'bottomLeft':
         newPlace = {
-          top: window.scrollY + childRect.bottom + 12,
+          top: buttomPlacementTop,
           left: childRect.left,
         };
         break;
       case 'bottomRight':
         newPlace = {
-          top: window.scrollY + childRect.bottom + 12,
-          right: offsetWidth - childRect.right,
+          top: buttomPlacementTop,
+          right: document.body.offsetWidth - childRect.right,
         };
         break;
-      case 'bottom':
+      case 'left':
         newPlace = {
-          top: window.scrollY + childRect.bottom + 12,
-          left: childRect.left - verticalOffset - 8,
+          top: childTopOffset - horizontalOffset,
+          left: leftPlacementLeft,
+        };
+        break;
+      case 'leftTop':
+        newPlace = {
+          top: childTopOffset,
+          left: leftPlacementLeft,
+        };
+        break;
+      case 'leftBottom':
+        newPlace = {
+          top: window.scrollY + childRect.bottom - tooltipHeight,
+          left: leftPlacementLeft,
+        };
+        break;
+      case 'rightTop':
+        newPlace = {
+          top: childTopOffset,
+          left: rightPlacementLeft,
+        };
+        break;
+      case 'right':
+        newPlace = {
+          top: childTopOffset - horizontalOffset,
+          left: rightPlacementLeft,
+        };
+        break;
+      case 'rightBottom':
+        newPlace = {
+          top: window.scrollY + childRect.bottom - tooltipHeight,
+          left: rightPlacementLeft,
         };
         break;
       default:
+        newPlace = null;
         break;
     };
 
@@ -178,10 +191,7 @@ function Tooltip(props: Partial<TooltipProps>) {
 
   function handleClose() {
     setVisible(false);
-
-    if (!props.visible) {
-      setPlace(null);
-    }
+    setPlace(null);
 
     if (onChange) {
       onChange(false);
@@ -197,7 +207,15 @@ function Tooltip(props: Partial<TooltipProps>) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);
 
-      enterTimer.current = setTimeout(visible ? handleClose : handleOpen, enterDelay);
+      enterTimer.current = setTimeout(() => {
+        if (visible) {
+          if (!tooltipHover && !props.visible) {
+            handleClose();
+          }
+        } else {
+          handleOpen();
+        }
+      }, enterDelay);
     }
   }
 
@@ -222,12 +240,28 @@ function Tooltip(props: Partial<TooltipProps>) {
       onMouseLeave(e);
     }
 
-    if (triggerList.includes('hover')) {
+    if (
+      triggerList.includes('hover') &&
+      !tooltipHover &&
+      !props.visible
+    ) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);
 
       leaveTimer.current = setTimeout(handleClose, leaveDelay);
     }
+  }
+
+  function handleTooltipClick(e: React.MouseEvent<HTMLElement>) {
+    childRef.current?.focus();
+  }
+
+  function handleTooltipMouseEnter(e: React.MouseEvent<HTMLElement>) {
+    setTooltipHover(true);
+  }
+
+  function handleTooltipMouseLeave(e: React.MouseEvent<HTMLElement>) {
+    setTooltipHover(false);
   }
 
   function handleFocus(e: React.FocusEvent<HTMLElement>) {
@@ -246,7 +280,11 @@ function Tooltip(props: Partial<TooltipProps>) {
     if (onBlur) {
       onBlur(e);
     }
-    if (triggerList.includes('focus') || triggerList.includes('click')) {
+    if (
+      (triggerList.includes('focus') || triggerList.includes('click')) &&
+      !tooltipHover &&
+      !props.visible
+    ) {
       clearTimeout(enterTimer.current);
       clearTimeout(leaveTimer.current);
 
@@ -280,6 +318,9 @@ function Tooltip(props: Partial<TooltipProps>) {
                 placement={place || {}}
                 background={color}
                 role="Tooltip"
+                onClick={handleTooltipClick}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
               >
                   {title}
                   {arrow &&

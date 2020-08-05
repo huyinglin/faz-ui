@@ -94,6 +94,7 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Message', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Notification', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Spin', 'index.tsx'),
+        path.resolve(__dirname, 'src/components/Popconfirm', 'index.tsx'),
       ])
     },
   ],

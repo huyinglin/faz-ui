@@ -32,10 +32,10 @@ export const TooltipContentView = styled.div<TooltipContentViewProps>`
 
 function arrowHorizontal(placement: TooltipPlacement) {
   if (placement.substr(-4) === 'Left') {
-    return '25%';
+    return '15%';
   }
   if (placement.substr(-5) === 'Right') {
-    return '75%';
+    return '85%';
   }
   return '50%';
 }
