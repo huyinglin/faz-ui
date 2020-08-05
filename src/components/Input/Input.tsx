@@ -18,6 +18,7 @@ import Limit from './component/Limit';
 import Password from './component/Password';
 import TextArea from './component/TextArea';
 import Search from './component/Search';
+import { useCopyRef } from '../../hooks/useCopyRef';
 
 export function validatedValue(value: any) {
   return typeof value === 'undefined' || value === null ? '' : value;
@@ -35,6 +36,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     allowClear,
     style,
     className,
+    inputRef,
     onChange,
     onPressEnter,
     onKeyDown,
@@ -45,24 +47,18 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     value,
   });
 
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const innerInputRef = React.useRef<HTMLInputElement | null>(null);
   const prefixRef = React.useRef<HTMLSpanElement | null>(null);
   const suffixRef = React.useRef<HTMLSpanElement | null>(null);
   const addonBeforeRef = React.useRef<HTMLSpanElement | null>(null);
   const addonAfterRef = React.useRef<HTMLSpanElement | null>(null);
 
-  const { height: inputHeight } = useMeasure(inputRef);
+  const mergedRef = useCopyRef(inputRef, innerInputRef)
+  const { height: inputHeight } = useMeasure(innerInputRef);
   const { width: prefixWidth } = useMeasure(prefixRef);
   const { width: suffixWidth } = useMeasure(suffixRef);
   const { width: addonBeforeWidth } = useMeasure(addonBeforeRef);
   const { width: addonAfterWidth } = useMeasure(addonAfterRef);
-
-  React.useImperativeHandle<HTMLInputElement, any>(ref, () => ({
-    element: inputRef.current,
-    focus: () => inputRef.current?.focus(),
-    blur: () => inputRef.current?.blur(),
-    select: () => inputRef.current?.select(),
-  }));
 
   React.useEffect(() => {
     clearPasswordValueAttribute();
@@ -78,11 +74,11 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
 
   function handleClear(e: React.MouseEvent<HTMLSpanElement>) {
     setMergedValue('');
-    inputRef.current?.focus();
+    innerInputRef.current?.focus();
     if (onChange) {
       const event = Object.create(e);
-      event.target = inputRef.current;
-      event.currentTarget = inputRef.current;
+      event.target = innerInputRef.current;
+      event.currentTarget = innerInputRef.current;
       event.target.value = '';
       onChange(event);
     }
@@ -99,7 +95,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
 
   function clearPasswordValueAttribute() {
     if (props.type === 'password') {
-      setTimeout(() => inputRef.current?.removeAttribute('value'), 0);
+      setTimeout(() => innerInputRef.current?.removeAttribute('value'), 0);
     }
   }
 
@@ -107,6 +103,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
     <InputContainerView
       style={style}
       className={className}
+      ref={ref}
     >
       {addonBefore &&
         <AddonView
@@ -118,7 +115,7 @@ const Input = React.forwardRef((props: Partial<InputProps>, ref: React.Ref<HTMLI
         </AddonView>
       }
       <InputView
-        ref={inputRef}
+        ref={mergedRef}
         prefixWidth={prefixWidth}
         suffixWidth={suffixWidth}
         addonAfter={addonAfter}

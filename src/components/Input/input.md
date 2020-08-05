@@ -1,6 +1,18 @@
 Basic Input:
 
 ```jsx
+<Input
+  defaultValue="defaultValue"
+  allowClear
+  style={{ width: 200 }}
+  placeholder="This is placeholder"
+/>
+```
+InputRef:
+
+使用 inputRef 获取内部原生 input 元素的 ref。
+
+```jsx
 import React, { useRef, useEffect } from 'react';
 import Button from '../Button';
 
@@ -14,16 +26,12 @@ function onPressEnter(e) {
   console.log('onPressEnter', e.keyCode);
 }
 
-useEffect(() => {
-  console.log('input', ref.current.element.type)
-});
-
 <>
   <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.focus()}>focus</Button>
   <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.blur()}>blur</Button>
   <Button type="primary" style={{ marginRight: 8 }} onClick={() => ref.current.select()}>select</Button>
   <Input
-    ref={ref}
+    inputRef={ref}
     defaultValue="This is defaultValue"
     onChange={onChange}
     allowClear

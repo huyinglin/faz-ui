@@ -24,6 +24,9 @@ export interface TooltipProps {
   /** 默认是否显隐 */
   defaultVisible: boolean;
 
+  /** Tooltip 和 children 的间距 */
+  space: number;
+
   /** 浮层渲染父节点，默认渲染到 body 上 */
   container: React.ReactInstance | (() => React.ReactInstance);
 

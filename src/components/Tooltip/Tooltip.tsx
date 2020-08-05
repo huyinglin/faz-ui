@@ -30,6 +30,7 @@ function Tooltip(props: Partial<TooltipProps>) {
     trigger = 'hover',
     enterDelay = 100,
     leaveDelay = 100,
+    space = 12,
     className,
     style,
     onChange,
@@ -63,6 +64,8 @@ function Tooltip(props: Partial<TooltipProps>) {
   } = child.props;
 
   React.useEffect(() => {
+    console.log('childRef: ', childRef);
+
     const childRect = childRef.current?.getBoundingClientRect();
     if (childRect && visible) {
       handlePlacement(childRect);
@@ -89,9 +92,6 @@ function Tooltip(props: Partial<TooltipProps>) {
 
     /** children 的距离文档顶部的距离 */
     const childTopOffset = window.scrollY + childRect.top;
-
-    /** Tooltip 和 children 的间距 */
-    const space = 12;
 
     const topPlacementTop = childTopOffset - tooltipHeight - space;
     const buttomPlacementTop = window.scrollY + childRect.bottom + space;

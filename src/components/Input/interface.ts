@@ -17,6 +17,9 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   /** 是否禁用状态 */
   disabled: boolean;
 
+  /** input 元素的 ref */
+  inputRef: React.Ref<HTMLInputElement>;
+
   /** 最大长度 */
   maxLength: number;
 

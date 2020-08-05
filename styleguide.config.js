@@ -53,18 +53,18 @@ module.exports = {
       components: () => ([
         path.resolve(__dirname, 'src/components/Button', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Icon', 'index.tsx'),
-      ])
+      ]),
     },
     {
       name: '布局',
       components: () => ([
-      ])
+      ]),
     },
     {
       name: '导航',
       components: () => ([
         path.resolve(__dirname, 'src/components/Menu', 'index.tsx'),
-      ])
+      ]),
     },
     {
       name: '数据录入',
@@ -73,7 +73,8 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Checkbox', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Radio', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Switch', 'index.tsx'),
-      ])
+        path.resolve(__dirname, 'src/components/Select', 'index.tsx'),
+      ]),
     },
     {
       name: '数据展示',
@@ -84,7 +85,7 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Tag', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Tooltip', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Popover', 'index.tsx'),
-      ])
+      ]),
     },
     {
       name: '反馈',
@@ -95,7 +96,7 @@ module.exports = {
         path.resolve(__dirname, 'src/components/Notification', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Spin', 'index.tsx'),
         path.resolve(__dirname, 'src/components/Popconfirm', 'index.tsx'),
-      ])
+      ]),
     },
   ],
-}
+};
