@@ -7,18 +7,29 @@ function Option(props: SelectOptionProps) {
   const {
     disabled = false,
     value = '',
+    children = '',
     style,
     className,
-    children,
   } = props;
 
-  const { width, value: selectdValue, onSelect, onFocus } = React.useContext(SelectContext);
+  const {
+    width,
+    showSearch,
+    searchedLabels,
+    value: selectdValue,
+    onSelect,
+    onFocus,
+  } = React.useContext(SelectContext);
 
   function handleClick() {
     if (disabled) {
       return;
     }
     onSelect(value, children);
+  }
+
+  if (showSearch && !searchedLabels[children]) {
+    return null;
   }
 
   return (

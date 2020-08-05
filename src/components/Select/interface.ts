@@ -48,9 +48,16 @@ export interface SelectOptionProps {
   children?: string;
 }
 
+export interface SelectOption {
+  value: string | number;
+  label: string;
+  disabled: boolean;
+}
 export interface SelectContextProps {
   width: number;
   value?: string | number;
+  showSearch: boolean;
+  searchedLabels: {[label: string]: boolean};
   onSelect: (selectValue: string | number, label?: string) => void;
   onFocus: () => void;
 }

@@ -2,7 +2,8 @@ import React from 'react';
 import Option from './component/Option';
 
 import {
-  SelectProps
+  SelectProps,
+  SelectOption,
 } from './interface';
 import {
   SelectView,
@@ -31,6 +32,10 @@ function Select(props: SelectProps) {
 
   const selectInputRef = React.useRef<HTMLInputElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const selectLabel = React.useRef<string | undefined>();
+  const searchedLabels = React.useRef<{[label: string]: boolean}>({});
+  const searchLabels = React.useRef<{[label: string]: boolean}>({});
+  const option = React.useRef<SelectOption[]>([]);
 
   const { width } = useMeasureDirty(inputRef);
   const hideCaret = React.useMemo(() => !showSearch, [showSearch]);
@@ -44,21 +49,71 @@ function Select(props: SelectProps) {
     isProps: 'value' in props,
   });
 
+  React.useEffect(() => {
+    React.Children.forEach(children, (child: any) => {
+      if (child) {
+        option.current.push({
+          value: child.props.value,
+          label: child.props.children,
+          disabled: child.props.disabled,
+        });
+        searchedLabels.current[child.props.children] = true;
+        searchLabels.current[child.props.children] = true;
+      }
+    });
+  }, [children]);
+
   function handleSelect(selectValue: string | number, label?: string) {
     setValue(selectValue);
     setVisible(false);
     setInputValue(label);
+    selectLabel.current = label;
+    searchedLabels.current = {...searchLabels.current};
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (hideCaret) {
       return;
     }
-    setInputValue(e.target.value);
+    const { value } = e.target;
+
+    setInputValue(value);
+
+    if (showSearch) {
+      if (visible) {
+        handleSearch(value);
+      } else {
+        const lastStr = value.substr(-1);
+        handleVisibleChange(true);
+        setInputValue(lastStr);
+        handleSearch(lastStr);
+      }
+    }
+  }
+
+  function handleSearch(searchValue: string) {
+    if (!searchValue) {
+      searchedLabels.current = {...searchLabels.current};
+      return;
+    }
+    option.current.forEach((it: SelectOption) => {
+      searchedLabels.current[it.label] = it.disabled
+        ? false
+        : !!it.label.toLowerCase().includes(searchValue.toLowerCase());
+    });
   }
 
   function handleVisibleChange(visible: boolean) {
     setVisible(visible);
+    if (showSearch) {
+      if (visible) {
+        setPlaceholder(inputValue);
+        setInputValue(undefined);
+      } else {
+        setPlaceholder(props.placeholder);
+        setInputValue(selectLabel.current);
+      }
+    }
   }
 
   function handleSelectInputFocus() {
@@ -70,6 +125,7 @@ function Select(props: SelectProps) {
   function handleClear() {
     setValue(undefined);
     setInputValue(undefined);
+    selectLabel.current = undefined;
   }
 
   function handleSuffixMouseEnter() {
@@ -90,7 +146,7 @@ function Select(props: SelectProps) {
     if (disabled) {
       return;
     }
-    setVisible(true);
+    handleVisibleChange(true);
     handleSelectInputFocus();
   }
 
@@ -110,6 +166,8 @@ function Select(props: SelectProps) {
   const contextValue = {
     value,
     width,
+    showSearch,
+    searchedLabels: searchedLabels.current,
     onSelect: handleSelect,
     onFocus: handleSelectInputFocus,
   };
