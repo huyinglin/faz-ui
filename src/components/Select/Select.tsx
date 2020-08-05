@@ -69,21 +69,36 @@ function Select(props: SelectProps) {
   }
 
   function handleSuffixMouseEnter() {
+    if (disabled) {
+      return;
+    }
     setSuffixHover(true);
   }
 
   function handleSuffixMouseLeave() {
+    if (disabled) {
+      return;
+    }
     setSuffixHover(false);
+  }
+
+  function handleSuffixClick() {
+    if (disabled) {
+      return;
+    }
+    setVisible(true);
+    handleSelectInputFocus();
   }
 
   const selectSuffix = (
     <SelectSuffixView
+      disabled={disabled}
       onMouseEnter={handleSuffixMouseEnter}
       onMouseLeave={handleSuffixMouseLeave}
     >
       {suffixHover && allowClear && value
         ? <span onClick={handleClear}>{clearIcon}</span>
-        : <span onClick={() => setVisible(true)}>{suffixIcon}</span>
+        : <span onClick={handleSuffixClick}>{suffixIcon}</span>
       }
     </SelectSuffixView>
   );
@@ -111,6 +126,7 @@ function Select(props: SelectProps) {
         <SelectInputView
           placeholder={placeholder}
           value={inputValue}
+          disabled={disabled}
           suffix={selectSuffix}
           inputRef={selectInputRef}
           onChange={handleInputChange}

@@ -53,12 +53,12 @@ export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolea
   ${({ disabled }) => disabled && disabledCSS}
 `;
 
-export const SelectSuffixView = styled.div`
+export const SelectSuffixView = styled.div<{ disabled: boolean; }>`
   width: 16px;
   height: 100%;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 
   > span {
     display: flex;
