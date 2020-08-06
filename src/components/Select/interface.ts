@@ -45,19 +45,26 @@ export interface SelectOptionProps {
 
   className?: string;
 
-  children?: string;
+  children?: string | string[];
 }
 
 export interface SelectOption {
   value: string | number;
   label: string;
   disabled: boolean;
+  selected: boolean;
+  searchTarget: boolean;
 }
+
+export type OptioinMap = Map<string | number, SelectOption>;
+
 export interface SelectContextProps {
   width: number;
   value?: string | number;
   showSearch: boolean;
-  searchedLabels: {[label: string]: boolean};
+  option: OptioinMap;
+  keyboardActiveValue: string | number | null;
   onSelect: (selectValue: string | number, label?: string) => void;
   onFocus: () => void;
+  onHover: (value: string | number) => void;
 }

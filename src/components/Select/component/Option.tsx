@@ -2,6 +2,7 @@ import React from 'react';
 import { SelectOptionProps } from '../interface';
 import { SelectOptionView } from '../style';
 import { SelectContext } from './SelectContext';
+import { formatChildren } from '../Select';
 
 function Option(props: SelectOptionProps) {
   const {
@@ -13,34 +14,56 @@ function Option(props: SelectOptionProps) {
   } = props;
 
   const {
-    width,
     showSearch,
-    searchedLabels,
+    option,
+    keyboardActiveValue,
     value: selectdValue,
+    onHover,
     onSelect,
     onFocus,
   } = React.useContext(SelectContext);
+
+  const optionRef = React.useRef<HTMLDivElement>(null);
+  const selected = selectdValue === value;
+  const hover = keyboardActiveValue === value;
+
+  const child = React.useMemo(() => formatChildren(children), [children]);
+
+  React.useEffect(() => {
+    if (hover) {
+      optionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+  }, [hover]);
 
   function handleClick() {
     if (disabled) {
       return;
     }
-    onSelect(value, children);
+    onSelect(value, child);
   }
 
-  if (showSearch && !searchedLabels[children]) {
+  function handleMouseEnter() {
+    if (disabled) {
+      return;
+    }
+    onHover(value);
+  }
+
+  if (showSearch && !option.get(child)?.searchTarget) {
     return null;
   }
 
   return (
     <SelectOptionView
-      width={width}
+      ref={optionRef}
       style={style}
       className={className}
       disabled={disabled}
-      selected={selectdValue === value}
+      selected={selected}
+      hover={hover}
       onClick={handleClick}
       onMouseDown={onFocus}
+      onMouseEnter={handleMouseEnter}
     >
       {children}
     </SelectOptionView>

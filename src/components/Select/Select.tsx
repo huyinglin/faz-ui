@@ -3,7 +3,7 @@ import Option from './component/Option';
 
 import {
   SelectProps,
-  SelectOption,
+  OptioinMap,
 } from './interface';
 import {
   SelectView,
@@ -14,6 +14,21 @@ import { SelectContext } from './component/SelectContext';
 import { useMergedState } from '../../hooks/useMergedState';
 import { AiOutlineDown, AiFillCloseCircle } from 'react-icons/ai';
 import { useMeasureDirty } from '../../hooks/useMeasure';
+import Empty from '../Empty';
+import { ArrayIterator } from 'lodash';
+
+export function formatChildren(children: React.ReactNode): string {
+  if (typeof children === 'string') {
+    return children;
+  }
+  if (Array.isArray(children)) {
+    return children.join('');
+  }
+  if (React.isValidElement(children)) {
+    throw new Error('Faz-UI: The children of the Select.Option must be either a string or an array.');
+  }
+  return '';
+}
 
 function Select(props: SelectProps) {
   const {
@@ -32,11 +47,11 @@ function Select(props: SelectProps) {
 
   const selectInputRef = React.useRef<HTMLInputElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const selectLabel = React.useRef<string | undefined>();
-  const searchedLabels = React.useRef<{[label: string]: boolean}>({});
-  const searchLabels = React.useRef<{[label: string]: boolean}>({});
-  const option = React.useRef<SelectOption[]>([]);
+  const selectLabel = React.useRef<string | undefined>(); // 缓存当前选中的 label
+  const searchEmpty = React.useRef<boolean>(false);
+  const option = React.useRef<OptioinMap>(new Map());
 
+  const [keyboardActiveValue, setKeyboardActiveValue] = React.useState<string | number | null>(null); // 上下建控制选择
   const { width } = useMeasureDirty(inputRef);
   const hideCaret = React.useMemo(() => !showSearch, [showSearch]);
   const [inputValue, setInputValue] = React.useState<string>();
@@ -52,23 +67,69 @@ function Select(props: SelectProps) {
   React.useEffect(() => {
     React.Children.forEach(children, (child: any) => {
       if (child) {
-        option.current.push({
+        const label = formatChildren(child.props.children);
+        option.current.set(label, {
+          label,
           value: child.props.value,
-          label: child.props.children,
           disabled: child.props.disabled,
+          selected: false,
+          searchTarget: true,
         });
-        searchedLabels.current[child.props.children] = true;
-        searchLabels.current[child.props.children] = true;
       }
     });
   }, [children]);
 
+  const handleKeyboardControll = React.useCallback((e: KeyboardEvent) => {
+    if (!visible) {
+      return;
+    }
+    const up = 38;
+    const down = 40;
+    const enter = 13;
+    const optionArr = [...(option.current.values() as any)]
+
+    if (e.keyCode === up || e.keyCode === down) {
+      if (keyboardActiveValue === null) {
+        for (let value of (option.current.values() as any)) { //  找到一个 disabled 不为 true 的 children
+          if (!value.disabled) {
+            setKeyboardActiveValue(value.value);
+            break;
+          }
+        }
+      } else {
+        const validOption = optionArr.filter(it => !it.disabled);
+        const currentIndex = validOption.findIndex(it => it.value === keyboardActiveValue);
+
+        if (e.keyCode === up) {
+          const prevIndex = (currentIndex - 1 + validOption.length) % validOption.length;
+          setKeyboardActiveValue(validOption[prevIndex].value);
+        } else if (e.keyCode === down) {
+          const nextIndex = (currentIndex + 1) % validOption.length;
+          setKeyboardActiveValue(validOption[nextIndex].value);
+        }
+      }
+    }
+    if (e.keyCode === enter && keyboardActiveValue) {
+      const current = optionArr.find(it => it.value === keyboardActiveValue);
+      if (current) {
+        handleSelect(keyboardActiveValue, current.label);
+      }
+    }
+  }, [visible, option, keyboardActiveValue]);
+
+  React.useEffect(() => {
+    window.addEventListener('keydown', handleKeyboardControll, false);
+    return () => window.removeEventListener('keydown', handleKeyboardControll, false);
+  }, [handleKeyboardControll]);
+
   function handleSelect(selectValue: string | number, label?: string) {
+    console.log('selectValue: ', selectValue, label);
     setValue(selectValue);
-    setVisible(false);
     setInputValue(label);
+    handelResetSearch();
     selectLabel.current = label;
-    searchedLabels.current = {...searchLabels.current};
+    setKeyboardActiveValue(selectValue);
+    setVisible(false);
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -91,16 +152,30 @@ function Select(props: SelectProps) {
     }
   }
 
-  function handleSearch(searchValue: string) {
-    if (!searchValue) {
-      searchedLabels.current = {...searchLabels.current};
-      return;
-    }
-    option.current.forEach((it: SelectOption) => {
-      searchedLabels.current[it.label] = it.disabled
-        ? false
-        : !!it.label.toLowerCase().includes(searchValue.toLowerCase());
+  function handelResetSearch() {
+    option.current.forEach((value, key, map) => {
+      map.set(key, {...value, searchTarget: true});
     });
+  }
+
+  function handleSearch(searchValue: string) {
+    let empty = false;
+    option.current.forEach((value, key, map) => {
+      let searchTarget = true;
+      if (!searchValue) {
+        searchTarget = true;
+      } else if (value.disabled) {
+        searchTarget = false;
+      } else {
+        searchTarget = !!value.label.toLowerCase().includes(searchValue.toLowerCase());
+      }
+      if (searchTarget) {
+        empty = searchTarget;
+      }
+      map.set(key, {...value, searchTarget});
+    });
+
+    searchEmpty.current = !empty;
   }
 
   function handleVisibleChange(visible: boolean) {
@@ -112,8 +187,13 @@ function Select(props: SelectProps) {
       } else {
         setPlaceholder(props.placeholder);
         setInputValue(selectLabel.current);
+        searchEmpty.current = false;
+        handelResetSearch();
       }
     }
+    // if (!visible) {
+    //   setKeyboardActiveValue(null);
+    // }
   }
 
   function handleSelectInputFocus() {
@@ -150,6 +230,10 @@ function Select(props: SelectProps) {
     handleSelectInputFocus();
   }
 
+  function handleChildrenHover(value: string | number) {
+    setKeyboardActiveValue(value);
+}
+
   const selectSuffix = (
     <SelectSuffixView
       disabled={disabled}
@@ -167,9 +251,11 @@ function Select(props: SelectProps) {
     value,
     width,
     showSearch,
-    searchedLabels: searchedLabels.current,
+    option: option.current,
+    keyboardActiveValue,
     onSelect: handleSelect,
     onFocus: handleSelectInputFocus,
+    onHover: handleChildrenHover,
   };
 
   return (
@@ -181,10 +267,13 @@ function Select(props: SelectProps) {
         space={4}
         enterDelay={50}
         arrow={false}
+        // visible={true}
         visible={visible}
+        width={width}
+        listHeight={listHeight}
         onChange={handleVisibleChange}
         childrenFocus={handleSelectInputFocus}
-        title={children}
+        title={searchEmpty.current ? <Empty size={56}/> : children}
       >
         <SelectInputView
           placeholder={placeholder}

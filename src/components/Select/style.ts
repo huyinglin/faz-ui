@@ -3,9 +3,13 @@ import { themeColor } from '../../styled';
 import Tooltip from '../Tooltip';
 import Input from '../Input';
 
-export const SelectView = styled(Tooltip)`
+export const SelectView = styled(Tooltip)<{ listHeight: number; width: number; }>`
   padding: 4px 0;
+  width: ${({ width }) => width}px;
   max-width: unset;
+  max-height: ${({ listHeight }) => listHeight}px;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const SelectInputView = styled(Input)<{ hideCaret: boolean; }>`
@@ -34,8 +38,8 @@ const disabledCSS = css`
   }
 `;
 
-export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolean; width: number; }>`
-  width: ${({ width }) => width}px;
+export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolean; hover: boolean; }>`
+  width: 100%;
   min-height: 32px;
   padding: 6px 12px;
   box-sizing: border-box;
@@ -44,10 +48,11 @@ export const SelectOptionView = styled.div<{ selected: boolean; disabled: boolea
   color: rgba(0, 0, 0, 0.65);
   cursor: pointer;
   transition: all 0.3s ease;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 
-  &:hover {
-    background: #f5f5f5;
-  }
+  background: ${({ disabled, hover }) => !disabled && hover ? '#f5f5f5' : 'unset'};
 
   ${({ selected }) => selected && selectCSS}
   ${({ disabled }) => disabled && disabledCSS}

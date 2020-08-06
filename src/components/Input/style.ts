@@ -79,7 +79,6 @@ export const AffixView = styled.span<{ affixType: 'prefix' | 'suffix'; addonBefo
       : `right: ${addonAfterWidth ? addonAfterWidth + 12 * 2 : 0}px;`
   }
   ${({ affixType }) => affixType === 'prefix' ? 'padding-left: 8px;' : 'padding-right: 8px;'}
-  z-index: 1;
   height: 100%;
   display: flex;
   align-items: center;

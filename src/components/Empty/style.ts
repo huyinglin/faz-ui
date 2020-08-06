@@ -11,6 +11,7 @@ export const EmptyView = styled.div`
   justify-content: center;
   color: rgba(0, 0, 0, 0.25);
   padding: 8px;
+  box-sizing: border-box;
 
   >span {
     margin: 8px;

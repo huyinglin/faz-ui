@@ -12,6 +12,7 @@ function Empty(props: Partial<EmptyProps>) {
   const {
     description,
     image,
+    size = 64,
     imageStyle,
     style,
     className,
@@ -19,7 +20,7 @@ function Empty(props: Partial<EmptyProps>) {
 
   return (
     <EmptyView style={style} className={className}>
-      {image || <BsInboxFill style={{ fontSize: 64, color: '#ccc' }}/>}
+      {image || <BsInboxFill style={{ fontSize: size, color: '#ccc' }}/>}
       <span>{description || '暂无数据'}</span>
     </EmptyView>
   );

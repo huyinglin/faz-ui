@@ -8,6 +8,8 @@ export interface EmptyProps {
   /** 图片样式 */
   imageStyle: React.CSSProperties;
 
+  size: number;
+
   style: React.CSSProperties;
 
   className: string;
