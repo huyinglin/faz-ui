@@ -11,15 +11,18 @@ export interface SelectProps {
   /** 使单选模式可搜索 */
   showSearch: boolean;
 
+  /** 开启多选模式 */
+  multiple: boolean;
+
   /** 自定义选择框后缀图标 */
   suffixIcon: React.ReactNode;
 
   /** 自定义多选框清空图标	 */
   clearIcon: React.ReactNode;
 
-  defaultValue: any;
+  defaultValue: string | string[];
 
-  value: any;
+  value: string | string[];
 
   /** 选择框默认文字 */
   placeholder: string;
@@ -39,7 +42,7 @@ export interface SelectOptionProps {
   disabled?: boolean;
 
   /** 默认根据此属性值进行筛选 */
-  value: string | number;
+  value: string;
 
   style?: React.CSSProperties;
 
@@ -49,22 +52,24 @@ export interface SelectOptionProps {
 }
 
 export interface SelectOption {
-  value: string | number;
+  value: string;
   label: string;
   disabled: boolean;
   selected: boolean;
   searchTarget: boolean;
 }
 
-export type OptioinMap = Map<string | number, SelectOption>;
+export type OptioinMap = Map<string, SelectOption>;
 
 export interface SelectContextProps {
-  width: number;
-  value?: string | number;
+  value: string[];
+  selectWidth: number;
   showSearch: boolean;
+  multiple: boolean;
   option: OptioinMap;
-  keyboardActiveValue: string | number | null;
-  onSelect: (selectValue: string | number, label?: string) => void;
+  keyboardActiveValue: string | null;
+  onUnselect: (selectValue: string, label: string) => void;
+  onSelect: (selectValue: string, label: string) => void;
   onFocus: () => void;
-  onHover: (value: string | number) => void;
+  onHover: (value: string) => void;
 }

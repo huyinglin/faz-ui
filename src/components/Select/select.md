@@ -7,6 +7,17 @@ Basic Select:
   )}
 </Select>
 ```
+Multiple Select:
+
+多选模式。
+
+```jsx
+<Select multiple placeholder="placeholder">
+  {Array.from({length: 10}).map((it, index) =>
+    <Select.Option value={index} key={index}>Option-{index}</Select.Option>
+  )}
+</Select>
+```
 ShowSearch:
 
 ```jsx

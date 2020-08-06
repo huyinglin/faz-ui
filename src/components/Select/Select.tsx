@@ -9,13 +9,15 @@ import {
   SelectView,
   SelectInputView,
   SelectSuffixView,
+  MultiSelectView,
+  MultiSelectPlaceholderView,
 } from './style';
 import { SelectContext } from './component/SelectContext';
 import { useMergedState } from '../../hooks/useMergedState';
 import { AiOutlineDown, AiFillCloseCircle } from 'react-icons/ai';
 import { useMeasureDirty } from '../../hooks/useMeasure';
 import Empty from '../Empty';
-import { ArrayIterator } from 'lodash';
+import Tag from '../Tag';
 
 export function formatChildren(children: React.ReactNode): string {
   if (typeof children === 'string') {
@@ -40,27 +42,47 @@ function Select(props: SelectProps) {
     suffixIcon = <AiOutlineDown style={{ color: 'rgba(0, 0, 0, 0.25)' }}/>,
     clearIcon = <AiFillCloseCircle style={{ color: 'rgba(0, 0, 0, 0.25)' }}/>,
     listHeight = 256,
+    multiple = false,
     style,
     className,
     children,
   } = props;
 
   const selectInputRef = React.useRef<HTMLInputElement>(null);
+  const mutiInputRef = React.useRef<HTMLInputElement>(null);
+  const mutiSelectRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const selectLabel = React.useRef<string | undefined>(); // 缓存当前选中的 label
   const searchEmpty = React.useRef<boolean>(false);
   const option = React.useRef<OptioinMap>(new Map());
 
-  const [keyboardActiveValue, setKeyboardActiveValue] = React.useState<string | number | null>(null); // 上下建控制选择
   const { width } = useMeasureDirty(inputRef);
-  const hideCaret = React.useMemo(() => !showSearch, [showSearch]);
+
+  const [keyboardActiveValue, setKeyboardActiveValue] = React.useState<string | null>(null); // 上下建控制选择
   const [inputValue, setInputValue] = React.useState<string>();
   const [visible, setVisible] = React.useState<boolean>(false);
   const [suffixHover, setSuffixHover] = React.useState<boolean>(false);
   const [placeholder, setPlaceholder] = React.useState<string | undefined>(props.placeholder);
 
-  const [value, setValue] = useMergedState(defaultValue, {
-    value: props.value,
+  const hideCaret = React.useMemo(() => !showSearch, [showSearch]);
+  const propsValue = React.useMemo(() => {
+    if (!('value' in props)) {
+      return undefined;
+    }
+    if (typeof props.value === 'string') {
+      return [props.value];
+    }
+    return Array.isArray(props.value) ? props.value : [];
+  }, [props.value]);
+  const propsDefaultValue = React.useMemo(() => {
+    if (typeof defaultValue === 'string') {
+      return [defaultValue];
+    }
+    return ('defaultValue' in props) && Array.isArray(defaultValue) ? defaultValue : [];
+  }, [defaultValue]);
+
+  const [value, setValue] = useMergedState<string[]>(() => propsDefaultValue, {
+    value: propsValue,
     isProps: 'value' in props,
   });
 
@@ -68,7 +90,7 @@ function Select(props: SelectProps) {
     React.Children.forEach(children, (child: any) => {
       if (child) {
         const label = formatChildren(child.props.children);
-        option.current.set(label, {
+        option.current.set(child.props.value, {
           label,
           value: child.props.value,
           disabled: child.props.disabled,
@@ -80,7 +102,7 @@ function Select(props: SelectProps) {
   }, [children]);
 
   const handleKeyboardControll = React.useCallback((e: KeyboardEvent) => {
-    if (!visible) {
+    if (!visible || multiple) {
       return;
     }
     const up = 38;
@@ -122,14 +144,25 @@ function Select(props: SelectProps) {
     return () => window.removeEventListener('keydown', handleKeyboardControll, false);
   }, [handleKeyboardControll]);
 
-  function handleSelect(selectValue: string | number, label?: string) {
-    console.log('selectValue: ', selectValue, label);
-    setValue(selectValue);
-    setInputValue(label);
+  function handleSelect(selectValue: string, label: string) {
     handelResetSearch();
-    selectLabel.current = label;
     setKeyboardActiveValue(selectValue);
-    setVisible(false);
+
+    if (multiple) {
+      setValue([...value, selectValue]);
+      handleMutiSelectFocus();
+    } else {
+      setValue([selectValue]);
+      setInputValue(label);
+      selectLabel.current = label;
+      setVisible(false);
+    }
+  }
+
+  function handleUnselect(selectValue: string) {
+    setValue(value.filter(it => it !== selectValue));
+    mutiSelectRef.current?.focus();
+    handelResetSearch();
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -191,9 +224,6 @@ function Select(props: SelectProps) {
         handelResetSearch();
       }
     }
-    // if (!visible) {
-    //   setKeyboardActiveValue(null);
-    // }
   }
 
   function handleSelectInputFocus() {
@@ -202,8 +232,14 @@ function Select(props: SelectProps) {
     }, 0);
   }
 
+  function handleMutiSelectFocus() {
+    setTimeout(() => {
+      mutiSelectRef.current?.focus();
+    }, 0);
+  }
+
   function handleClear() {
-    setValue(undefined);
+    setValue([]);
     setInputValue(undefined);
     selectLabel.current = undefined;
   }
@@ -230,7 +266,7 @@ function Select(props: SelectProps) {
     handleSelectInputFocus();
   }
 
-  function handleChildrenHover(value: string | number) {
+  function handleChildrenHover(value: string) {
     setKeyboardActiveValue(value);
 }
 
@@ -240,20 +276,24 @@ function Select(props: SelectProps) {
       onMouseEnter={handleSuffixMouseEnter}
       onMouseLeave={handleSuffixMouseLeave}
     >
-      {suffixHover && allowClear && value
+      {suffixHover && allowClear && value.length
         ? <span onClick={handleClear}>{clearIcon}</span>
         : <span onClick={handleSuffixClick}>{suffixIcon}</span>
       }
     </SelectSuffixView>
   );
 
+  const selectWidth = multiple ? (mutiSelectRef.current?.offsetWidth || 0) : width;
+
   const contextValue = {
     value,
-    width,
+    multiple,
     showSearch,
+    selectWidth,
     option: option.current,
     keyboardActiveValue,
     onSelect: handleSelect,
+    onUnselect: handleUnselect,
     onFocus: handleSelectInputFocus,
     onHover: handleChildrenHover,
   };
@@ -269,24 +309,47 @@ function Select(props: SelectProps) {
         arrow={false}
         // visible={true}
         visible={visible}
-        width={width}
+        width={selectWidth}
         listHeight={listHeight}
         onChange={handleVisibleChange}
         childrenFocus={handleSelectInputFocus}
         title={searchEmpty.current ? <Empty size={56}/> : children}
       >
-        <SelectInputView
-          placeholder={placeholder}
-          value={inputValue}
-          disabled={disabled}
-          suffix={selectSuffix}
-          inputRef={selectInputRef}
-          onChange={handleInputChange}
-          hideCaret={hideCaret}
-          style={style}
-          ref={inputRef}
-          className={className}
-        />
+        {multiple
+          ? <MultiSelectView
+              ref={mutiSelectRef}
+              style={style}
+              tabIndex={0}
+              className={className}
+              onClick={handleMutiSelectFocus}
+            >
+              {value.length
+                ? value.map(selectedValue =>
+                    <Tag
+                      key={selectedValue}
+                      closable
+                      onClose={() => handleUnselect(selectedValue)}
+                    >
+                      {option.current.get(selectedValue)?.label}
+                    </Tag>
+                  )
+                : <MultiSelectPlaceholderView>{placeholder}</MultiSelectPlaceholderView>
+              }
+              {showSearch && <input ref={mutiInputRef} style={{ border: 'none', outline: 'none', width: 4 }} />}
+            </MultiSelectView>
+          : <SelectInputView
+              placeholder={placeholder}
+              value={inputValue}
+              disabled={disabled}
+              suffix={selectSuffix}
+              inputRef={selectInputRef}
+              onChange={handleInputChange}
+              hideCaret={hideCaret}
+              style={style}
+              ref={inputRef}
+              className={className}
+            />
+        }
       </SelectView>
     </SelectContext.Provider>
   );
