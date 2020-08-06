@@ -79,7 +79,7 @@ export const SelectSuffixView = styled.div<{ disabled: boolean; }>`
   }
 `;
 
-export const MultiSelectView = styled.div`
+export const MultiSelectView = styled.div<{ showMutiSelectClear: boolean; }>`
   box-sizing: border-box;
   margin: 0;
   width: 100%;
@@ -87,6 +87,7 @@ export const MultiSelectView = styled.div`
   min-height: 32px;
   padding: 4px;
   padding-bottom: 0;
+  padding-right: ${({ showMutiSelectClear }) => showMutiSelectClear ? '22px' : '4px'};
   font-variant: tabular-nums;
   list-style: none;
   font-feature-settings: 'tnum';
@@ -137,4 +138,11 @@ export const MultiSelectPlaceholderView = styled.span`
   overflow: hidden;
   white-space: nowrap;
   padding-left: 8px;
+`;
+
+export const MultiSelectClearView = styled.span`
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  display: flex;
 `;

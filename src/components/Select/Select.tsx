@@ -11,6 +11,7 @@ import {
   SelectSuffixView,
   MultiSelectView,
   MultiSelectPlaceholderView,
+  MultiSelectClearView,
 } from './style';
 import { SelectContext } from './component/SelectContext';
 import { useMergedState } from '../../hooks/useMergedState';
@@ -320,6 +321,7 @@ function Select(props: SelectProps) {
               ref={mutiSelectRef}
               style={style}
               tabIndex={0}
+              showMutiSelectClear={multiple && allowClear}
               className={className}
               onClick={handleMutiSelectFocus}
             >
@@ -336,6 +338,9 @@ function Select(props: SelectProps) {
                 : <MultiSelectPlaceholderView>{placeholder}</MultiSelectPlaceholderView>
               }
               {showSearch && <input ref={mutiInputRef} style={{ border: 'none', outline: 'none', width: 4 }} />}
+              {multiple && allowClear && !!value.length && visible &&
+                <MultiSelectClearView onClick={handleClear}>{clearIcon}</MultiSelectClearView>
+              }
             </MultiSelectView>
           : <SelectInputView
               placeholder={placeholder}

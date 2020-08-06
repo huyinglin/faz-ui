@@ -1,7 +1,7 @@
 Basic Select:
 
 ```jsx
-<Select style={{ width: 200 }} placeholder="placeholder">
+<Select style={{ width: 200 }} placeholder="Please select">
   {Array.from({length: 10}).map((it, index) =>
     <Select.Option value={index} key={index}>Option-{index}</Select.Option>
   )}
@@ -12,7 +12,7 @@ Multiple Select:
 多选模式。
 
 ```jsx
-<Select multiple placeholder="placeholder">
+<Select allowClear style={{ width: 400 }} multiple placeholder="Please select">
   {Array.from({length: 10}).map((it, index) =>
     <Select.Option value={index} key={index}>Option-{index}</Select.Option>
   )}
@@ -21,7 +21,7 @@ Multiple Select:
 ShowSearch:
 
 ```jsx
-<Select showSearch style={{ width: 120 }} placeholder="placeholder">
+<Select showSearch style={{ width: 200 }} placeholder="Please select">
   <Select.Option value="jack">Jack</Select.Option>
   <Select.Option value="lucy">Lucy</Select.Option>
   <Select.Option value="disabled" disabled>
@@ -33,7 +33,7 @@ ShowSearch:
 AllowClear:
 
 ```jsx
-<Select allowClear style={{ width: 120 }} placeholder="placeholder">
+<Select allowClear style={{ width: 200 }} placeholder="Please select">
   <Select.Option value="jack">Jack</Select.Option>
   <Select.Option value="lucy">Lucy</Select.Option>
   <Select.Option value="disabled" disabled>
@@ -45,7 +45,7 @@ AllowClear:
 Disabled:
 
 ```jsx
-<Select disabled style={{ width: 120 }} placeholder="placeholder">
+<Select disabled style={{ width: 200 }} placeholder="Please select">
   <Select.Option value="jack">Jack</Select.Option>
   <Select.Option value="lucy">Lucy</Select.Option>
   <Select.Option value="disabled" disabled>
