@@ -35,6 +35,10 @@ export interface SelectProps {
   className: string;
 
   children: React.ReactNode;
+
+  onSelect: (value: string | string[]) => void;
+
+  onChange: (value: string | string[] | undefined) => void;
 }
 
 export interface SelectOptionProps {

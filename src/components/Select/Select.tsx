@@ -47,6 +47,8 @@ function Select(props: SelectProps) {
     style,
     className,
     children,
+    onSelect,
+    onChange,
   } = props;
 
   const selectInputRef = React.useRef<HTMLInputElement>(null);
@@ -158,12 +160,24 @@ function Select(props: SelectProps) {
       selectLabel.current = label;
       setVisible(false);
     }
+
+    if (onSelect) {
+      onSelect(multiple ? [...value, selectValue] : selectValue);
+    }
+    if (onChange) {
+      onChange(multiple ? [...value, selectValue] : selectValue)
+    }
   }
 
   function handleUnselect(selectValue: string) {
-    setValue(value.filter(it => it !== selectValue));
+    const newValue = value.filter(it => it !== selectValue);
+    setValue(newValue);
     mutiSelectRef.current?.focus();
     handelResetSearch();
+
+    if (onChange) {
+      onChange(newValue);
+    }
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -243,6 +257,10 @@ function Select(props: SelectProps) {
     setValue([]);
     setInputValue(undefined);
     selectLabel.current = undefined;
+
+    if (onChange) {
+      onChange(undefined);
+    }
   }
 
   function handleSuffixMouseEnter() {
