@@ -39,7 +39,7 @@ export function useMergedState<T, R = T>(
     }
     setInnerValue(newValue);
     if (mergedValue !== newValue && onChange) {
-      onChange(newValue, mergedValue);
+      onChange(newValue, mergedValue as any);
     }
   }
 

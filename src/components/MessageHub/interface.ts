@@ -31,5 +31,5 @@ export interface MessageProps {
   duration?: number | null;
   content?: React.ReactNode | ((onClose: () => void) => React.ReactNode);
   onClick?: React.MouseEventHandler<HTMLDivElement>;
-  onClose?: () => void;
+  onClose?: (key?: React.Key) => void;
 }

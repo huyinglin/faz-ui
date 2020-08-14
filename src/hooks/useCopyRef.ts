@@ -7,7 +7,7 @@ function setRef<T>(value: T | null, ref?: Ref<T>): void {
   if (typeof ref === 'function') {
     ref(value);
   } else if (ref) {
-    ref.current = value;
+    (ref.current as any) = value;
   }
 }
 

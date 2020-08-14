@@ -10,6 +10,6 @@ export interface NotificationProps {
   duration?: number | null;
   closable?: boolean;
 
-  onClose?: (key: React.Key) => void;
+  onClose?: (key?: React.Key) => void;
   onClick?: (key: React.Key) => void;
 }

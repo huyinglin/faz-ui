@@ -19,5 +19,5 @@ export function useRefs<RefType>(): [
     cacheRefs.current.delete(key);
   }
 
-  return [getRef, removeRef];
+  return [getRef as any, removeRef];
 }

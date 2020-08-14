@@ -16,7 +16,7 @@ import { useMeasure } from '../../hooks/useMeasure';
 import { usePrevious } from '../../hooks/usePrevious';
 import { useSpring, animated } from 'react-spring';
 
-function Tree(props: TreeProps) {
+function Tree(props: Partial<TreeProps>) {
   const {
     name,
     defaultOpen = false,
