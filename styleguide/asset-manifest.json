@@ -2,15 +2,15 @@
   "files": {
     "main.js": "/build/main.14a864be.js",
     "runtime-main.js": "/build/bundle.e4600816.js",
-    "build/2.9c58845b.js": "/build/2.9c58845b.js",
-    "build/2.9c58845b.js.LICENSE.txt": "/build/2.9c58845b.js.LICENSE.txt",
+    "build/2.01059d34.js": "/build/2.01059d34.js",
+    "build/2.01059d34.js.LICENSE.txt": "/build/2.01059d34.js.LICENSE.txt",
     "index.html": "/index.html",
-    "precache-manifest.77b04ad71204a315ea67b151af8774cb.js": "/precache-manifest.77b04ad71204a315ea67b151af8774cb.js",
+    "precache-manifest.8b0b246f4be3b4731c79262793d7e965.js": "/precache-manifest.8b0b246f4be3b4731c79262793d7e965.js",
     "service-worker.js": "/service-worker.js"
   },
   "entrypoints": [
     "build/bundle.e4600816.js",
-    "build/2.9c58845b.js",
+    "build/2.01059d34.js",
     "build/main.14a864be.js"
   ]
 }

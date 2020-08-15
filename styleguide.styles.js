@@ -28,8 +28,9 @@ const theme = {
     name: colors.primary,
     type: colors.secondary,
     base: colors.dark,
-    link: colors.primary,
-    linkHover: colors.tertiary,
+    link: colors.light,
+    linkHover: colors.light,
+    heading: 'red',
     sidebarBackground: colors.primary
   },
   fontFamily: {
@@ -116,6 +117,9 @@ const styles = {
         padding: rhythm(1)
       }
     },
+    footer: {
+      display: 'none',
+    },
     logo: {
       border: 0,
       paddingBottom: 0,
@@ -158,10 +162,10 @@ const styles = {
     },
     sidebar: {
       border: 0,
-      '& li > a': {
+      '& li a': {
         color: `${colors.light} !important`
       }
-    }
+    },
   },
   TabButton: {
     button: {

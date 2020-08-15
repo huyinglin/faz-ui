@@ -44,9 +44,9 @@ module.exports = {
     'src/components/**/component/**',
     'src/components/**/hook/**',
   ],
-  styles,
   propsParser: require("react-docgen-typescript").withDefaultConfig(options).parse,
   theme,
+  styles,
   sections: [
     {
       name: '通用',
