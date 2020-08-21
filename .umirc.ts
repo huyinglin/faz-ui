@@ -10,5 +10,5 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/Loading',
   },
-  // more config: https://d.umijs.org/config
+  exportStatic: {}
 });
