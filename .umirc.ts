@@ -1,9 +1,14 @@
+import { version } from './package.json';
 import { defineConfig } from 'dumi';
 
 export default defineConfig({
-  title: 'dumi',
-  favicon: 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
-  logo: 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
+  title: `Faz-UI @${version}`,
+  favicon: 'https://faz-images.oss-cn-hangzhou.aliyuncs.com/favicon.png',
+  logo: 'https://faz-images.oss-cn-hangzhou.aliyuncs.com/faz-ui.png',
   outputPath: 'docs-dist',
+  description: '一套基于 React 的 UI 组件库',
+  dynamicImport: {
+    loading: '@/Loading',
+  },
   // more config: https://d.umijs.org/config
 });

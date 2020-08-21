@@ -12,14 +12,14 @@ import React from 'react';
 import { Button } from 'faz-ui';
 
 export default () => (
-  <>
+  <div>
     <Button type="primary" style={{ margin: 8 }}>Primary Button</Button>
     <Button style={{ margin: 8 }}>Default Button</Button>
     <Button type="dashed" style={{ margin: 8 }}>Dashed Button</Button>
     <br />
     <Button type="text" style={{ margin: 8 }}>Text Button</Button>
     <Button type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }}>Link Button</Button>
-  </>
+  </div>
 )
 ```
 ### 按钮形状
@@ -35,7 +35,7 @@ import { Button } from 'faz-ui';
 import { AiOutlineSearch } from "react-icons/ai";
 
 export default () => (
-  <>
+  <div>
     <Button style={{ margin: 8 }} type="primary" shape="circle" icon={<AiOutlineSearch />} />
     <Button style={{ margin: 8 }} type="primary" shape="round" icon={<AiOutlineSearch />} />
     <Button style={{ margin: 8 }} type="primary" shape="round" icon={<AiOutlineSearch />}>
@@ -43,7 +43,7 @@ export default () => (
     </Button>
     <Button shape="circle" style={{ margin: 8 }}>A</Button>
     <Button shape="round" style={{ margin: 8 }}>Round Shape Button</Button>
-  </>
+  </div>
 )
 ```
 ### 按钮尺寸
@@ -58,7 +58,7 @@ import React from 'react';
 import { Button } from 'faz-ui';
 
 export default () => (
-  <>
+  <div>
     <Button size="large" style={{ margin: 8 }}>Large Button</Button>
     <Button size="default" style={{ margin: 8 }}>Default Button</Button>
     <Button size="small" style={{ margin: 8 }}>Small Button</Button>
@@ -78,7 +78,7 @@ export default () => (
     <Button size="large" shape="round" style={{ margin: 8 }}>Large Round Button</Button>
     <Button size="default" shape="round" style={{ margin: 8 }}>Default Round Button</Button>
     <Button size="small" shape="round" style={{ margin: 8 }}>Small Round Button</Button>
-  </>
+  </div>
 )
 ```
 
@@ -95,7 +95,7 @@ import { Button } from 'faz-ui';
 import { AiOutlineSearch } from "react-icons/ai";
 
 export default () => (
-  <>
+  <div>
     <Button style={{ margin: 8 }} type="primary" shape="circle" icon={<AiOutlineSearch />} />
     <Button style={{ margin: 8 }} type="primary" icon={<AiOutlineSearch />}>
       Search
@@ -103,7 +103,7 @@ export default () => (
     <Button style={{ margin: 8 }} icon={<AiOutlineSearch />}>
       Search
     </Button>
-  </>
+  </div>
 )
 ```
 ### 禁用状态
@@ -118,10 +118,10 @@ import React from 'react';
 import { Button } from 'faz-ui';
 
 export default () => (
-  <>
+  <div>
     <Button type="primary" style={{ margin: 8 }} disabled>Primary Button</Button>
     <Button type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }} disabled>Link Button</Button>
-  </>
+  </div>
 )
 ```
 ### Block 按钮
@@ -136,13 +136,13 @@ import React from 'react';
 import { Button } from 'faz-ui';
 
 export default () => (
-  <>
+  <div>
     <Button block type="primary" style={{ margin: 8 }}>Primary</Button>
     <Button block style={{ margin: 8 }}>Default</Button>
     <Button block type="dashed" style={{ margin: 8 }}>Dashed</Button>
     <Button block type="text" style={{ margin: 8 }}>Text</Button>
     <Button block type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }}>Link</Button>
-  </>
+  </div>
 )
 ```
 ### 幽灵按钮
@@ -177,13 +177,13 @@ import React from 'react';
 import { Button } from 'faz-ui';
 
 export default () => (
-  <>
+  <div>
     <Button danger type="primary" style={{ margin: 8 }}>Primary</Button>
     <Button danger style={{ margin: 8 }}>Default</Button>
     <Button danger type="dashed" style={{ margin: 8 }}>Dashed</Button>
     <Button danger type="text" style={{ margin: 8 }}>Text</Button>
     <Button danger type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }}>Link</Button>
-  </>
+  </div>
 )
 ```
 ### 加载中状态
@@ -200,7 +200,7 @@ import { Button } from 'faz-ui';
 const [loading, setLoading] = React.useState(false);
 
 export default () => (
-  <>
+  <div>
     <Button
       type="primary"
       style={{ margin: 8 }}
@@ -211,7 +211,7 @@ export default () => (
     <br/>
     <Button loading={loading} type="primary" style={{ margin: 8 }}>Primary</Button>
     <Button loading={loading} style={{ margin: 8 }}>Default</Button>
-  </>
+  </div>
 )
 ```
 
