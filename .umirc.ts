@@ -10,5 +10,5 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/Loading',
   },
-  exportStatic: {}
+  exportStatic: {},
 });
