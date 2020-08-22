@@ -312,7 +312,7 @@ export default () =>
  */
 
 import React, { useState, useRef } from 'react';
-import { Carousel, Button } from 'faz-ui';
+import { Carousel, Button, Input } from 'faz-ui';
 import styled from 'styled-components';
 
 const CarouselView = styled.h3`
@@ -347,7 +347,8 @@ export default () =>
     <Button style={{ marginRight: 8 }} type="primary" onClick={onNext}>
       Next Page
     </Button>
-    <input
+    <Input
+      style={{ width: 200 }}
       placeholder="input goto key"
       onChange={e => onGoto(e.target.value, true)}
     />
