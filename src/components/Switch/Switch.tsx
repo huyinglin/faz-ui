@@ -83,5 +83,4 @@ const Switch = React.forwardRef((props: Partial<SwitchProps>, ref: React.Ref<HTM
 
 Switch.displayName = 'Switch';
 
-/** @component */
 export default Switch;

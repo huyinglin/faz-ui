@@ -100,5 +100,4 @@ Alert.defaultProps = {
   type: 'info',
 }
 
-/** @component */
 export default Alert;

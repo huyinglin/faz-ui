@@ -81,5 +81,4 @@ Checkbox.defaultProps = {
 
 };
 
-/** @component */
 export default Checkbox;

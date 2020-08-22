@@ -83,5 +83,4 @@ Button.defaultProps = {
   htmlType: 'button',
 };
 
-/** @component */
 export default Button;

@@ -220,5 +220,4 @@ export type ForwardInputType = typeof Input & {
 (Input as ForwardInputType).TextArea = TextArea;
 (Input as ForwardInputType).Search = Search;
 
-/** @component */
 export default Input;

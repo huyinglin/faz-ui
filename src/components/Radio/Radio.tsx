@@ -93,5 +93,4 @@ export type ForwardRadioType = typeof Radio & { Group: typeof Group };
 
 (Radio as ForwardRadioType).Group = Group;
 
-/** @component */
 export default Radio;
