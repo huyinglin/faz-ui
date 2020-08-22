@@ -8,3 +8,4 @@ export { default as Switch } from './components/Switch';
 export { default as Tag } from './components/Tag';
 export { default as Message } from './components/Message';
 export { default as Notification } from './components/Notification';
+export { default as Tooltip } from './components/Tooltip';
