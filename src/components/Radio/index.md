@@ -154,7 +154,7 @@ export default () =>
 
 | 属性       | 说明  | 类型   | 默认值  |
 | --------- | ----- | ------ | ------ |
-| value | 根据 value 进行比较，判断是否选中 | string 或 number | - |
+| value | 根据 value 进行比较，判断是否选中 | string &#124 number | - |
 | checked | 指定当前是否选中 |  boolean | false |
 | defaultChecked | 初始是否选中 |  boolean | false |
 | disabled | 失效状态 |  boolean | false |

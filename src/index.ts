@@ -6,3 +6,5 @@ export { default as Checkbox } from './components/Checkbox';
 export { default as Radio } from './components/Radio';
 export { default as Switch } from './components/Switch';
 export { default as Tag } from './components/Tag';
+export { default as Message } from './components/Message';
+export { default as Notification } from './components/Notification';

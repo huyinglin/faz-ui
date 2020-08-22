@@ -219,7 +219,7 @@ export default () => (
 支持原生 button 的其他所有属性。
 
 | 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
+| --------- | ----- | ------ | ----- |
 | size      | 设置按钮大小   | `large`  `small`  `default`  | `default` |
 | type      | 设置按钮类型	 | `primary` `dashed` `danger` `link` `text` `default`  | `default` |
 | shape     | 设置按钮形状   | `circle`  `round`  | - |
