@@ -89,10 +89,10 @@ export const TooltipArrowView = styled.div<{ background: string; placement: Tool
   ${({ placement }) => arrowPlacement(placement)};
 `;
 
-export const TooltipView = styled.div`
+export const TooltipView = styled.div<{ visible: boolean; }>`
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
-  z-index: 1000;
+  z-index: ${({ visible }) => visible ? 1000 : 'unset' };
 `;

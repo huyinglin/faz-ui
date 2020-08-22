@@ -303,14 +303,14 @@ function Tooltip(props: Partial<TooltipProps>) {
     ref: useCopyRef((child as any).ref, childRef),
   };
 
-  const animationProps = useSpring({ opacity: place ? 1 : 0, config: { duration: 200, easing: ease.easeQuadOut, } });
+  const animationProps = useSpring({ opacity: place ? 1 : 0, config: { duration: 200, easing: ease.easeQuadOut }});
 
   return (
     <>
       {React.cloneElement(child, childrenProps)}
       <Portal>
         {title !== null &&
-          <TooltipView>
+          <TooltipView visible={!!place}>
             <animated.div style={animationProps}>
               <TooltipContentView
                 className={`faz-ui_tooltip ${className}`}

@@ -186,6 +186,8 @@ export default () =>
 
 ## API
 
+请确保 Tooltip 的子元素能接受 onMouseEnter、onMouseLeave、onFocus、onClick 事件。
+
 | 属性       | 说明  | 类型   | 默认值 |
 | --------- | ----- | ------ | ----- |
 | title | Tooltip 内容，设置 title 为 null 时，Tooltip 不会显示 | React.ReactNode | - |
