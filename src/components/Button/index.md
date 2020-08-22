@@ -11,7 +11,7 @@
 import React from 'react';
 import { Button } from 'faz-ui';
 
-export default () => (
+export default () =>
   <div>
     <Button type="primary" style={{ margin: 8 }}>Primary Button</Button>
     <Button style={{ margin: 8 }}>Default Button</Button>
@@ -20,7 +20,6 @@ export default () => (
     <Button type="text" style={{ margin: 8 }}>Text Button</Button>
     <Button type="link" href="https://www.baidu.com" target="_blank" style={{ margin: 8 }}>Link Button</Button>
   </div>
-)
 ```
 ### 按钮形状
 
