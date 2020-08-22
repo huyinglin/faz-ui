@@ -10,3 +10,4 @@ export { default as Message } from './components/Message';
 export { default as Notification } from './components/Notification';
 export { default as Tooltip } from './components/Tooltip';
 export { default as Popover } from './components/Popover';
+export { default as Popconfirm } from './components/Popconfirm';
