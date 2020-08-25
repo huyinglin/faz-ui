@@ -1,5 +1,9 @@
+---
+title: 快速上手
+footer: Copyright © 2020 huyinglin.net 版权所有 [浙ICP备2020030789号-1](beian.miit.gov.cn)
+---
 <p align="center">
-  <a href="https://ant.design">
+  <a href="http://huyinglin.net/">
     <img width="200" src="https://faz-images.oss-cn-hangzhou.aliyuncs.com/faz-ui.png">
   </a>
 </p>
@@ -8,5 +12,3 @@
 
 
 ## 快速上手
-
-Faz-UI 是一套

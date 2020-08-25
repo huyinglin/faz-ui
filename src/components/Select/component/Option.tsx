@@ -5,7 +5,8 @@ import { SelectContext } from './SelectContext';
 import { formatChildren } from '../Select';
 import { AiOutlineCheck } from 'react-icons/ai';
 
-function Option(props: SelectOptionProps) {
+function Option(props: SelectOptionProps, context: any) {
+  console.log('context: ', context);
   const {
     disabled = false,
     value = '',

@@ -338,7 +338,7 @@ function Select(props: SelectProps) {
               style={style}
               tabIndex={0}
               showMutiSelectClear={multiple && allowClear}
-              className={className}
+              className={`faz-ui_select-muti ${className}`}
               onClick={handleMutiSelectFocus}
             >
               {value.length
@@ -368,7 +368,7 @@ function Select(props: SelectProps) {
               hideCaret={hideCaret}
               style={style}
               ref={inputRef}
-              className={className}
+              className={`faz-ui_select ${className}`}
             />
         }
       </SelectView>
