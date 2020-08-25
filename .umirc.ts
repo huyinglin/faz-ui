@@ -11,5 +11,5 @@ export default defineConfig({
     loading: '@/Loading',
   },
   exportStatic: {},
-  publicPath: 'https://faz-source.oss-cn-hangzhou.aliyuncs.com/'
+  publicPath: 'https://faz-source.oss-cn-hangzhou.aliyuncs.com/docs-dist/'
 });
