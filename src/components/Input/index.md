@@ -1,4 +1,5 @@
 ## Input 输入框
+
 ---
 
 ### 基本使用
@@ -12,8 +13,11 @@
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () => <Input placeholder="This is placeholder" style={{ width: 200 }} />
+export default () => (
+  <Input placeholder="This is placeholder" style={{ width: 200 }} />
+);
 ```
+
 ### 带移除图标
 
 ```jsx
@@ -25,8 +29,11 @@ export default () => <Input placeholder="This is placeholder" style={{ width: 20
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () => <Input allowClear placeholder="This is placeholder" style={{ width: 200 }}/>
+export default () => (
+  <Input allowClear placeholder="This is placeholder" style={{ width: 200 }} />
+);
 ```
+
 ### 前置/后置标签
 
 ```jsx
@@ -38,14 +45,16 @@ export default () => <Input allowClear placeholder="This is placeholder" style={
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () =>
+export default () => (
   <Input
     addonBefore="http://"
     addonAfter=".com"
     defaultValue="mysite"
     style={{ width: 400 }}
   />
+);
 ```
+
 ### 前缀和后缀
 
 ```jsx
@@ -57,13 +66,9 @@ export default () =>
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () =>
-  <Input
-    prefix="￥"
-    suffix="RMB"
-    style={{ width: 400 }}
-  />
+export default () => <Input prefix="￥" suffix="RMB" style={{ width: 400 }} />;
 ```
+
 ### 禁用
 
 ```jsx
@@ -75,8 +80,9 @@ export default () =>
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () => <Input disabled style={{ width: 200 }}/>
+export default () => <Input disabled style={{ width: 200 }} />;
 ```
+
 ### 搜索框
 
 ```tsx
@@ -92,7 +98,7 @@ function onSearch(value: string) {
   console.log('SearchValue:', value);
 }
 
-export default () =>
+export default () => (
   <div>
     <Input.Search
       onSearch={onSearch}
@@ -112,8 +118,10 @@ export default () =>
       style={{ width: 400 }}
     />
   </div>
+);
 ```
-### 文本域
+
+<!-- ### 文本域
 
 ```jsx
 /**
@@ -158,28 +166,30 @@ import React from 'react';
 import { Input } from 'faz-ui';
 
 export default () => <Input.Limit maxLength={4} placeholder="Enter up to 4 characters" style={{ width: 200 }}/>
-```
+``` -->
+
 ## API
 
 ### Input
 
 Input 的其他属性和 React 自带的 input 一致。
 
-| 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
-| addonAfter | 带标签的 input，设置后置标签 | React.ReactNode | - |
-| addonBefore | 带标签的 input，设置前置标签 | React.ReactNode | - |
-| prefix | 带有前缀图标的 input	| React.ReactNode | - |
-| suffix | 带有后缀图标的 input	| React.ReactNode | - |
-| defaultValue | 输入框默认内容	| string | - |
-| disabled | 	是否禁用 | boolean | false |
-| inputRef | 内部原生 input 的 ref | `React.Ref<HTMLInputElement>` | - |
-| type | 声明 input 类型，同原生 input 标签的 type 属性 | string | text |
-| allowClear | 可以点击清除图标删除内容	| boolean | false |
-| value | 输入框内容 | string | - |
-| onChange | 输入框内容变化时的回调 | `(event: React.ChangeEvent<HTMLInputElement>) => void` | - |
-| onPressEnter | 按下回车的回调 | `(event: React.KeyboardEvent<HTMLInputElement>) => void` | - |
+| 属性         | 说明                                           | 类型                                                     | 默认值 |
+| ------------ | ---------------------------------------------- | -------------------------------------------------------- | ------ |
+| addonAfter   | 带标签的 input，设置后置标签                   | React.ReactNode                                          | -      |
+| addonBefore  | 带标签的 input，设置前置标签                   | React.ReactNode                                          | -      |
+| prefix       | 带有前缀图标的 input                           | React.ReactNode                                          | -      |
+| suffix       | 带有后缀图标的 input                           | React.ReactNode                                          | -      |
+| defaultValue | 输入框默认内容                                 | string                                                   | -      |
+| disabled     | 是否禁用                                       | boolean                                                  | false  |
+| inputRef     | 内部原生 input 的 ref                          | `React.Ref<HTMLInputElement>`                            | -      |
+| type         | 声明 input 类型，同原生 input 标签的 type 属性 | string                                                   | text   |
+| allowClear   | 可以点击清除图标删除内容                       | boolean                                                  | false  |
+| value        | 输入框内容                                     | string                                                   | -      |
+| onChange     | 输入框内容变化时的回调                         | `(event: React.ChangeEvent<HTMLInputElement>) => void`   | -      |
+| onPressEnter | 按下回车的回调                                 | `(event: React.KeyboardEvent<HTMLInputElement>) => void` | -      |
 
+<!--
 ### Input.TextArea
 
 Input.TextArea 的其他属性和浏览器自带的 textarea 一致。
@@ -217,4 +227,4 @@ Input.TextArea 的其他属性和浏览器自带的 textarea 一致。
 
 | 属性       | 说明  | 类型   | 默认值 |
 | --------- | ----- | ------ | --    |
-| maxLength | 内容的最大长度 | number | 0 |
+| maxLength | 内容的最大长度 | number | 0 | -->

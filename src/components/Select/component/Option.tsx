@@ -2,11 +2,25 @@ import React from 'react';
 import { SelectOptionProps } from '../interface';
 import { SelectOptionView, SelectOptionChildView } from '../style';
 import { SelectContext } from './SelectContext';
-import { formatChildren } from '../Select';
+// import { formatChildren } from '../Select';
 import { AiOutlineCheck } from 'react-icons/ai';
 
+export function formatChildren(children: React.ReactNode): string {
+  if (typeof children === 'string') {
+    return children;
+  }
+  if (Array.isArray(children)) {
+    return children.join('');
+  }
+  if (React.isValidElement(children)) {
+    throw new Error(
+      'Faz-UI: The children of the Select.Option must be either a string or an array.',
+    );
+  }
+  return '';
+}
+
 function Option(props: SelectOptionProps, context: any) {
-  console.log('context: ', context);
   const {
     disabled = false,
     value = '',
@@ -29,14 +43,20 @@ function Option(props: SelectOptionProps, context: any) {
   } = React.useContext(SelectContext);
 
   const optionRef = React.useRef<HTMLDivElement>(null);
-  const selected = React.useMemo(() => selectdValue.includes(value), [selectdValue, value]);
+  const selected = React.useMemo(() => selectdValue.includes(value), [
+    selectdValue,
+    value,
+  ]);
   const hover = keyboardActiveValue === value;
 
   const child = React.useMemo(() => formatChildren(children), [children]);
 
   React.useEffect(() => {
     if (hover) {
-      optionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      optionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
     }
   }, [hover]);
 
@@ -46,7 +66,7 @@ function Option(props: SelectOptionProps, context: any) {
     }
     if (multiple) {
       if (selected) {
-        onUnselect(value, child)
+        onUnselect(value, child);
       } else {
         onSelect(value, child);
       }
@@ -81,7 +101,7 @@ function Option(props: SelectOptionProps, context: any) {
       <SelectOptionChildView multiple={multiple}>
         {children}
       </SelectOptionChildView>
-      {multiple && selected && <AiOutlineCheck style={{ color: '#1890ff' }}/>}
+      {multiple && selected && <AiOutlineCheck style={{ color: '#1890ff' }} />}
     </SelectOptionView>
   );
 }
