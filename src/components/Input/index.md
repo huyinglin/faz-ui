@@ -83,6 +83,7 @@ import { Input } from 'faz-ui';
 export default () => <Input disabled style={{ width: 200 }} />;
 ```
 
+<!--
 ### 搜索框
 
 ```tsx
@@ -119,7 +120,7 @@ export default () => (
     />
   </div>
 );
-```
+``` -->
 
 <!-- ### 文本域
 

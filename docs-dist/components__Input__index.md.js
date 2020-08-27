@@ -1,33 +1,20 @@
 (window['webpackJsonp'] = window['webpackJsonp'] || []).push([
   [8],
   {
-    mpTb: function(e, t, n) {
+    mpTb: function(e, t, a) {
       'use strict';
-      n.r(t);
-      var a = n('0Owb'),
-        l = n('q1tI'),
-        r = n.n(l),
-        c = (n('B2uJ'), n('+su7'), n('qOys'), n('5Yjd')),
-        u = n.n(c),
+      a.r(t);
+      var n = a('0Owb'),
+        l = a('q1tI'),
+        r = a.n(l),
+        c = (a('B2uJ'), a('+su7'), a('qOys'), a('5Yjd')),
+        u = a.n(c),
         d = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA'),
+          var e = a('K+nK'),
+            t = e(a('q1tI')),
+            n = a('/7QA'),
             l = function() {
-              return t['default'].createElement(a.Input, {
-                placeholder: 'This is placeholder',
-                style: { width: 200 },
-              });
-            };
-          return t['default'].createElement(l);
-        }),
-        i = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA'),
-            l = function() {
-              return t['default'].createElement(a.Input, {
-                allowClear: !0,
+              return t['default'].createElement(n.Input, {
                 placeholder: 'This is placeholder',
                 style: { width: 200 },
               });
@@ -35,11 +22,24 @@
           return t['default'].createElement(l);
         }),
         m = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA'),
+          var e = a('K+nK'),
+            t = e(a('q1tI')),
+            n = a('/7QA'),
             l = function() {
-              return t['default'].createElement(a.Input, {
+              return t['default'].createElement(n.Input, {
+                allowClear: !0,
+                placeholder: 'This is placeholder',
+                style: { width: 200 },
+              });
+            };
+          return t['default'].createElement(l);
+        }),
+        i = r.a.memo(function() {
+          var e = a('K+nK'),
+            t = e(a('q1tI')),
+            n = a('/7QA'),
+            l = function() {
+              return t['default'].createElement(n.Input, {
                 addonBefore: 'http://',
                 addonAfter: '.com',
                 defaultValue: 'mysite',
@@ -48,12 +48,12 @@
             };
           return t['default'].createElement(l);
         }),
-        o = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA'),
+        E = r.a.memo(function() {
+          var e = a('K+nK'),
+            t = e(a('q1tI')),
+            n = a('/7QA'),
             l = function() {
-              return t['default'].createElement(a.Input, {
+              return t['default'].createElement(n.Input, {
                 prefix: '\uffe5',
                 suffix: 'RMB',
                 style: { width: 400 },
@@ -61,49 +61,17 @@
             };
           return t['default'].createElement(l);
         }),
-        s = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA'),
+        o = r.a.memo(function() {
+          var e = a('K+nK'),
+            t = e(a('q1tI')),
+            n = a('/7QA'),
             l = function() {
-              return t['default'].createElement(a.Input, {
+              return t['default'].createElement(n.Input, {
                 disabled: !0,
                 style: { width: 200 },
               });
             };
           return t['default'].createElement(l);
-        }),
-        E = r.a.memo(function() {
-          var e = n('K+nK'),
-            t = e(n('q1tI')),
-            a = n('/7QA');
-          function l(e) {
-            console.log('SearchValue:', e);
-          }
-          var r = function() {
-            return t['default'].createElement(
-              'div',
-              null,
-              t['default'].createElement(a.Input.Search, {
-                onSearch: l,
-                placeholder: 'input search text',
-                style: { width: 200 },
-              }),
-              t['default'].createElement(a.Input.Search, {
-                enterButton: !0,
-                onSearch: l,
-                placeholder: 'input search text',
-                style: { width: 400, margin: 16 },
-              }),
-              t['default'].createElement(a.Input.Search, {
-                enterButton: 'Search',
-                onSearch: l,
-                placeholder: 'input search text',
-                style: { width: 400 },
-              }),
-            );
-          };
-          return t['default'].createElement(r);
         });
       t['default'] = function() {
         return r.a.createElement(
@@ -136,7 +104,7 @@
           ),
           r.a.createElement(
             u.a,
-            Object(a['a'])(
+            Object(n['a'])(
               {
                 source: {
                   jsx:
@@ -147,7 +115,7 @@
                 title: 'Basic Input',
                 desc:
                   '<div class="markdown"><p>\u57fa\u672c\u4f7f\u7528\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
+                dependencies: { 'faz-ui': '1.0.4' },
                 files: {},
               },
             ),
@@ -172,7 +140,7 @@
           ),
           r.a.createElement(
             u.a,
-            Object(a['a'])(
+            Object(n['a'])(
               {
                 source: {
                   jsx:
@@ -183,11 +151,11 @@
                 title: 'AllowClear',
                 desc:
                   '<div class="markdown"><p>\u5e26\u79fb\u9664\u56fe\u6807\u7684\u8f93\u5165\u6846\uff0c\u70b9\u51fb\u56fe\u6807\u5220\u9664\u6240\u6709\u5185\u5bb9\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
+                dependencies: { 'faz-ui': '1.0.4' },
                 files: {},
               },
             ),
-            r.a.createElement(i, null),
+            r.a.createElement(m, null),
           ),
           r.a.createElement(
             'div',
@@ -208,7 +176,7 @@
           ),
           r.a.createElement(
             u.a,
-            Object(a['a'])(
+            Object(n['a'])(
               {
                 source: {
                   jsx:
@@ -219,11 +187,11 @@
                 title: 'AddonBefore & AddonAfter',
                 desc:
                   '<div class="markdown"><p>\u7528\u4e8e\u914d\u7f6e\u4e00\u4e9b\u56fa\u5b9a\u7ec4\u5408\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
+                dependencies: { 'faz-ui': '1.0.4' },
                 files: {},
               },
             ),
-            r.a.createElement(m, null),
+            r.a.createElement(i, null),
           ),
           r.a.createElement(
             'div',
@@ -244,7 +212,7 @@
           ),
           r.a.createElement(
             u.a,
-            Object(a['a'])(
+            Object(n['a'])(
               {
                 source: {
                   jsx:
@@ -255,11 +223,11 @@
                 title: 'Prefix & Suffix',
                 desc:
                   '<div class="markdown"><p>\u5728\u8f93\u5165\u6846\u4e0a\u6dfb\u52a0\u524d\u7f00\u6216\u540e\u7f00\u56fe\u6807\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
+                dependencies: { 'faz-ui': '1.0.4' },
                 files: {},
               },
             ),
-            r.a.createElement(o, null),
+            r.a.createElement(E, null),
           ),
           r.a.createElement(
             'div',
@@ -277,7 +245,7 @@
           ),
           r.a.createElement(
             u.a,
-            Object(a['a'])(
+            Object(n['a'])(
               {
                 source: {
                   jsx:
@@ -288,46 +256,11 @@
                 title: 'Disabled',
                 desc:
                   '<div class="markdown"><p>\u7981\u7528 Input\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
+                dependencies: { 'faz-ui': '1.0.4' },
                 files: {},
               },
             ),
-            r.a.createElement(s, null),
-          ),
-          r.a.createElement(
-            'div',
-            { className: 'markdown' },
-            r.a.createElement(
-              'h3',
-              { id: '\u641c\u7d22\u6846' },
-              r.a.createElement(
-                'a',
-                { 'aria-hidden': 'true', href: '#\u641c\u7d22\u6846' },
-                r.a.createElement('span', { className: 'icon icon-link' }),
-              ),
-              '\u641c\u7d22\u6846',
-            ),
-          ),
-          r.a.createElement(
-            u.a,
-            Object(a['a'])(
-              {
-                source: {
-                  tsx:
-                    'import React from \'react\';\nimport { Input } from \'faz-ui\';\n\nfunction onSearch(value: string) {\n  console.log(\'SearchValue:\', value);\n}\n\nexport default () => (\n  <div>\n    <Input.Search\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{ width: 200 }}\n    />\n    <Input.Search\n      enterButton\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{ width: 400, margin: 16 }}\n    />\n    <Input.Search\n      enterButton="Search"\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{ width: 400 }}\n    />\n  </div>\n);',
-                  jsx:
-                    'import React from \'react\';\nimport { Input } from \'faz-ui\';\n\nfunction onSearch(value) {\n  console.log(\'SearchValue:\', value);\n}\n\nexport default () => (\n  <div>\n    <Input.Search\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{\n        width: 200,\n      }}\n    />\n    <Input.Search\n      enterButton\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{\n        width: 400,\n        margin: 16,\n      }}\n    />\n    <Input.Search\n      enterButton="Search"\n      onSearch={onSearch}\n      placeholder="input search text"\n      style={{\n        width: 400,\n      }}\n    />\n  </div>\n);\n',
-                },
-              },
-              {
-                title: 'Input.Search',
-                desc:
-                  '<div class="markdown"><p>\u5e26\u6709\u641c\u7d22\u6309\u94ae\u7684\u8f93\u5165\u6846\u3002\u70b9\u51fb\u641c\u7d22\u6309\u94ae\u6216\u8005\u6309\u4e0b\u56de\u8f66\u53ef\u89e6\u53d1 onSearch\u3002</p></div>',
-                dependencies: { 'faz-ui': '1.0.3' },
-                files: {},
-              },
-            ),
-            r.a.createElement(E, null),
+            r.a.createElement(o, null),
           ),
           r.a.createElement(
             'div',

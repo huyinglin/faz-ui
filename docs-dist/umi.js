@@ -5765,6 +5765,7 @@
         },
         PageHeader: { back: 'Back' },
         Form: {
+          optional: '(optional)',
           defaultValidateMessages: {
             default: 'Field validation error ${label}',
             required: 'Please enter ${label}',
@@ -6485,8 +6486,17 @@
     var Tn = {
       open: kn,
       config: wn,
-      destroy: function() {
-        Zt && (Zt.destroy(), (Zt = null));
+      destroy: function(e) {
+        if (Zt)
+          if (e) {
+            var t = Zt,
+              n = t.removeNotice;
+            n(e);
+          } else {
+            var r = Zt,
+              o = r.destroy;
+            o(), (Zt = null);
+          }
       },
     };
     function _n(e, t) {
@@ -17504,40 +17514,58 @@
     }
     e.exports = o;
   },
-  bmMU: function(e, t, n) {
-    'use strict';
-    var r = Array.isArray,
-      o = Object.keys,
-      i = Object.prototype.hasOwnProperty,
-      a = 'undefined' !== typeof Element;
-    function u(e, t) {
+  bmMU: function(e, t) {
+    var n = 'undefined' !== typeof Element,
+      r = 'function' === typeof Map,
+      o = 'function' === typeof Set,
+      i = 'function' === typeof ArrayBuffer && !!ArrayBuffer.isView;
+    function a(e, t) {
       if (e === t) return !0;
       if (e && t && 'object' == typeof e && 'object' == typeof t) {
-        var n,
-          l,
-          c,
-          s = r(e),
-          f = r(t);
-        if (s && f) {
-          if (((l = e.length), l != t.length)) return !1;
-          for (n = l; 0 !== n--; ) if (!u(e[n], t[n])) return !1;
+        if (e.constructor !== t.constructor) return !1;
+        var u, l, c, s;
+        if (Array.isArray(e)) {
+          if (((u = e.length), u != t.length)) return !1;
+          for (l = u; 0 !== l--; ) if (!a(e[l], t[l])) return !1;
           return !0;
         }
-        if (s != f) return !1;
-        var p = e instanceof Date,
-          d = t instanceof Date;
-        if (p != d) return !1;
-        if (p && d) return e.getTime() == t.getTime();
-        var h = e instanceof RegExp,
-          v = t instanceof RegExp;
-        if (h != v) return !1;
-        if (h && v) return e.toString() == t.toString();
-        var m = o(e);
-        if (((l = m.length), l !== o(t).length)) return !1;
-        for (n = l; 0 !== n--; ) if (!i.call(t, m[n])) return !1;
-        if (a && e instanceof Element && t instanceof Element) return e === t;
-        for (n = l; 0 !== n--; )
-          if (((c = m[n]), ('_owner' !== c || !e.$$typeof) && !u(e[c], t[c])))
+        if (r && e instanceof Map && t instanceof Map) {
+          if (e.size !== t.size) return !1;
+          s = e.entries();
+          while (!(l = s.next()).done) if (!t.has(l.value[0])) return !1;
+          s = e.entries();
+          while (!(l = s.next()).done)
+            if (!a(l.value[1], t.get(l.value[0]))) return !1;
+          return !0;
+        }
+        if (o && e instanceof Set && t instanceof Set) {
+          if (e.size !== t.size) return !1;
+          s = e.entries();
+          while (!(l = s.next()).done) if (!t.has(l.value[0])) return !1;
+          return !0;
+        }
+        if (i && ArrayBuffer.isView(e) && ArrayBuffer.isView(t)) {
+          if (((u = e.length), u != t.length)) return !1;
+          for (l = u; 0 !== l--; ) if (e[l] !== t[l]) return !1;
+          return !0;
+        }
+        if (e.constructor === RegExp)
+          return e.source === t.source && e.flags === t.flags;
+        if (e.valueOf !== Object.prototype.valueOf)
+          return e.valueOf() === t.valueOf();
+        if (e.toString !== Object.prototype.toString)
+          return e.toString() === t.toString();
+        if (((c = Object.keys(e)), (u = c.length), u !== Object.keys(t).length))
+          return !1;
+        for (l = u; 0 !== l--; )
+          if (!Object.prototype.hasOwnProperty.call(t, c[l])) return !1;
+        if (n && e instanceof Element) return !1;
+        for (l = u; 0 !== l--; )
+          if (
+            (('_owner' !== c[l] && '__v' !== c[l] && '__o' !== c[l]) ||
+              !e.$$typeof) &&
+            !a(e[c[l]], t[c[l]])
+          )
             return !1;
         return !0;
       }
@@ -17545,19 +17573,11 @@
     }
     e.exports = function(e, t) {
       try {
-        return u(e, t);
+        return a(e, t);
       } catch (n) {
-        if (
-          (n.message && n.message.match(/stack|recursion/i)) ||
-          -2146828260 === n.number
-        )
+        if ((n.message || '').match(/stack|recursion/i))
           return (
-            console.warn(
-              'Warning: react-fast-compare does not handle circular references.',
-              n.name,
-              n.message,
-            ),
-            !1
+            console.warn('react-fast-compare cannot handle circular refs'), !1
           );
         throw n;
       }
@@ -24435,7 +24455,7 @@
                     },
                     locales: [],
                     navs: {},
-                    title: 'Faz-UI @1.0.3',
+                    title: 'Faz-UI @1.0.4',
                     logo:
                       'https://faz-images.oss-cn-hangzhou.aliyuncs.com/faz-ui.png',
                     desc:
@@ -24753,11 +24773,6 @@
                     heading: '\u524d\u7f00\u548c\u540e\u7f00',
                   },
                   { depth: 3, value: '\u7981\u7528', heading: '\u7981\u7528' },
-                  {
-                    depth: 3,
-                    value: '\u641c\u7d22\u6846',
-                    heading: '\u641c\u7d22\u6846',
-                  },
                   { depth: 2, value: 'API', heading: 'api' },
                   { depth: 3, value: 'Input', heading: 'input' },
                 ],
@@ -25214,7 +25229,7 @@
               redirect: '/components/alert',
             },
           ],
-          title: 'Faz-UI @1.0.3',
+          title: 'Faz-UI @1.0.4',
         },
       ];
       return (
@@ -25243,7 +25258,7 @@
                 isServer: Object({ NODE_ENV: 'production' }).__IS_SERVER,
                 dynamicImport: !0,
                 rootElement: 'root',
-                defaultTitle: 'Faz-UI @1.0.3',
+                defaultTitle: 'Faz-UI @1.0.4',
               },
             });
             return Object(O['renderClient'])(t);
@@ -25253,7 +25268,7 @@
       },
       j = C();
     t['default'] = j();
-    window.g_umi = { version: '3.2.16' };
+    window.g_umi = { version: '3.2.17' };
   },
   tEiQ: function(e, t, n) {
     'use strict';

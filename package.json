@@ -1,9 +1,9 @@
 {
   "name": "faz-ui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "start": "dumi dev",
-    "docs:build": "dumi build",
+    "docs:build": "dumi build && npm run oss",
     "docs:deploy": "gh-pages -d docs-dist",
     "build": "father-build",
     "deploy": "npm run docs:build && npm run docs:deploy",
@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "@types/d3-ease": "^1.0.9",
+    "@types/react": "^16.9.48",
+    "@types/react-icons": "^3.0.0",
     "@types/styled-components": "^5.1.2",
     "@types/uuid": "^8.3.0",
     "@umijs/fabric": "^2.2.2",
