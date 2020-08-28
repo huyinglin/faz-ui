@@ -9,7 +9,7 @@ footer: Copyright © 2020 huyinglin.net 版权所有 [浙ICP备2020030789号-1](
   </a>
 </p>
 
-<h1 align="center">Faz-UI</h1>
+<h1 align="center">Faz-UI 一套基于 React 的 UI 组件库</h1>
 
 ## 快速上手
 
