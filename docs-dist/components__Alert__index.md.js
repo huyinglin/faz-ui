@@ -225,7 +225,7 @@
               {
                 source: {
                   jsx:
-                    "import React from 'react';\nimport { Alert } from 'faz-ui';\n\nexport default () => <Alert message=\"This is Info alert!\"/>",
+                    "import React from 'react';\nimport { Alert } from 'faz-ui';\n\nexport default () => <Alert message=\"This is Info alert!\" />;",
                 },
               },
               {
@@ -259,7 +259,7 @@
               {
                 source: {
                   jsx:
-                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () =>\n  <div>\n    <Alert message="Success Text" type="success" style={{ marginBottom: 8 }}/>\n    <Alert message="Info Text" type="info" style={{ marginBottom: 8 }}/>\n    <Alert message="Warning Text" type="warning" style={{ marginBottom: 8 }}/>\n    <Alert message="Danger Text" type="danger" style={{ marginBottom: 8 }}/>\n  </div>',
+                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () => (\n  <div>\n    <Alert message="Success Text" type="success" style={{ marginBottom: 8 }} />\n    <Alert message="Info Text" type="info" style={{ marginBottom: 8 }} />\n    <Alert message="Warning Text" type="warning" style={{ marginBottom: 8 }} />\n    <Alert message="Danger Text" type="danger" style={{ marginBottom: 8 }} />\n  </div>\n);',
                 },
               },
               {
@@ -296,7 +296,7 @@
               {
                 source: {
                   jsx:
-                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () =>\n  <div>\n    <Alert\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Info Text"\n      description="Info Description Info Description Info Description Info Description"\n      type="info"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Warning Text"\n      description="Warning Description Warning Description Warning Description Warning Description"\n      type="warning"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Danger Text"\n      description="Error Description Error Description Error Description Error Description"\n      type="danger"\n      style={{ marginBottom: 8 }}\n    />\n  </div>',
+                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () => (\n  <div>\n    <Alert\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Info Text"\n      description="Info Description Info Description Info Description Info Description"\n      type="info"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Warning Text"\n      description="Warning Description Warning Description Warning Description Warning Description"\n      type="warning"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Danger Text"\n      description="Error Description Error Description Error Description Error Description"\n      type="danger"\n      style={{ marginBottom: 8 }}\n    />\n  </div>\n);',
                 },
               },
               {
@@ -332,7 +332,7 @@
               {
                 source: {
                   jsx:
-                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () =>\n  <div>\n    <Alert message="Info Text" closable onClose={e => console.log(e, \'I was closed.\')} style={{ marginBottom: 8 }}/>\n    <Alert\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      closable\n    />\n  </div>',
+                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () => (\n  <div>\n    <Alert\n      message="Info Text"\n      closable\n      onClose={e => console.log(e, \'I was closed.\')}\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      closable\n    />\n  </div>\n);',
                 },
               },
               {
@@ -365,7 +365,7 @@
               {
                 source: {
                   jsx:
-                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () =>\n  <div>\n    <Alert showIcon message="Success Text" type="success" style={{ marginBottom: 8 }}/>\n    <Alert showIcon message="Info Text" type="info" style={{ marginBottom: 8 }}/>\n    <Alert showIcon message="Warning Text" type="warning" style={{ marginBottom: 8 }}/>\n    <Alert showIcon message="Danger Text" type="danger" style={{ marginBottom: 8 }}/>\n    <Alert\n      showIcon\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Info Text"\n      description="Info Description Info Description Info Description Info Description"\n      type="info"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Warning Text"\n      description="Warning Description Warning Description Warning Description Warning Description"\n      type="warning"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Danger Text"\n      description="Error Description Error Description Error Description Error Description"\n      type="danger"\n      style={{ marginBottom: 8 }}\n    />\n  </div>',
+                    'import React from \'react\';\nimport { Alert } from \'faz-ui\';\n\nexport default () => (\n  <div>\n    <Alert\n      showIcon\n      message="Success Text"\n      type="success"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Info Text"\n      type="info"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Warning Text"\n      type="warning"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Danger Text"\n      type="danger"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Success Text"\n      description="Success Description Success Description Success Description"\n      type="success"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Info Text"\n      description="Info Description Info Description Info Description Info Description"\n      type="info"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Warning Text"\n      description="Warning Description Warning Description Warning Description Warning Description"\n      type="warning"\n      style={{ marginBottom: 8 }}\n    />\n    <Alert\n      showIcon\n      message="Danger Text"\n      description="Error Description Error Description Error Description Error Description"\n      type="danger"\n      style={{ marginBottom: 8 }}\n    />\n  </div>\n);',
                 },
               },
               {

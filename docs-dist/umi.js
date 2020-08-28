@@ -24479,7 +24479,7 @@
               exact: !0,
               meta: {
                 filePath: 'src/components/Alert/index.md',
-                updatedTime: 1598080604e3,
+                updatedTime: 1598551433e3,
                 slugs: [
                   {
                     depth: 2,
@@ -24745,7 +24745,7 @@
               exact: !0,
               meta: {
                 filePath: 'src/components/Input/index.md',
-                updatedTime: 1598548374e3,
+                updatedTime: 1598551433e3,
                 slugs: [
                   {
                     depth: 2,
@@ -24773,8 +24773,40 @@
                     heading: '\u524d\u7f00\u548c\u540e\u7f00',
                   },
                   { depth: 3, value: '\u7981\u7528', heading: '\u7981\u7528' },
+                  {
+                    depth: 3,
+                    value: '\u641c\u7d22\u6846',
+                    heading: '\u641c\u7d22\u6846',
+                  },
+                  {
+                    depth: 3,
+                    value: '\u6587\u672c\u57df',
+                    heading: '\u6587\u672c\u57df',
+                  },
+                  {
+                    depth: 3,
+                    value: '\u5bc6\u7801\u6846',
+                    heading: '\u5bc6\u7801\u6846',
+                  },
+                  {
+                    depth: 3,
+                    value: '\u5185\u5bb9\u957f\u5ea6\u9650\u5236',
+                    heading: '\u5185\u5bb9\u957f\u5ea6\u9650\u5236',
+                  },
                   { depth: 2, value: 'API', heading: 'api' },
                   { depth: 3, value: 'Input', heading: 'input' },
+                  {
+                    depth: 3,
+                    value: 'Input.TextArea',
+                    heading: 'inputtextarea',
+                  },
+                  { depth: 3, value: 'Input.Search', heading: 'inputsearch' },
+                  {
+                    depth: 3,
+                    value: 'Input.Password',
+                    heading: 'inputpassword',
+                  },
+                  { depth: 3, value: 'Input.Limit', heading: 'inputlimit' },
                 ],
                 title: 'Input \u8f93\u5165\u6846',
                 group: { path: '/components', title: 'Components' },

@@ -83,7 +83,6 @@ import { Input } from 'faz-ui';
 export default () => <Input disabled style={{ width: 200 }} />;
 ```
 
-<!--
 ### 搜索框
 
 ```tsx
@@ -120,9 +119,9 @@ export default () => (
     />
   </div>
 );
-``` -->
+```
 
-<!-- ### 文本域
+### 文本域
 
 ```jsx
 /**
@@ -133,13 +132,15 @@ export default () => (
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () =>
+export default () => (
   <Input.TextArea
     rows={4}
     placeholder="This is placeholder"
     style={{ width: 400 }}
   />
+);
 ```
+
 ### 密码框
 
 ```jsx
@@ -152,7 +153,9 @@ import React from 'react';
 import { Input } from 'faz-ui';
 import { BsLock, BsUnlock } from 'react-icons/ai';
 
-export default () => <Input.Password placeholder="Enter your Password" style={{ width: 200 }}/>
+export default () => (
+  <Input.Password placeholder="Enter your Password" style={{ width: 200 }} />
+);
 ```
 
 ### 内容长度限制
@@ -166,8 +169,14 @@ export default () => <Input.Password placeholder="Enter your Password" style={{ 
 import React from 'react';
 import { Input } from 'faz-ui';
 
-export default () => <Input.Limit maxLength={4} placeholder="Enter up to 4 characters" style={{ width: 200 }}/>
-``` -->
+export default () => (
+  <Input.Limit
+    maxLength={4}
+    placeholder="Enter up to 4 characters"
+    style={{ width: 200 }}
+  />
+);
+```
 
 ## API
 
@@ -190,42 +199,41 @@ Input 的其他属性和 React 自带的 input 一致。
 | onChange     | 输入框内容变化时的回调                         | `(event: React.ChangeEvent<HTMLInputElement>) => void`   | -      |
 | onPressEnter | 按下回车的回调                                 | `(event: React.KeyboardEvent<HTMLInputElement>) => void` | -      |
 
-<!--
 ### Input.TextArea
 
 Input.TextArea 的其他属性和浏览器自带的 textarea 一致。
 
-| 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
-| defaultValue | 输入框默认内容	| string | - |
-| value | 输入框内容 | string | - |
-| onChange | 输入框内容变化时的回调 | `(event: React.ChangeEvent<HTMLTextAreaElement>) => void` | - |
-| onPressEnter | 按下回车的回调 | `(event: React.KeyboardEvent<HTMLTextAreaElement>) => void` | - |
-| onResize | TextArea 大小变化时的回调 | `(width: number, height: number) => void` | - |
+| 属性         | 说明                      | 类型                                                        | 默认值 |
+| ------------ | ------------------------- | ----------------------------------------------------------- | ------ |
+| defaultValue | 输入框默认内容            | string                                                      | -      |
+| value        | 输入框内容                | string                                                      | -      |
+| onChange     | 输入框内容变化时的回调    | `(event: React.ChangeEvent<HTMLTextAreaElement>) => void`   | -      |
+| onPressEnter | 按下回车的回调            | `(event: React.KeyboardEvent<HTMLTextAreaElement>) => void` | -      |
+| onResize     | TextArea 大小变化时的回调 | `(width: number, height: number) => void`                   | -      |
 
 ### Input.Search
 
 其余属性和 Input 一致。
 
-| 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
-| enterButton | 是否有确认按钮，可设为按钮文字。该属性会与 addonAfter 冲突。| `boolean | React.ReactNode` | false |
-| onSearch | 点击搜索或按下回车键时的回调	| `(value: string, event: React.KeyboardEvent<HTMLInputElement>) => void` | - |
+| 属性        | 说明                                                         | 类型                                                                    | 默认值 |
+| ----------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | ------ |
+| enterButton | 是否有确认按钮，可设为按钮文字。该属性会与 addonAfter 冲突。 | boolean &#124; React.ReactNode                                          | false  |
+| onSearch    | 点击搜索或按下回车键时的回调                                 | `(value: string, event: React.KeyboardEvent<HTMLInputElement>) => void` | -      |
 
 ### Input.Password
 
 其余属性和 Input 一致。
 
-| 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
-| visibilityToggle | 是否显示切换按钮 | boolean | true |
-| visibleIcon | 自定义显示密码 Icon | React.ReactNode | - |
-| invisibleIcon | 自定义隐藏密码 Icon | React.ReactNode | - |
+| 属性             | 说明                | 类型            | 默认值 |
+| ---------------- | ------------------- | --------------- | ------ |
+| visibilityToggle | 是否显示切换按钮    | boolean         | true   |
+| visibleIcon      | 自定义显示密码 Icon | React.ReactNode | -      |
+| invisibleIcon    | 自定义隐藏密码 Icon | React.ReactNode | -      |
 
 ### Input.Limit
 
 其余属性和 Input 一致。
 
-| 属性       | 说明  | 类型   | 默认值 |
-| --------- | ----- | ------ | --    |
-| maxLength | 内容的最大长度 | number | 0 | -->
+| 属性      | 说明           | 类型   | 默认值 |
+| --------- | -------------- | ------ | ------ |
+| maxLength | 内容的最大长度 | number | 0      | --> |
